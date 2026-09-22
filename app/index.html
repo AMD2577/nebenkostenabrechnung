@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nebenkostenabrechnung 2025 · Berrenrather Straße 218</title>
+  <link rel="stylesheet" href="stil.css">
+</head>
+<body>
+
+  <header class="kopf">
+    <h1>Nebenkostenabrechnung 2025</h1>
+    <span class="unterzeile" id="kopfzeile"></span>
+    <span class="werkzeuge">
+      <button class="knopf haupt" id="alleDrucken">Alle Abrechnungen drucken</button>
+    </span>
+  </header>
+
+  <nav class="reiter">
+    <button data-reiter="uebersicht" class="aktiv">Übersicht</button>
+    <button data-reiter="abrechnungen">Abrechnungen</button>
+    <button data-reiter="pruefungen">Prüfungen</button>
+    <button data-reiter="belege">Belege &amp; Konto</button>
+    <button data-reiter="erfassen">Beleg erfassen</button>
+    <button data-reiter="einstellungen">Einstellungen</button>
+  </nav>
+
+  <main id="inhalt"></main>
+
+  <!-- Hier stehen immer alle fünf Schreiben. Am Bildschirm unsichtbar,
+       beim Drucken ist es das Einzige, was aufs Papier kommt. -->
+  <div id="druckbereich"></div>
+
+  <!-- Reihenfolge ist wichtig: erst die Daten, dann der Rechenkern,
+       dann das Schreiben, zuletzt die Oberfläche. -->
+  <!-- PDF.js liest Text aus PDF-Dateien. Fehlt die Datei, funktioniert alles
+       weiter - nur das Einlesen per PDF nicht (dann Text einfügen). -->
+  <script src="../vendor/pdf.min.js"></script>
+  <script>window.PDFJS_WORKER_PFAD = "../vendor/pdf.worker.min.js";</script>
+
+  <script src="fall.js"></script>
+  <script src="../rechenkern/nebenkosten.js"></script>
+  <script src="schreiben.js"></script>
+  <script src="einlesen.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4731 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nebenkostenabrechnung 2025 · Berrenrather Straße 218</title>
+  <style>
+/* =============================================================================
+ * GESTALTUNG
+ * =============================================================================
+ * Zwei Welten in einer Datei:
+ *   1. BILDSCHIRM - die Bedienoberfläche (Reiter, Tabellen, Schalter)
+ *   2. DRUCK      - die Abrechnungsschreiben auf A4
+ * Im Druck wird die Oberfläche komplett ausgeblendet; übrig bleiben nur die
+ * Schreiben, jedes auf einer eigenen Seite. Deshalb sieht man am Bildschirm
+ * genau das, was später auf dem Papier steht.
+ * ========================================================================== */
+
+:root {
+  --papier: #ffffff;
+  --hintergrund: #f4f6f8;
+  --linie: #dfe3e8;
+  --text: #1b1f24;
+  --gedaempft: #5f6b7a;
+  --akzent: #1f4e8c;
+  --gut: #1a7f4b;
+  --warnung: #b45309;
+  --schlecht: #b91c1c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--hintergrund);
+}
+
+/* --- Kopf und Reiter ------------------------------------------------------ */
+header.kopf {
+  background: #fff; border-bottom: 1px solid var(--linie);
+  padding: 12px 22px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;
+}
+header.kopf h1 { font-size: 16px; margin: 0; }
+header.kopf .unterzeile { color: var(--gedaempft); font-size: 12.5px; }
+header.kopf .werkzeuge { margin-left: auto; display: flex; gap: 8px; }
+
+nav.reiter {
+  background: #fff; border-bottom: 1px solid var(--linie);
+  padding: 8px 22px 0; display: flex; gap: 4px; flex-wrap: wrap;
+}
+nav.reiter button {
+  border: 1px solid transparent; border-bottom: none; background: none;
+  padding: 8px 14px; font-size: 14px; cursor: pointer;
+  color: var(--gedaempft); border-radius: 6px 6px 0 0;
+}
+nav.reiter button.aktiv {
+  background: var(--hintergrund); color: var(--text);
+  border-color: var(--linie); font-weight: 600;
+}
+
+main { padding: 18px 22px 60px; max-width: 1180px; margin: 0 auto; }
+
+/* --- Bausteine ------------------------------------------------------------ */
+.kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.kachel { background: #fff; border: 1px solid var(--linie); border-radius: 8px; padding: 11px 13px; }
+.kachel .titel { color: var(--gedaempft); font-size: 12px; }
+.kachel .wert { font-size: 19px; font-weight: 600; margin-top: 2px; }
+
+.karte { background: #fff; border: 1px solid var(--linie); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+.karte h2 { font-size: 15px; margin: 0 0 10px; }
+
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--linie); vertical-align: top; }
+th { color: var(--gedaempft); font-weight: 600; font-size: 12.5px; }
+td.r, th.r { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+tr.summe td { font-weight: 600; border-top: 2px solid #999; }
+tr.klickbar { cursor: pointer; }
+tr.klickbar:hover { background: #eef3fa; }
+
+.klein { color: var(--gedaempft); font-size: 11.5px; font-weight: normal; }
+.grund { font-size: 12.5px; color: #2c3440; margin: 3px 0; max-width: 60em; }
+.plus { color: var(--schlecht); }
+.minus { color: var(--gut); }
+
+button { font-family: inherit; }
+button.knopf {
+  border: 1px solid var(--linie); background: #fff; border-radius: 6px;
+  padding: 6px 12px; cursor: pointer; font-size: 13px;
+}
+button.knopf:hover { background: #eef3fa; border-color: var(--akzent); }
+button.knopf.haupt { background: var(--akzent); color: #fff; border-color: var(--akzent); }
+button.knopf:disabled, button.knopf.haupt:disabled {
+  background: #e9ecef; color: #9aa4b0; border-color: var(--linie); cursor: not-allowed;
+}
+
+.marke { display: inline-block; font-size: 11.5px; padding: 1px 7px; border-radius: 10px; border: 1px solid; }
+.marke.gut { color: var(--gut); border-color: var(--gut); }
+.marke.schlecht { color: var(--schlecht); border-color: var(--schlecht); }
+.marke.warnung { color: var(--warnung); border-color: var(--warnung); }
+
+.befund { border-left: 3px solid var(--warnung); padding: 7px 12px; margin: 8px 0; background: #fffaf3; border-radius: 0 6px 6px 0; }
+.befund.ok { border-color: var(--gut); background: #f2faf5; }
+.befund.info { border-color: var(--akzent); background: #f3f7fd; }
+.befund b { display: block; }
+
+details summary { cursor: pointer; color: var(--akzent); font-size: 12.5px; }
+
+/* --- Beleg erfassen ------------------------------------------------------- */
+.ablage {
+  border: 2px dashed var(--linie); border-radius: 8px; padding: 26px; text-align: center;
+  color: var(--gedaempft); background: #fbfcfd;
+}
+.ablage.bereit { border-color: var(--akzent); background: #eef3fa; color: var(--akzent); }
+textarea { width: 100%; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px;
+  border: 1px solid var(--linie); border-radius: 6px; padding: 8px; margin: 8px 0; }
+input.feld, select.feld {
+  width: 100%; border: 1px solid var(--linie); border-radius: 5px; padding: 4px 7px;
+  font-family: inherit; font-size: 13px; background: #fff;
+}
+input.feld:focus, select.feld:focus { outline: 2px solid var(--akzent); outline-offset: -1px; }
+pre.dokumenttext {
+  background: #f7f9fb; border: 1px solid var(--linie); border-radius: 6px; padding: 10px;
+  font-size: 11.5px; max-height: 320px; overflow: auto; white-space: pre-wrap;
+}
+
+/* --- Einstellungen -------------------------------------------------------- */
+.schalter { display: grid; grid-template-columns: 220px 1fr; gap: 10px 16px; align-items: start; }
+.schalter label { font-weight: 600; }
+.schalter .auswahl { display: flex; gap: 6px; flex-wrap: wrap; }
+.schalter .auswahl button { border: 1px solid var(--linie); background: #fff; border-radius: 6px; padding: 5px 11px; cursor: pointer; font-size: 13px; }
+.schalter .auswahl button.aktiv { background: var(--akzent); color: #fff; border-color: var(--akzent); }
+
+.diff { background: #fffdf5; border: 1px solid var(--warnung); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
+
+/* =============================================================================
+ * DAS SCHREIBEN (Bildschirm: wie Papier; Druck: A4)
+ * ========================================================================== */
+.papier {
+  background: var(--papier); border: 1px solid var(--linie); border-radius: 4px;
+  padding: 18mm; margin: 0 auto 16px; max-width: 210mm;
+}
+
+.schreiben { font-size: 10.5pt; line-height: 1.4; }
+.schreiben .briefkopf {
+  display: flex; justify-content: space-between; font-size: 9pt;
+  color: #444; border-bottom: 1px solid #999; padding-bottom: 6px; margin-bottom: 22px;
+}
+.schreiben .rechts { text-align: right; }
+.schreiben .datumzeile { float: right; font-size: 9pt; text-align: right; }
+.schreiben .anschriftenfeld { min-height: 32mm; }
+.schreiben .absenderzeile { font-size: 7.5pt; color: #666; text-decoration: underline; margin-bottom: 8px; }
+.schreiben h1 { font-size: 15pt; margin: 18px 0 4px; }
+.schreiben .untertitel { color: #444; margin-bottom: 14px; }
+.schreiben h2 {
+  font-size: 11pt; margin: 18px 0 6px;
+  /* Eine Überschrift allein am Seitenende, deren Inhalt erst auf der nächsten
+     Seite folgt, wirkt im Druck wie ein Fehler - deshalb wandert sie mit. */
+  page-break-after: avoid;
+}
+.schreiben h2 + p, .schreiben h2 + table { page-break-before: avoid; }
+.schreiben p { margin: 6px 0; }
+.schreiben .anrede { margin-top: 14px; }
+.schreiben table.eckdaten td { border: none; padding: 2px 8px 2px 0; }
+.schreiben table.eckdaten td:first-child { color: #555; width: 42mm; }
+.schreiben table.kosten { margin: 10px 0; font-size: 9.5pt; }
+.schreiben table.kosten th { background: #f2f2f2; border-bottom: 1px solid #999; color: #000; }
+.schreiben table.kosten tr { page-break-inside: avoid; }
+.schreiben table.kosten tr.summe td { border-top: 2px solid #333; border-bottom: none; }
+.schreiben table.kosten tr.ergebnis td { font-weight: 700; font-size: 11pt; background: #f7f7f7; border-bottom: 2px solid #333; }
+/* Eine IBAN darf nicht mitten im Block umbrechen - sonst steht "DE21" am
+   Zeilenende und der Rest auf der nächsten Zeile. */
+.schreiben .iban { white-space: nowrap; }
+.schreiben .grund { font-size: 9pt; color: #333; margin: 2px 0 1px; }
+.schreiben .hinweis { border: 1px solid var(--warnung); background: #fffaf3; padding: 8px 10px; margin: 10px 0; font-size: 9.5pt; }
+.schreiben .entwurfsband {
+  border: 2px solid var(--schlecht); background: #fdf2f2; color: var(--schlecht);
+  padding: 8px 10px; margin-bottom: 14px; font-size: 9.5pt;
+}
+.schreiben .entwurfsband b { display: block; letter-spacing: 0.08em; }
+.schreiben .offen { color: var(--schlecht); font-weight: 600; }
+.schreiben .gruss { margin-top: 18px; }
+/* Herleitung, Belegeinsicht und Grußformel gehören zusammen. Ohne diese Regel
+   landet die Grußformel allein auf einer sonst leeren letzten Seite. */
+.schreiben .abschluss { page-break-inside: avoid; }
+.schreiben .brieffuss { font-size: 8pt; color: #666; border-top: 1px solid #999; margin-top: 22px; padding-top: 6px; }
+
+/* Der Druckbereich ist am Bildschirm unsichtbar - er existiert nur fürs Papier. */
+#druckbereich { display: none; }
+
+/* =============================================================================
+ * DRUCK
+ * ========================================================================== */
+@media print {
+  @page { size: A4; margin: 18mm 18mm 16mm 18mm; }
+
+  body { background: #fff; }
+  header.kopf, nav.reiter, main { display: none !important; }
+
+  #druckbereich { display: block; }
+  #druckbereich .schreiben { page-break-after: always; }
+  #druckbereich .schreiben:last-child { page-break-after: auto; }
+
+  /* Wird ein einzelnes Schreiben gedruckt, blendet dieser Block alle anderen
+     aus. body[data-nur-drucken] wird dafür in app.js gesetzt. */
+  body[data-nur-drucken] #druckbereich .schreiben { display: none; }
+  body[data-nur-drucken] #druckbereich .schreiben.drucken { display: block; }
+}
+
+</style>
+</head>
+<body>
+
+  <header class="kopf">
+    <h1>Nebenkostenabrechnung 2025</h1>
+    <span class="unterzeile" id="kopfzeile"></span>
+    <span class="werkzeuge">
+      <button class="knopf haupt" id="alleDrucken">Alle Abrechnungen drucken</button>
+    </span>
+  </header>
+
+  <nav class="reiter">
+    <button data-reiter="uebersicht" class="aktiv">Übersicht</button>
+    <button data-reiter="abrechnungen">Abrechnungen</button>
+    <button data-reiter="pruefungen">Prüfungen</button>
+    <button data-reiter="belege">Belege &amp; Konto</button>
+    <button data-reiter="erfassen">Beleg erfassen</button>
+    <button data-reiter="einstellungen">Einstellungen</button>
+  </nav>
+
+  <main id="inhalt"></main>
+
+  <!-- Hier stehen immer alle fünf Schreiben. Am Bildschirm unsichtbar,
+       beim Drucken ist es das Einzige, was aufs Papier kommt. -->
+  <div id="druckbereich"></div>
+
+  <!-- Reihenfolge ist wichtig: erst die Daten, dann der Rechenkern,
+       dann das Schreiben, zuletzt die Oberfläche. -->
+  <!-- PDF.js liest Text aus PDF-Dateien. Fehlt die Datei, funktioniert alles
+       weiter - nur das Einlesen per PDF nicht (dann Text einfügen). -->
+  <script src="vendor/pdf.min.js"></script>
+  <script>window.PDFJS_WORKER_PFAD = "vendor/pdf.worker.min.js";</script>
+
+  <script>
+/* Erzeugt von werkzeuge/baue.js - nicht von Hand ändern.
+   Die Falldaten als JavaScript, damit die Seite auch per Doppelklick
+   (file://) funktioniert und keinen Server braucht. */
+window.FALL = {
+  "schema": 1,
+  "bezeichnung": "Nebenkostenabrechnung 2025 – Berrenrather Straße 218",
+  "objekt": {
+    "bezeichnung": "Berrenrather Straße 218, 50937 Köln (Köln-Sülz)",
+    "strasse": "Berrenrather Straße 218",
+    "plz_ort": "50937 Köln",
+    "baujahr": 1968,
+    "wohnflaeche_gesamt_qm": 250
+  },
+  "vermieterin": {
+    "name": "Objektgesellschaft Berrenrather 218 GbR",
+    "vertreten_durch": "Frau Renate Kohlhaas",
+    "strasse": "Luxemburger Straße 44",
+    "plz_ort": "50674 Köln",
+    "iban": "DE21 3705 0198 1902 4471 88",
+    "bank": "Sparkasse KölnBonn"
+  },
+  "abrechnung": {
+    "von": "2025-01-01",
+    "bis": "2025-12-31",
+    "erstellt_am": "2026-02-16",
+    "zahlungsfrist_tage": 30
+  },
+  "einstellungen": {
+    "zeitanteil_methode": "tage",
+    "vorauszahlungen_ansatz": "ist",
+    "kostenansatz": "leistung"
+  },
+  "einheiten": [
+    {
+      "we": "WE 1",
+      "lage": "Erdgeschoss links",
+      "zimmer": 2.5,
+      "wohnflaeche_qm": 62,
+      "keller": "K1",
+      "quelle": "10_Einheiten-_und_Mieteruebersicht.pdf, Aufmaß Vermessungsbüro Terhoeven 12.04.2018"
+    },
+    {
+      "we": "WE 2",
+      "lage": "Erdgeschoss rechts",
+      "zimmer": 2,
+      "wohnflaeche_qm": 48.5,
+      "keller": "K2",
+      "quelle": "10_Einheiten-_und_Mieteruebersicht.pdf, Aufmaß 12.04.2018"
+    },
+    {
+      "we": "WE 3",
+      "lage": "1. Obergeschoss",
+      "zimmer": 3.5,
+      "wohnflaeche_qm": 84,
+      "keller": "K3",
+      "quelle": "10_Einheiten-_und_Mieteruebersicht.pdf, Aufmaß 12.04.2018",
+      "hinweis": "Mietvertrag Nowak (2016) nennt 'ca. 81 m²'. Maßgeblich ist die tatsächliche Fläche lt. Aufmaß 2018 (84,00 m²), vgl. BGH VIII ZR 220/17; Vertrag Kestner (2025) nennt bereits 84,00 m²."
+    },
+    {
+      "we": "WE 4",
+      "lage": "Dachgeschoss",
+      "zimmer": 2.5,
+      "wohnflaeche_qm": 55.5,
+      "keller": "K4",
+      "quelle": "10_Einheiten-_und_Mieteruebersicht.pdf, Aufmaß 12.04.2018"
+    }
+  ],
+  "mietverhaeltnisse": [
+    {
+      "id": "WE1_Yildirim",
+      "we": "WE 1",
+      "mieter": "Ahmet und Sevda Yildirim",
+      "anrede": "Sehr geehrte Frau Yildirim, sehr geehrter Herr Yildirim,",
+      "beginn": "2019-03-01",
+      "ende": null,
+      "nettokaltmiete": 520,
+      "nk_vorauszahlung": 130,
+      "zahler_kennung": "YILDIRIM",
+      "quelle": "20_Mietvertrag_WE1_Yildirim.pdf (Vertrag vom 18.02.2019)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    },
+    {
+      "id": "WE2_Bendel",
+      "we": "WE 2",
+      "mieter": "Marco Bendel",
+      "anrede": "Sehr geehrter Herr Bendel,",
+      "beginn": "2022-09-01",
+      "ende": null,
+      "nettokaltmiete": 465,
+      "nk_vorauszahlung": 120,
+      "staffelmiete": [
+        {
+          "ab": "2022-09-01",
+          "nettokaltmiete": 465
+        },
+        {
+          "ab": "2023-09-01",
+          "nettokaltmiete": 490
+        },
+        {
+          "ab": "2024-09-01",
+          "nettokaltmiete": 515
+        },
+        {
+          "ab": "2025-09-01",
+          "nettokaltmiete": 545
+        }
+      ],
+      "zahler_kennung": "BENDEL",
+      "quelle": "21_Mietvertrag_WE2_Bendel.pdf (Vertrag vom 11.08.2022, § 3a Staffelmiete)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    },
+    {
+      "id": "WE3_Nowak",
+      "we": "WE 3",
+      "mieter": "Christiane Nowak",
+      "anrede": "Sehr geehrte Frau Nowak,",
+      "beginn": "2016-11-01",
+      "ende": "2025-07-31",
+      "nettokaltmiete": 700,
+      "nk_vorauszahlung": 180,
+      "zahler_kennung": "NOWAK",
+      "anschrift_hinweis": "ausgezogen zum 31.07.2025 – neue Anschrift liegt nicht vor (Rückfrage)",
+      "quelle": "22_Mietvertrag_WE3_Nowak.pdf (Vertrag vom 22.09.2016, Nachtrag Nr. 1 vom 28.04.2025)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    },
+    {
+      "id": "WE3_Kestner",
+      "we": "WE 3",
+      "mieter": "Julian Kestner",
+      "anrede": "Sehr geehrter Herr Kestner,",
+      "beginn": "2025-08-01",
+      "ende": null,
+      "nettokaltmiete": 890,
+      "nk_vorauszahlung": 200,
+      "zahler_kennung": "KESTNER",
+      "quelle": "23_Mietvertrag_WE3_Kestner.pdf (Vertrag vom 09.07.2025)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    },
+    {
+      "id": "WE4_Ohlwein",
+      "we": "WE 4",
+      "mieter": "Petra Ohlwein",
+      "anrede": "Sehr geehrte Frau Ohlwein,",
+      "beginn": "2021-05-01",
+      "ende": null,
+      "nettokaltmiete": 610,
+      "nk_vorauszahlung": 150,
+      "zahler_kennung": "OHLWEIN",
+      "quelle": "24_Mietvertrag_WE4_Ohlwein.pdf (Vertrag vom 06.04.2021)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    }
+  ],
+  "kostenarten": {
+    "grundsteuer": {
+      "bezeichnung": "Grundsteuer",
+      "betrkv": "§ 2 Nr. 1 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („laufende öffentliche Lasten, insbesondere die Grundsteuer“)",
+      "warum": "Die Grundsteuer ist eine laufende öffentliche Last des Grundstücks. Sie fällt Jahr für Jahr an, solange das Haus vermietet wird, und darf deshalb auf die Mieter umgelegt werden.",
+      "konto": "6100",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "wasser": {
+      "bezeichnung": "Wasserversorgung",
+      "betrkv": "§ 2 Nr. 2 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Wasserversorgung“)",
+      "warum": "Das Wasser, das im Haus verbraucht wird, bezahlt die Eigentümerin an die RheinEnergie und legt es um. Es gibt keine Wohnungszähler, deshalb wird nach Wohnfläche verteilt.",
+      "konto": "6140",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "entwaesserung": {
+      "bezeichnung": "Entwässerung (Schmutz- und Niederschlagswasser)",
+      "betrkv": "§ 2 Nr. 3 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („der Entwässerung einschließlich Niederschlagswasser“)",
+      "warum": "Die Stadt Köln stellt das Ableiten von Schmutzwasser und von Regenwasser vom Grundstück in Rechnung. Beides sind laufende Kosten des Betriebs.",
+      "konto": "6130",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "strassenreinigung": {
+      "bezeichnung": "Straßenreinigung",
+      "betrkv": "§ 2 Nr. 8 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Straßenreinigung“)",
+      "warum": "Die Stadt reinigt die Straße vor dem Haus und stellt das nach Frontlänge in Rechnung. Eine laufende Leistung für alle Bewohner.",
+      "konto": "6120",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "muell": {
+      "bezeichnung": "Müllbeseitigung",
+      "betrkv": "§ 2 Nr. 8 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („der Müllbeseitigung“)",
+      "warum": "Die Abfallbehälter werden regelmäßig geleert. Die Gebühr richtet sich nach Zahl und Größe der Tonnen und fällt laufend an.",
+      "konto": "6110",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "gebaeudereinigung": {
+      "bezeichnung": "Gebäudereinigung (Treppenhaus)",
+      "betrkv": "§ 2 Nr. 9 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Gebäudereinigung“)",
+      "warum": "Treppenhaus, Eingang und Kellergang werden wöchentlich gereinigt. Eine wiederkehrende Leistung, von der alle Mietparteien etwas haben.",
+      "konto": "6320",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "gartenpflege": {
+      "bezeichnung": "Gartenpflege",
+      "betrkv": "§ 2 Nr. 10 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Gartenpflege“)",
+      "warum": "Rasen, Hecken und Beete werden mehrmals im Jahr gepflegt. Umlagefähig ist die laufende Pflege – nicht das erstmalige Anlegen eines Gartens.",
+      "konto": "6310",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "allgemeinstrom": {
+      "bezeichnung": "Beleuchtung / Allgemeinstrom",
+      "betrkv": "§ 2 Nr. 11 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Beleuchtung der gemeinschaftlich genutzten Flächen“)",
+      "warum": "Strom für Treppenhaus, Keller und Außenbeleuchtung. Er wird über einen eigenen Zähler abgerechnet und von allen gemeinsam genutzt.",
+      "konto": "6150",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "schornsteinfeger": {
+      "bezeichnung": "Schornsteinfeger",
+      "betrkv": "§ 2 Nr. 12 BetrKV",
+      "vertrag": "§ 4 Abs. 1 und § 5 Abs. 2 Mietvertrag („legt sie nach § 4 um“)",
+      "warum": "Der Bezirksschornsteinfeger prüft die vier Gasthermen und misst die Abgaswerte – gesetzlich vorgeschrieben und wiederkehrend. Der Mietvertrag regelt ausdrücklich, dass die Vermieterin diese Kosten trägt und nach Wohnfläche umlegt.",
+      "konto": "6330",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "versicherung": {
+      "bezeichnung": "Sach- und Haftpflichtversicherung",
+      "betrkv": "§ 2 Nr. 13 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Sach- und Haftpflichtversicherung des Gebäudes“)",
+      "warum": "Gebäude- und Haftpflichtversicherung schützen das Haus und seine Bewohner, etwa bei Feuer, Leitungswasser oder einem Sturmschaden. Der Beitrag fällt jedes Jahr an.",
+      "konto": "6200",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "hauswart": {
+      "bezeichnung": "Hauswart",
+      "betrkv": "§ 2 Nr. 14 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten des Hauswarts“)",
+      "warum": "Der Hauswart kümmert sich laufend um das Haus: Müllplatz, Beleuchtung, Winterdienst. Umlagefähig ist nur diese laufende Betreuung – Reparaturen, die er nebenbei erledigt, gehören nicht dazu.",
+      "konto": "6300",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "rauchwarnmelder": {
+      "bezeichnung": "Wartung Rauchwarnmelder",
+      "betrkv": "§ 2 Nr. 17 BetrKV (sonstige, lt. § 4 Abs. 2 Mietvertrag)",
+      "vertrag": "§ 4 Abs. 2 Mietvertrag (ausdrücklich als sonstige Betriebskosten vereinbart)",
+      "warum": "Rauchwarnmelder müssen jährlich geprüft werden. Solche „sonstigen“ Betriebskosten darf man nur umlegen, wenn sie im Mietvertrag ausdrücklich genannt sind – hier ist das der Fall.",
+      "konto": "6340",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "kabel": {
+      "bezeichnung": "Breitband-/Kabelanschluss",
+      "betrkv": "§ 2 Nr. 15 BetrKV a.F. – seit 01.07.2024 nicht mehr umlagefähig (§ 71 TKG)",
+      "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
+      "warum": "Bis Juni 2024 durfte ein Kabelanschluss über die Nebenkosten abgerechnet werden. Diese Möglichkeit ist entfallen: Seit dem 01.07.2024 muss jeder Haushalt seinen Fernsehanschluss selbst beauftragen. Die Kosten bleiben deshalb bei der Eigentümerin – zusätzlich fehlt eine entsprechende Vereinbarung im Mietvertrag.",
+      "konto": "6350",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche",
+      "umlagefaehig_bis": "2024-06-30",
+      "rechtsgrundlage": "§ 71 TKG"
+    },
+    "rechtsschutz": {
+      "bezeichnung": "Rechtsschutzversicherung",
+      "betrkv": "keine Betriebskosten (nicht in § 2 BetrKV)",
+      "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
+      "warum": "Eine Rechtsschutzversicherung schützt die Vermieterin bei Streitigkeiten – etwa gegen einen Mieter. Sie nützt allein ihr und ist keine Sach- oder Haftpflichtversicherung des Gebäudes. Umlage deshalb ausgeschlossen.",
+      "konto": "6210",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    },
+    "verwaltung": {
+      "bezeichnung": "Verwaltervergütung",
+      "betrkv": "§ 1 Abs. 2 Nr. 1 BetrKV – Verwaltungskosten, nicht umlagefähig",
+      "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
+      "warum": "Was die Hausverwaltung für Buchhaltung, Zahlungsverkehr und Mieterkorrespondenz bekommt, ist Aufwand der Eigentümerin für ihr eigenes Geschäft. Die Betriebskostenverordnung nimmt Verwaltungskosten ausdrücklich aus.",
+      "konto": "6500",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    },
+    "instandhaltung": {
+      "bezeichnung": "Instandhaltung / Instandsetzung",
+      "betrkv": "§ 1 Abs. 2 Nr. 2 BetrKV – nicht umlagefähig; § 7 Abs. 2 Mietvertrag",
+      "vertrag": "§ 7 Abs. 2 Mietvertrag: „Kosten der Instandhaltung und Instandsetzung trägt die Vermieterin“",
+      "warum": "Eine Reparatur stellt etwas wieder her, das kaputtgegangen ist. Das gehört zur Erhaltung des Gebäudes und ist Sache der Eigentümerin – auch wenn alle Mietparteien davon profitieren.",
+      "konto": "6400",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    },
+    "kleinreparaturen": {
+      "bezeichnung": "Kleinreparaturen (durch Hauswart)",
+      "betrkv": "§ 2 Nr. 14 BetrKV schließt Instandhaltung ausdrücklich aus",
+      "vertrag": "§ 7 Abs. 2 Mietvertrag",
+      "warum": "Auch kleine Reparaturen bleiben Reparaturen. Der Hauswart rechnet sie getrennt von seiner Pauschale ab, und genau diese Positionen werden herausgerechnet.",
+      "konto": "6410",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    },
+    "neuanlage": {
+      "bezeichnung": "Außenanlagen – Neuanlage",
+      "betrkv": "einmalige Herstellung/Erweiterung, keine laufende Gartenpflege (§ 2 Nr. 10 BetrKV)",
+      "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
+      "warum": "Der Vorgarten wurde neu angelegt: Boden ausgetauscht, neue Sträucher gepflanzt, Beeteinfassung gesetzt. Das ist eine einmalige Verbesserung auf Wunsch der Eigentümerin und keine laufende Gartenpflege.",
+      "konto": "6600",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    }
+  },
+  "belege": [
+    {
+      "id": "30",
+      "beleg": "30_Stadt-Koeln_Grundbesitzabgaben_2025.pdf",
+      "lieferant": "Stadt Köln – Amt für Finanzen",
+      "datum": "2025-01-14",
+      "leistungszeitraum": "01.01.2025 – 31.12.2025",
+      "rechnungsbetrag": 3234.8,
+      "bank_kennung": "STADT KOELN",
+      "zahlung_erwartet": "4 Raten à 808,70 € (15.02./15.05./15.08./15.11.2025)",
+      "positionen": [
+        {
+          "bezeichnung": "Grundsteuer B (Messbetrag 274,00 € × 400 v.H.)",
+          "betrag": 1096,
+          "kostenart": "grundsteuer",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Abfallentsorgung (2× Restabfall 240 l, Bio, Papier)",
+          "betrag": 764,
+          "kostenart": "muell",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Straßenreinigung (16 m Front, Klasse 2)",
+          "betrag": 214.4,
+          "kostenart": "strassenreinigung",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Entwässerung Schmutzwasser (320 m³ × 2,87 €)",
+          "betrag": 918.4,
+          "kostenart": "entwaesserung",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Entwässerung Niederschlagswasser (220 m² × 1,10 €)",
+          "betrag": 242,
+          "kostenart": "entwaesserung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "31",
+      "beleg": "31_RheinEnergie_Jahresrechnung_2025.pdf",
+      "lieferant": "RheinEnergie AG",
+      "datum": "2026-01-22",
+      "leistungszeitraum": "01.01.2025 – 31.12.2025",
+      "rechnungsbetrag": 1276.6,
+      "bank_kennung": "RHEINENERGIE",
+      "zahlung_erwartet": "12 Abschläge à 100,00 € in 2025; Nachzahlung 76,60 € am 06.02.2026",
+      "abfluss_im_abrechnungsjahr": 1200,
+      "hinweis": "Jahresrechnung datiert 22.01.2026. Nach Leistungsprinzip werden die vollen Jahreskosten 2025 (1.276,60 €) angesetzt, nicht nur die 2025 abgeflossenen Abschläge (1.200,00 €).",
+      "positionen": [
+        {
+          "bezeichnung": "Trinkwasser 320 m³ inkl. Grundpreis (brutto, 7 % USt)",
+          "betrag": 892.4,
+          "kostenart": "wasser",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Allgemeinstrom 912 kWh inkl. Grundpreis (brutto, 19 % USt)",
+          "betrag": 384.2,
+          "kostenart": "allgemeinstrom",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "32",
+      "beleg": "32_Provinzial_Versicherungsbeitrag_2025.pdf",
+      "lieferant": "Provinzial Rheinland Versicherung AG",
+      "datum": "2024-12-12",
+      "leistungszeitraum": "01.01.2025 – 31.12.2025",
+      "rechnungsbetrag": 1337.52,
+      "bank_kennung": "PROVINZIAL",
+      "positionen": [
+        {
+          "bezeichnung": "Wohngebäudeversicherung (Feuer, Leitungswasser, Sturm/Hagel, Elementar)",
+          "betrag": 986.4,
+          "kostenart": "versicherung",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Haus- und Grundbesitzerhaftpflicht",
+          "betrag": 162.12,
+          "kostenart": "versicherung",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Rechtsschutz für Vermieter",
+          "betrag": 189,
+          "kostenart": "rechtsschutz",
+          "umlagefaehig": false,
+          "begruendung": "Rechtsschutz ist keine Sach-/Haftpflichtversicherung i.S.d. § 2 Nr. 13 BetrKV und dient allein dem Vermieterinteresse."
+        }
+      ]
+    },
+    {
+      "id": "331",
+      "beleg": "331_Hausservice-Wilms_Q1.pdf",
+      "lieferant": "Hausservice Wilms e.K.",
+      "datum": "2025-01-02",
+      "leistungszeitraum": "01.01.2025 – 31.03.2025",
+      "rechnungsbetrag": 442,
+      "bank_kennung": "WILMS",
+      "hinweis": "Position 1 nennt 'Kontrolle Heizungsraum' – das Haus hat keinen Heizungsraum (Gas-Etagenheizungen). Rückfrage.",
+      "positionen": [
+        {
+          "bezeichnung": "Hauswartstätigkeit Q1 (3 × 120,00 €)",
+          "betrag": 360,
+          "kostenart": "hauswart",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten (Leuchtmittel, Türschließer, Briefkastenschloss)",
+          "betrag": 82,
+          "kostenart": "kleinreparaturen",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "332",
+      "beleg": "332_Hausservice-Wilms_Q2.pdf",
+      "lieferant": "Hausservice Wilms e.K.",
+      "datum": "2025-04-01",
+      "leistungszeitraum": "01.04.2025 – 30.06.2025",
+      "rechnungsbetrag": 428,
+      "bank_kennung": "WILMS",
+      "positionen": [
+        {
+          "bezeichnung": "Hauswartstätigkeit Q2 (3 × 120,00 €)",
+          "betrag": 360,
+          "kostenart": "hauswart",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten (Kellerfensterdichtung, Handlauf)",
+          "betrag": 68,
+          "kostenart": "kleinreparaturen",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "333",
+      "beleg": "333_Hausservice-Wilms_Q3.pdf",
+      "lieferant": "Hausservice Wilms e.K.",
+      "datum": "2025-07-01",
+      "leistungszeitraum": "01.07.2025 – 30.09.2025",
+      "rechnungsbetrag": 451,
+      "bank_kennung": "WILMS",
+      "positionen": [
+        {
+          "bezeichnung": "Hauswartstätigkeit Q3 (3 × 120,00 €)",
+          "betrag": 360,
+          "kostenart": "hauswart",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten (Gartentor, Türgriff, Fallrohr)",
+          "betrag": 91,
+          "kostenart": "kleinreparaturen",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "334",
+      "beleg": "334_Hausservice-Wilms_Q4.pdf",
+      "lieferant": "Hausservice Wilms e.K.",
+      "datum": "2025-10-01",
+      "leistungszeitraum": "01.10.2025 – 31.12.2025",
+      "rechnungsbetrag": 419,
+      "bank_kennung": "WILMS",
+      "positionen": [
+        {
+          "bezeichnung": "Hauswartstätigkeit Q4 (3 × 120,00 €)",
+          "betrag": 360,
+          "kostenart": "hauswart",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten (Leuchtmittel Keller, Hoftorschloss)",
+          "betrag": 59,
+          "kostenart": "kleinreparaturen",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "341",
+      "beleg": "341_Clean-and-Go_Q1.pdf",
+      "lieferant": "Clean&Go Gebäudeservice GmbH",
+      "datum": "2025-01-02",
+      "leistungszeitraum": "01.01.2025 – 31.03.2025",
+      "rechnungsbetrag": 189,
+      "bank_kennung": "CLEAN+GO",
+      "positionen": [
+        {
+          "bezeichnung": "Unterhaltsreinigung Treppenhaus Q1 (wöchentlich)",
+          "betrag": 189,
+          "kostenart": "gebaeudereinigung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "342",
+      "beleg": "342_Clean-and-Go_Q2.pdf",
+      "lieferant": "Clean&Go Gebäudeservice GmbH",
+      "datum": "2025-04-01",
+      "leistungszeitraum": "01.04.2025 – 30.06.2025",
+      "rechnungsbetrag": 189,
+      "bank_kennung": "CLEAN+GO",
+      "positionen": [
+        {
+          "bezeichnung": "Unterhaltsreinigung Treppenhaus Q2 (wöchentlich)",
+          "betrag": 189,
+          "kostenart": "gebaeudereinigung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "343",
+      "beleg": "343_Clean-and-Go_Q3.pdf",
+      "lieferant": "Clean&Go Gebäudeservice GmbH",
+      "datum": "2025-07-01",
+      "leistungszeitraum": "01.07.2025 – 30.09.2025",
+      "rechnungsbetrag": 189,
+      "bank_kennung": "CLEAN+GO",
+      "positionen": [
+        {
+          "bezeichnung": "Unterhaltsreinigung Treppenhaus Q3 (wöchentlich)",
+          "betrag": 189,
+          "kostenart": "gebaeudereinigung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "344",
+      "beleg": "344_Clean-and-Go_Q4.pdf",
+      "lieferant": "Clean&Go Gebäudeservice GmbH",
+      "datum": "2025-10-01",
+      "leistungszeitraum": "01.10.2025 – 31.12.2025",
+      "rechnungsbetrag": 189,
+      "bank_kennung": "CLEAN+GO",
+      "positionen": [
+        {
+          "bezeichnung": "Unterhaltsreinigung Treppenhaus Q4 (wöchentlich)",
+          "betrag": 189,
+          "kostenart": "gebaeudereinigung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "351",
+      "beleg": "351_Hausverwaltung-Rheinblick_Q1.pdf",
+      "lieferant": "Hausverwaltung Rheinblick GmbH",
+      "datum": "2025-01-02",
+      "leistungszeitraum": "01.01.2025 – 31.03.2025",
+      "rechnungsbetrag": 294,
+      "bank_kennung": "RHEINBLICK",
+      "positionen": [
+        {
+          "bezeichnung": "Verwaltervergütung Q1 (4 WE × 3 Mon. × 20,59 € netto)",
+          "betrag": 294,
+          "kostenart": "verwaltung",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "352",
+      "beleg": "352_Hausverwaltung-Rheinblick_Q2.pdf",
+      "lieferant": "Hausverwaltung Rheinblick GmbH",
+      "datum": "2025-04-01",
+      "leistungszeitraum": "01.04.2025 – 30.06.2025",
+      "rechnungsbetrag": 294,
+      "bank_kennung": "RHEINBLICK",
+      "positionen": [
+        {
+          "bezeichnung": "Verwaltervergütung Q2",
+          "betrag": 294,
+          "kostenart": "verwaltung",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "353",
+      "beleg": "353_Hausverwaltung-Rheinblick_Q3.pdf",
+      "lieferant": "Hausverwaltung Rheinblick GmbH",
+      "datum": "2025-07-01",
+      "leistungszeitraum": "01.07.2025 – 30.09.2025",
+      "rechnungsbetrag": 294,
+      "bank_kennung": "RHEINBLICK",
+      "positionen": [
+        {
+          "bezeichnung": "Verwaltervergütung Q3",
+          "betrag": 294,
+          "kostenart": "verwaltung",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "354",
+      "beleg": "354_Hausverwaltung-Rheinblick_Q4.pdf",
+      "lieferant": "Hausverwaltung Rheinblick GmbH",
+      "datum": "2025-10-01",
+      "leistungszeitraum": "01.10.2025 – 31.12.2025",
+      "rechnungsbetrag": 294,
+      "bank_kennung": "RHEINBLICK",
+      "positionen": [
+        {
+          "bezeichnung": "Verwaltervergütung Q4",
+          "betrag": 294,
+          "kostenart": "verwaltung",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "361",
+      "beleg": "361_Gruenpflege-Bertram_Pflegeeinsatz_1.pdf",
+      "lieferant": "Grünpflege Bertram GbR",
+      "datum": "2025-04-17",
+      "leistungszeitraum": "17.04.2025",
+      "rechnungsbetrag": 245,
+      "bank_kennung": "BERTRAM",
+      "positionen": [
+        {
+          "bezeichnung": "Pflegeeinsatz Außenanlagen (Frühjahrsschnitt, Rasen, Beete)",
+          "betrag": 245,
+          "kostenart": "gartenpflege",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "362",
+      "beleg": "362_Gruenpflege-Bertram_Pflegeeinsatz_2.pdf",
+      "lieferant": "Grünpflege Bertram GbR",
+      "datum": "2025-07-11",
+      "leistungszeitraum": "11.07.2025",
+      "rechnungsbetrag": 245,
+      "bank_kennung": "BERTRAM",
+      "positionen": [
+        {
+          "bezeichnung": "Pflegeeinsatz Außenanlagen (Rasenmahd, Hecke, Wildkraut)",
+          "betrag": 245,
+          "kostenart": "gartenpflege",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "363",
+      "beleg": "363_Gruenpflege-Bertram_Pflegeeinsatz_3.pdf",
+      "lieferant": "Grünpflege Bertram GbR",
+      "datum": "2025-10-02",
+      "leistungszeitraum": "02.10.2025",
+      "rechnungsbetrag": 245,
+      "bank_kennung": "BERTRAM",
+      "positionen": [
+        {
+          "bezeichnung": "Pflegeeinsatz Außenanlagen (Rasenmahd, Stauden, Laub)",
+          "betrag": 245,
+          "kostenart": "gartenpflege",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "364",
+      "beleg": "364_Gruenpflege-Bertram_Neuanlage-Vorgarten.pdf",
+      "lieferant": "Grünpflege Bertram GbR",
+      "datum": "2025-04-25",
+      "leistungszeitraum": "22.–25.04.2025",
+      "rechnungsbetrag": 1480,
+      "bank_kennung": "BERTRAM",
+      "positionen": [
+        {
+          "bezeichnung": "Neuanlage Vorgarten (Bodenaustausch, 12 Sträucher, Pflanzung, Cortenstahl-Umrandung)",
+          "betrag": 1480,
+          "kostenart": "neuanlage",
+          "umlagefaehig": false,
+          "begruendung": "Erstmalige Herstellung/Umgestaltung auf Auftrag der Eigentümerin vom 04.04.2025 – keine laufende Pflege, daher nicht nach § 2 Nr. 10 BetrKV umlagefähig (Kontenrahmen 6600)."
+        }
+      ]
+    },
+    {
+      "id": "37",
+      "beleg": "37_Schornsteinfeger_Kaempgen.pdf",
+      "lieferant": "Bezirksschornsteinfeger Thomas Kämpgen",
+      "datum": "2025-03-06",
+      "leistungszeitraum": "06.03.2025",
+      "rechnungsbetrag": 218.4,
+      "bank_kennung": "KAEMPGEN",
+      "positionen": [
+        {
+          "bezeichnung": "Feuerstättenschau, Überprüfung Abgasanlagen (4 Thermen), BImSchV-Messung",
+          "betrag": 218.4,
+          "kostenart": "schornsteinfeger",
+          "umlagefaehig": true,
+          "begruendung": "§ 5 Abs. 2 Mietvertrag: Vermieterin trägt die Kosten und legt sie nach § 4 (Wohnfläche) um."
+        }
+      ]
+    },
+    {
+      "id": "38",
+      "beleg": "38_SafeAlarm_Wartung-Rauchwarnmelder.pdf",
+      "lieferant": "SafeAlarm Brandschutz GmbH",
+      "datum": "2025-06-03",
+      "leistungszeitraum": "03.06.2025",
+      "rechnungsbetrag": 89,
+      "bank_kennung": "SAFEALARM",
+      "positionen": [
+        {
+          "bezeichnung": "Jährliche Funktionsprüfung 9 Rauchwarnmelder (DIN 14676)",
+          "betrag": 89,
+          "kostenart": "rauchwarnmelder",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "39",
+      "beleg": "39_Sanitaer-Doblinger_Steigleitung.pdf",
+      "lieferant": "Sanitär Doblinger GmbH",
+      "datum": "2025-08-19",
+      "leistungszeitraum": "19.08.2025",
+      "rechnungsbetrag": 486.2,
+      "bank_kennung": "DOBLINGER",
+      "positionen": [
+        {
+          "bezeichnung": "Instandsetzung Kaltwassersteigleitung (Ventiltausch, 3,5 Monteurstunden)",
+          "betrag": 486.2,
+          "kostenart": "instandhaltung",
+          "umlagefaehig": false,
+          "begruendung": "Reparatur eines defekten Ventils = Instandsetzung (§ 1 Abs. 2 Nr. 2 BetrKV, § 7 Abs. 2 Mietvertrag)."
+        }
+      ]
+    },
+    {
+      "id": "40",
+      "beleg": "40_Vodafone_Jahresuebersicht-Kabel.pdf",
+      "lieferant": "Vodafone Deutschland GmbH",
+      "datum": "2025-12-31",
+      "leistungszeitraum": "01.01.2025 – 31.12.2025",
+      "rechnungsbetrag": 427.2,
+      "bank_kennung": "VODAFONE",
+      "zahlung_erwartet": "12 × 35,60 € jeweils zum 20. des Monats",
+      "positionen": [
+        {
+          "bezeichnung": "Sammelinkasso Kabelanschluss, 4 WE × 12 Monate",
+          "betrag": 427.2,
+          "kostenart": "kabel",
+          "umlagefaehig": false,
+          "begruendung": "Seit 01.07.2024 dürfen Kabel-TV-Kosten aus Sammelverträgen nicht mehr als Betriebskosten umgelegt werden (Ende des 'Nebenkostenprivilegs', § 71 TKG). Zudem ist die Kostenart in § 4 der Mietverträge nicht vereinbart."
+        }
+      ]
+    }
+  ],
+  "buchungen": [
+    {
+      "datum": "2025-01-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-01-02",
+      "gegenpartei": "PROVINZIAL RHEINLAND",
+      "zweck": "BEITRAG 2025 VS-2025-4470912",
+      "betrag": -1337.52
+    },
+    {
+      "datum": "2025-01-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-01-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 01/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-01-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 01/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-01-07",
+      "gegenpartei": "HAUSSERVICE WILMS E.K.",
+      "zweck": "HAUSWARTVERTRAG 01.01.2025",
+      "betrag": -442
+    },
+    {
+      "datum": "2025-01-07",
+      "gegenpartei": "CLEAN+GO GEBAEUDESERVICE",
+      "zweck": "TREPPENHAUSREINIGUNG 01.01.2025",
+      "betrag": -189
+    },
+    {
+      "datum": "2025-01-08",
+      "gegenpartei": "HAUSVERWALTUNG RHEINBLICK",
+      "zweck": "VERWALTERHONORAR 01.01.2025",
+      "betrag": -294
+    },
+    {
+      "datum": "2025-01-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-01-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-02-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-02-03",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-02-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 02/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-02-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 02/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-02-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-02-17",
+      "gegenpartei": "STADT KOELN KASSE",
+      "zweck": "GRUNDBESITZABGABEN GBA-2025-50937-0218",
+      "betrag": -808.7
+    },
+    {
+      "datum": "2025-02-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-03-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-03-03",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-03-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 03/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-03-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 03/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-03-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-03-18",
+      "gegenpartei": "SCHORNSTEINFEGER KAEMPGEN",
+      "zweck": "FEUERSTAETTENSCHAU",
+      "betrag": -218.4
+    },
+    {
+      "datum": "2025-03-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-04-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-04-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-04-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 04/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-04-04",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 04/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-04-07",
+      "gegenpartei": "HAUSSERVICE WILMS E.K.",
+      "zweck": "HAUSWARTVERTRAG 01.04.2025",
+      "betrag": -428
+    },
+    {
+      "datum": "2025-04-07",
+      "gegenpartei": "CLEAN+GO GEBAEUDESERVICE",
+      "zweck": "TREPPENHAUSREINIGUNG 01.04.2025",
+      "betrag": -189
+    },
+    {
+      "datum": "2025-04-08",
+      "gegenpartei": "HAUSVERWALTUNG RHEINBLICK",
+      "zweck": "VERWALTERHONORAR 01.04.2025",
+      "betrag": -294
+    },
+    {
+      "datum": "2025-04-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-04-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-04-24",
+      "gegenpartei": "GRUENPFLEGE BERTRAM GBR",
+      "zweck": "PFLEGEEINSATZ",
+      "betrag": -245
+    },
+    {
+      "datum": "2025-05-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-05-04",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-05-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 05/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-05-05",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 05/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-05-06",
+      "gegenpartei": "GRUENPFLEGE BERTRAM GBR",
+      "zweck": "RE 2025-0412 VORGARTEN",
+      "betrag": -1480
+    },
+    {
+      "datum": "2025-05-15",
+      "gegenpartei": "STADT KOELN KASSE",
+      "zweck": "GRUNDBESITZABGABEN GBA-2025-50937-0218",
+      "betrag": -808.7
+    },
+    {
+      "datum": "2025-05-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-05-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-06-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-06-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-06-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 06/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-06-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 06/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-06-11",
+      "gegenpartei": "SAFEALARM GMBH",
+      "zweck": "WARTUNG RAUCHWARNMELDER",
+      "betrag": -89
+    },
+    {
+      "datum": "2025-06-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-06-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-07-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-07-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-07-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 07/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-07-04",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 07/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-07-07",
+      "gegenpartei": "HAUSSERVICE WILMS E.K.",
+      "zweck": "HAUSWARTVERTRAG 01.07.2025",
+      "betrag": -451
+    },
+    {
+      "datum": "2025-07-07",
+      "gegenpartei": "CLEAN+GO GEBAEUDESERVICE",
+      "zweck": "TREPPENHAUSREINIGUNG 01.07.2025",
+      "betrag": -189
+    },
+    {
+      "datum": "2025-07-08",
+      "gegenpartei": "HAUSVERWALTUNG RHEINBLICK",
+      "zweck": "VERWALTERHONORAR 01.07.2025",
+      "betrag": -294
+    },
+    {
+      "datum": "2025-07-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-07-18",
+      "gegenpartei": "GRUENPFLEGE BERTRAM GBR",
+      "zweck": "PFLEGEEINSATZ",
+      "betrag": -245
+    },
+    {
+      "datum": "2025-07-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-08-04",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-08-04",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-08-04",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-08-04",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 08/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-08-15",
+      "gegenpartei": "STADT KOELN KASSE",
+      "zweck": "GRUNDBESITZABGABEN GBA-2025-50937-0218",
+      "betrag": -808.7
+    },
+    {
+      "datum": "2025-08-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-08-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-08-27",
+      "gegenpartei": "SANITAER DOBLINGER GMBH",
+      "zweck": "RE 25-0733",
+      "betrag": -486.2
+    },
+    {
+      "datum": "2025-09-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-09-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-09-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 09/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-09-12",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-09-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-09-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-10-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-10-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-10-04",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-10-07",
+      "gegenpartei": "HAUSSERVICE WILMS E.K.",
+      "zweck": "HAUSWARTVERTRAG 01.10.2025",
+      "betrag": -419
+    },
+    {
+      "datum": "2025-10-07",
+      "gegenpartei": "CLEAN+GO GEBAEUDESERVICE",
+      "zweck": "TREPPENHAUSREINIGUNG 01.10.2025",
+      "betrag": -189
+    },
+    {
+      "datum": "2025-10-08",
+      "gegenpartei": "HAUSVERWALTUNG RHEINBLICK",
+      "zweck": "VERWALTERHONORAR 01.10.2025",
+      "betrag": -294
+    },
+    {
+      "datum": "2025-10-09",
+      "gegenpartei": "GRUENPFLEGE BERTRAM GBR",
+      "zweck": "PFLEGEEINSATZ",
+      "betrag": -245
+    },
+    {
+      "datum": "2025-10-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-10-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-11-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-11-03",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-11-04",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-11-04",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 11/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-11-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-11-17",
+      "gegenpartei": "STADT KOELN KASSE",
+      "zweck": "GRUNDBESITZABGABEN GBA-2025-50937-0218",
+      "betrag": -808.7
+    },
+    {
+      "datum": "2025-11-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-12-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-12-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-12-03",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-12-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 12/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-12-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-12-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    }
+  ],
+  "kontoauszuege": [
+    {
+      "datei": "501_Kontoauszug_01_Januar_2025.txt",
+      "monat": 1,
+      "jahr": 2025,
+      "anfangsbestand": 4180.55,
+      "endbestand": 4657.43
+    },
+    {
+      "datei": "502_Kontoauszug_02_Februar_2025.txt",
+      "monat": 2,
+      "jahr": 2025,
+      "anfangsbestand": 4657.43,
+      "endbestand": 6588.13
+    },
+    {
+      "datei": "503_Kontoauszug_03_März_2025.txt",
+      "monat": 3,
+      "jahr": 2025,
+      "anfangsbestand": 6588.13,
+      "endbestand": 9109.13
+    },
+    {
+      "datei": "504_Kontoauszug_04_April_2025.txt",
+      "monat": 4,
+      "jahr": 2025,
+      "anfangsbestand": 9109.13,
+      "endbestand": 10692.53
+    },
+    {
+      "datei": "505_Kontoauszug_05_Mai_2025.txt",
+      "monat": 5,
+      "jahr": 2025,
+      "anfangsbestand": 10692.53,
+      "endbestand": 11143.23
+    },
+    {
+      "datei": "506_Kontoauszug_06_Juni_2025.txt",
+      "monat": 6,
+      "jahr": 2025,
+      "anfangsbestand": 11143.23,
+      "endbestand": 13793.63
+    },
+    {
+      "datei": "507_Kontoauszug_07_Juli_2025.txt",
+      "monat": 7,
+      "jahr": 2025,
+      "anfangsbestand": 13793.63,
+      "endbestand": 15354.03
+    },
+    {
+      "datei": "508_Kontoauszug_08_August_2025.txt",
+      "monat": 8,
+      "jahr": 2025,
+      "anfangsbestand": 15354.03,
+      "endbestand": 17008.53
+    },
+    {
+      "datei": "509_Kontoauszug_09_September_2025.txt",
+      "monat": 9,
+      "jahr": 2025,
+      "anfangsbestand": 17008.53,
+      "endbestand": 19957.93
+    },
+    {
+      "datei": "510_Kontoauszug_10_Oktober_2025.txt",
+      "monat": 10,
+      "jahr": 2025,
+      "anfangsbestand": 19957.93,
+      "endbestand": 21000.33
+    },
+    {
+      "datei": "511_Kontoauszug_11_November_2025.txt",
+      "monat": 11,
+      "jahr": 2025,
+      "anfangsbestand": 21000.33,
+      "endbestand": 23141.03
+    },
+    {
+      "datei": "512_Kontoauszug_12_Dezember_2025.txt",
+      "monat": 12,
+      "jahr": 2025,
+      "anfangsbestand": 23141.03,
+      "endbestand": 26090.43
+    }
+  ],
+  "befunde": [
+    {
+      "id": "A1",
+      "kategorie": "Stammdaten",
+      "titel": "Wohnfläche WE 3: 'ca. 81 m²' (Vertrag Nowak 2016) vs. 84,00 m² (Aufmaß 2018)",
+      "behandlung": "84,00 m² angesetzt. Das Aufmaß vom 12.04.2018 ist lt. Einheitenübersicht maßgeblich, der Vertrag Kestner nennt bereits 84,00 m², und nach BGH (VIII ZR 220/17) zählt für die Betriebskostenumlage die tatsächliche Fläche. Abweichung 3,7 % – auch die 10 %-Toleranz-Rechtsprechung greift nicht.",
+      "auswirkung": "Frau Nowak zahlt ihren Anteil nach 84 m² statt 81 m² (≈ +3,7 % auf ihren Anteil)."
+    },
+    {
+      "id": "A2",
+      "kategorie": "Zahlungseingang",
+      "titel": "WE 4 Ohlwein: Mietzahlung Oktober 2025 fehlt auf dem Objektkonto",
+      "behandlung": "Nur 11 Zahlungseingänge à 760,00 € (Okt. fehlt). In der Abrechnung werden nur die tatsächlich geleisteten Vorauszahlungen (11 × 150,00 € = 1.650,00 €) gutgeschrieben (BGH VIII ZR 57/04). Die offene Oktobermiete (760,00 €) ist außerhalb der Abrechnung als Mietrückstand anzumahnen.",
+      "auswirkung": "Nachzahlung Ohlwein 325,43 € statt 175,43 € bei Soll-Ansatz; umschaltbar im Reiter Einstellungen (vorauszahlungen_ansatz)."
+    },
+    {
+      "id": "A3",
+      "kategorie": "Mietbuchhaltung",
+      "titel": "WE 2 Bendel: Staffelmiete (§ 3a) seit 09/2023 nie umgesetzt",
+      "behandlung": "Für die Nebenkostenabrechnung irrelevant (Vorauszahlung 120 € ist von den Staffeln unberührt). Aber: Stammdaten 'laut Buchhaltung' zeigen 465 €, der Mieter zahlt 465 € – vertraglich geschuldet sind 515 € (ab 09/2024) bzw. 545 € (ab 09/2025). Mindereinnahme 2025: 720 €, kumuliert seit 09/2023: 1.220 €.",
+      "auswirkung": "Kein Einfluss auf die Abrechnung; Bewirtschaftungs-Check Nr. 1."
+    },
+    {
+      "id": "A4",
+      "kategorie": "Kostenabgrenzung",
+      "titel": "RheinEnergie-Jahresrechnung erst am 22.01.2026: 1.276,60 € Kosten vs. 1.200,00 € Abschläge in 2025",
+      "behandlung": "Leistungsprinzip: angesetzt werden die Kosten des Abrechnungsjahres lt. Jahresrechnung (1.276,60 €), da die Rechnung vor Erstellung der Abrechnung vorliegt. Der Nachzahlungsbetrag (76,60 €) fließt im Februar 2026 ab. Umschaltbar (kostenansatz: abfluss).",
+      "auswirkung": "+76,60 € umlagefähige Kosten gegenüber Abflussprinzip; umschaltbar im Reiter Einstellungen (kostenansatz)."
+    },
+    {
+      "id": "A5",
+      "kategorie": "Kostenabgrenzung",
+      "titel": "Hauswart-Rechnungen enthalten 'Kleinreparaturen und Instandhaltungsarbeiten' (300,00 € in 2025)",
+      "behandlung": "Position 2 jeder Wilms-Rechnung ist Instandhaltung (§ 2 Nr. 14 BetrKV nimmt Instandhaltung ausdrücklich aus) und wird herausgerechnet; nur die Hauswartpauschale (4 × 360,00 €) wird umgelegt.",
+      "auswirkung": "300,00 € weniger Umlage als bei ungeprüfter Übernahme der Rechnungsbeträge."
+    },
+    {
+      "id": "A6",
+      "kategorie": "Kostenabgrenzung",
+      "titel": "Vodafone Sammelinkasso Kabel-TV (427,20 €) nicht mehr umlagefähig",
+      "behandlung": "Das 'Nebenkostenprivileg' für Kabel-TV endete zum 30.06.2024 (§ 71 TKG). Zudem ist Kabelanschluss in § 4 der Mietverträge nicht als Kostenart vereinbart. Nicht umgelegt.",
+      "auswirkung": "Kosten verbleiben bei der Eigentümerin; Bewirtschaftungs-Check Nr. 3."
+    },
+    {
+      "id": "A7",
+      "kategorie": "Kostenabgrenzung",
+      "titel": "Weitere nicht umlagefähige Belege: Verwaltervergütung (1.176 €), Neuanlage Vorgarten (1.480 €), Steigleitungsreparatur (486,20 €), Rechtsschutz (189 €)",
+      "behandlung": "Verwaltung: § 1 Abs. 2 Nr. 1 BetrKV. Neuanlage: einmalige Herstellung, keine laufende Gartenpflege (eigenes Konto 6600). Steigleitung: Instandsetzung. Rechtsschutz: keine Sach-/Haftpflichtversicherung. Alle vier bleiben beim Eigentümer, werden in den Abrechnungen aber zur Transparenz als 'nicht umgelegt' ausgewiesen.",
+      "auswirkung": "Von 12.956,72 € Belegsumme sind 8.898,32 € (68,7 %) umlagefähig."
+    },
+    {
+      "id": "A8",
+      "kategorie": "Plausibilität",
+      "titel": "Hauswart Q1 rechnet 'Kontrolle Heizungsraum' ab – das Haus hat keinen Heizungsraum",
+      "behandlung": "Alle vier Wohnungen haben Gas-Etagenthermen. Vermutlich Textbaustein aus einem anderen Objekt. Der Pauschalbetrag wird dennoch angesetzt (Vertrag vom 04.01.2021), die Leistungsbeschreibung ist aber zu klären.",
+      "auswirkung": "Rückfrage an Eigentümerin/Hauswart; kein Zahleneffekt."
+    },
+    {
+      "id": "A9",
+      "kategorie": "Plausibilität",
+      "titel": "Wasserverbrauch 320 m³ konsistent (RheinEnergie ↔ Schmutzwassergebühr Stadt Köln); Saldenkette der 12 Kontoauszüge lückenlos; alle 23 Belege vollständig bezahlt",
+      "behandlung": "Automatisch geprüft (Prüfungen I-04, I-06, P-01 im Rechenkern; Belegsummen zusätzlich gegen den PDF-Text über scripts/02_parse.py). 320 m³ / 250 m² ≈ 1,28 m³/m² bzw. ≈ 80 m³ je Wohnung – plausibel.",
+      "auswirkung": "Keine."
+    },
+    {
+      "id": "A10",
+      "kategorie": "Vertrag",
+      "titel": "Anschrift Frau Nowak nach Auszug unbekannt",
+      "behandlung": "Das Schreiben an Frau Nowak ist gesperrt: Prüfung F-08 schlägt an, das Dokument trägt sichtbar den Vermerk ENTWURF und darf nicht versandt werden. Sobald die Anschrift eingetragen ist, verschwindet der Vermerk. Frist § 556 Abs. 3 BGB: 31.12.2026.",
+      "auswirkung": "Rückfrage."
+    }
+  ],
+  "protokoll": [
+    {
+      "zeitpunkt": "2026-09-22",
+      "wer": "Aaron",
+      "was": "Falldatei aus v1-Daten erzeugt",
+      "warum": "Umstellung auf eine einzige, versendbare Falldatei (siehe SPEC.md, ADR-1/ADR-3)"
+    },
+    {
+      "zeitpunkt": "2026-09-22",
+      "wer": "Aaron",
+      "was": "Rundung auf Largest-Remainder umgestellt; Befunde und Übergabedokumente auf diesen Stand gebracht",
+      "warum": "Kaufmännisches Runden je Zeile ließ 2 Cent verschwinden (SPEC.md § 9.2). Seither stimmen alle Summen exakt; die Salden von Bendel, Kestner und Ohlwein verschieben sich um je einen Cent."
+    },
+    {
+      "zeitpunkt": "2026-09-22",
+      "wer": "Aaron",
+      "was": "Jede Kostenart um Vertragsgrundlage und eine Begründung in normaler Sprache ergänzt",
+      "warum": "Eine Paragrafenangabe allein erklärt niemandem, warum ein Posten umgelegt wird oder nicht. Die Prüfung R-01 verlangt beide Seiten (BetrKV und Mietvertrag) - jetzt sind beide auch sichtbar."
+    },
+    {
+      "zeitpunkt": "2026-09-22",
+      "wer": "Aaron",
+      "was": "Prüfsummen aller 43 Originaldokumente in die Falldatei aufgenommen",
+      "warum": "Damit sich feststellen lässt, ob sich eine Unterlage seit der Erfassung geändert hat (SPEC.md § 3.5)."
+    }
+  ],
+  "unterlagen": [
+    {
+      "datei": "10_Stammdaten/10_Einheiten-_und_Mieteruebersicht.pdf",
+      "sha256": "69bb74d24c729e1d745276235a315ee17c1984d98e872eea7b56421da8ad5877",
+      "groesse": 5567
+    },
+    {
+      "datei": "10_Stammdaten/11_Kontenrahmen.pdf",
+      "sha256": "ccb65ed965e0ea4db8c3a734c9fed182ac148593ede9214dedfa82c0a5e12588",
+      "groesse": 4694
+    },
+    {
+      "datei": "10_Stammdaten/12_Energieausweis.pdf",
+      "sha256": "6c3472967c16efa18429a082109dab07434a039be0f50da07b59741a5b5c94ee",
+      "groesse": 4437
+    },
+    {
+      "datei": "20_Mietvertraege/20_Mietvertrag_WE1_Yildirim.pdf",
+      "sha256": "cfb79c14556dfefe28ef3b9e79e7043e127710059c6c7da4ca1a22e66f5c5aa8",
+      "groesse": 6636
+    },
+    {
+      "datei": "20_Mietvertraege/21_Mietvertrag_WE2_Bendel.pdf",
+      "sha256": "8be20506d8d5d50a48e91587f31ea2cc09c93851ec8c926b3576645d545f0dae",
+      "groesse": 7262
+    },
+    {
+      "datei": "20_Mietvertraege/22_Mietvertrag_WE3_Nowak.pdf",
+      "sha256": "0922e88364fb4adffaeabe226f5cf9cb2b8e7e6addaa0280e4e7a0c62936f519",
+      "groesse": 7128
+    },
+    {
+      "datei": "20_Mietvertraege/23_Mietvertrag_WE3_Kestner.pdf",
+      "sha256": "dc2ec4503a8535828733ccf96e52a555316f312444c780ced4cbaf8d31318e37",
+      "groesse": 6649
+    },
+    {
+      "datei": "20_Mietvertraege/24_Mietvertrag_WE4_Ohlwein.pdf",
+      "sha256": "934e2bab48944d86eb3bb5e4750c9819ba069839ee071babd8d3cf889aa01d37",
+      "groesse": 6593
+    },
+    {
+      "datei": "30_Rechnungen/30_Stadt-Koeln_Grundbesitzabgaben_2025.pdf",
+      "sha256": "e65722ec847759d311bef34d28dbf22c617d0ebf3da3eff878480f25ff062c87",
+      "groesse": 4148
+    },
+    {
+      "datei": "30_Rechnungen/31_RheinEnergie_Jahresrechnung_2025.pdf",
+      "sha256": "ceca64bd048b7277c0a6127b8f202cb120be8c0a7a69d443ecd603d690908216",
+      "groesse": 4094
+    },
+    {
+      "datei": "30_Rechnungen/32_Provinzial_Versicherungsbeitrag_2025.pdf",
+      "sha256": "4b87879c38fa82768524f35812ea9b221293d7d8a7348a24a3b388762d7027d1",
+      "groesse": 3727
+    },
+    {
+      "datei": "30_Rechnungen/331_Hausservice-Wilms_Q1.pdf",
+      "sha256": "6f2c8ecee56f68af2a2c0a707489d283443ff7ed2ccea07ae098b1dddaace9ec",
+      "groesse": 3434
+    },
+    {
+      "datei": "30_Rechnungen/332_Hausservice-Wilms_Q2.pdf",
+      "sha256": "e32466e03f8fb2e5b192772e26b13d88272233678e6eda5c9cd04fa0b9ac4503",
+      "groesse": 3392
+    },
+    {
+      "datei": "30_Rechnungen/333_Hausservice-Wilms_Q3.pdf",
+      "sha256": "d2838ce6ef89a23263823acdd5301ddb7de4bef15f00628c254bd2a8bb502a34",
+      "groesse": 3394
+    },
+    {
+      "datei": "30_Rechnungen/334_Hausservice-Wilms_Q4.pdf",
+      "sha256": "8536588bd6acdb263107b05e0216a4838f0d56b5e8583711225e98f7c59e4986",
+      "groesse": 3407
+    },
+    {
+      "datei": "30_Rechnungen/341_Clean-and-Go_Q1.pdf",
+      "sha256": "4c239c29c25312deb23345709fbd87616cb42ee8619ffd2f1027784e5ac5f90a",
+      "groesse": 3165
+    },
+    {
+      "datei": "30_Rechnungen/342_Clean-and-Go_Q2.pdf",
+      "sha256": "8aa2f1c489215d5df3e590335126810c6ee36093cf08006593a760e61cdcedae",
+      "groesse": 3164
+    },
+    {
+      "datei": "30_Rechnungen/343_Clean-and-Go_Q3.pdf",
+      "sha256": "4d40a334dadefc0fb8c2dd5f9bc5a15ad1f2e453c2f43195975eeade348d6f3e",
+      "groesse": 3163
+    },
+    {
+      "datei": "30_Rechnungen/344_Clean-and-Go_Q4.pdf",
+      "sha256": "c6ac01c82bb7816a0e88bd3120accbdce92703e2a440f827b5d942d5e5521fd9",
+      "groesse": 3164
+    },
+    {
+      "datei": "30_Rechnungen/351_Hausverwaltung-Rheinblick_Q1.pdf",
+      "sha256": "efb513ddd0dd1919659c0ccebd19d20681ce05c6400fcf74f411f1ca60e754d0",
+      "groesse": 3151
+    },
+    {
+      "datei": "30_Rechnungen/352_Hausverwaltung-Rheinblick_Q2.pdf",
+      "sha256": "01134630f5a0bc7781246148ad2fd3f8f552445aed476ec46c62d8864709c60c",
+      "groesse": 3144
+    },
+    {
+      "datei": "30_Rechnungen/353_Hausverwaltung-Rheinblick_Q3.pdf",
+      "sha256": "2321339cafbd1a749760b9271323e83fb54e029aadb7717f38b64286a4f3ce84",
+      "groesse": 3145
+    },
+    {
+      "datei": "30_Rechnungen/354_Hausverwaltung-Rheinblick_Q4.pdf",
+      "sha256": "343913975c4177848fd784997cdc5143b8ec5360b23f132b9bb20cdde2ca1d20",
+      "groesse": 3143
+    },
+    {
+      "datei": "30_Rechnungen/361_Gruenpflege-Bertram_Pflegeeinsatz_1.pdf",
+      "sha256": "d40c232e92d4ab1b165ca2b73164f1dbf761fcbd3968230e8fc0f67b68964d3b",
+      "groesse": 3069
+    },
+    {
+      "datei": "30_Rechnungen/362_Gruenpflege-Bertram_Pflegeeinsatz_2.pdf",
+      "sha256": "0cbce715bf420439c2760b6c42f61ef917acc9427f1e1f811f3fc1914e76f36e",
+      "groesse": 3076
+    },
+    {
+      "datei": "30_Rechnungen/363_Gruenpflege-Bertram_Pflegeeinsatz_3.pdf",
+      "sha256": "ae94c6e2b8a9eb8e64d602e289348f2491eeac167a69d17aed8742ea47fc60d7",
+      "groesse": 3073
+    },
+    {
+      "datei": "30_Rechnungen/364_Gruenpflege-Bertram_Neuanlage-Vorgarten.pdf",
+      "sha256": "3cc24a142753db0cfe80587b445f52ecf6dfcb6a9b01d1263982cdee123d9b01",
+      "groesse": 3628
+    },
+    {
+      "datei": "30_Rechnungen/37_Schornsteinfeger_Kaempgen.pdf",
+      "sha256": "789f7b19a3d6787648e053e7a839a20269a638432a2cf5b1d3e0f4e9a3c2a6c4",
+      "groesse": 3433
+    },
+    {
+      "datei": "30_Rechnungen/38_SafeAlarm_Wartung-Rauchwarnmelder.pdf",
+      "sha256": "439d016f9d824aa57a98077b4d41af2fec66671dd26e1de702d9101ae9b51b35",
+      "groesse": 3134
+    },
+    {
+      "datei": "30_Rechnungen/39_Sanitaer-Doblinger_Steigleitung.pdf",
+      "sha256": "9df3ff23f94fe741ab849765446d40f7de5f2ba79a5cc9fbad759d3033decf32",
+      "groesse": 3502
+    },
+    {
+      "datei": "30_Rechnungen/40_Vodafone_Jahresuebersicht-Kabel.pdf",
+      "sha256": "5e617642b0f164a629a1169808ae9b88616439368b215e611cc562c73c7c0130",
+      "groesse": 4167
+    },
+    {
+      "datei": "40_Kontoauszuege/501_Kontoauszug_01_Januar_2025.pdf",
+      "sha256": "100c27828614c3e435cd3d4917077da9cf85e211243c0ad1b11906d6299e94fb",
+      "groesse": 4285
+    },
+    {
+      "datei": "40_Kontoauszuege/502_Kontoauszug_02_Februar_2025.pdf",
+      "sha256": "516fece03dcd192c46261adf1ee0635c07c7f2dfc021f17c87dbf2491f407aed",
+      "groesse": 4050
+    },
+    {
+      "datei": "40_Kontoauszuege/503_Kontoauszug_03_März_2025.pdf",
+      "sha256": "772cdee4cf1cd2c4f616bf3e6b5c4a2d2519a4af551e38c8b84aee49dc32c1b2",
+      "groesse": 4028
+    },
+    {
+      "datei": "40_Kontoauszuege/504_Kontoauszug_04_April_2025.pdf",
+      "sha256": "22d6a3bc803606932aeeaf1087169e8f8f2c82650c55e7b8ebe03ed6b740cffe",
+      "groesse": 4276
+    },
+    {
+      "datei": "40_Kontoauszuege/505_Kontoauszug_05_Mai_2025.pdf",
+      "sha256": "c9c42bd5e4a08e687299cf47ebe02883ede13fcde88807eb3a09789332de596c",
+      "groesse": 4129
+    },
+    {
+      "datei": "40_Kontoauszuege/506_Kontoauszug_06_Juni_2025.pdf",
+      "sha256": "d7bbd48d72af51615f195b57ca86b711a3408267357164c0a8f45456524051a6",
+      "groesse": 4023
+    },
+    {
+      "datei": "40_Kontoauszuege/507_Kontoauszug_07_Juli_2025.pdf",
+      "sha256": "f2f9f37f906c8c3b195dc0490a0e478feec01698efa2876001b4ce9f4160f5d7",
+      "groesse": 4260
+    },
+    {
+      "datei": "40_Kontoauszuege/508_Kontoauszug_08_August_2025.pdf",
+      "sha256": "b295843a8c2b48e0c9356eac56926f5b34cb45050250532cc166a879c3d147ee",
+      "groesse": 4135
+    },
+    {
+      "datei": "40_Kontoauszuege/509_Kontoauszug_09_September_2025.pdf",
+      "sha256": "57901d606db6ae2444fb71477da52b5ca53721e8c0ebe307f03c4e1ee461613c",
+      "groesse": 3961
+    },
+    {
+      "datei": "40_Kontoauszuege/510_Kontoauszug_10_Oktober_2025.pdf",
+      "sha256": "f9b4c66159c8a833efcb1531588b8891d2bbabef1e877ba220022d37bf0987f4",
+      "groesse": 4209
+    },
+    {
+      "datei": "40_Kontoauszuege/511_Kontoauszug_11_November_2025.pdf",
+      "sha256": "fb7364cf6178abd1c0ab074c7b934cc63e87c0c946bef6ea3e7c5bc6239c6d1a",
+      "groesse": 4071
+    },
+    {
+      "datei": "40_Kontoauszuege/512_Kontoauszug_12_Dezember_2025.pdf",
+      "sha256": "ffde93a628c39361b6a609dcdc3078dfdfb142e8ca5be1f7ca2d4c2384ce3548",
+      "groesse": 3960
+    }
+  ]
+}
+;
+
+</script>
+  <script>
+/* =============================================================================
+ * RECHENKERN DER NEBENKOSTENABRECHNUNG
+ * =============================================================================
+ *
+ * WAS DIESE DATEI IST
+ *   Die gesamte Rechen- und Prüflogik der Abrechnung - in einer Datei, damit man
+ *   sie am Stück lesen kann. Sie bekommt einen "Fall" (daten/fall_2025.json) und
+ *   gibt ein "Ergebnis" zurück. Mehr macht sie nicht.
+ *
+ * WAS SIE BEWUSST NICHT TUT
+ *   - Sie liest und schreibt keine Dateien.
+ *   - Sie erzeugt kein HTML und kein PDF.
+ *   - Sie kennt keinen Browser und kein Node.
+ *   Dadurch kann derselbe Code im Browser (Oberfläche) und in Node (Tests)
+ *   laufen, und es gibt nur EINE Rechenlogik - keine zweite, die abweichen kann.
+ *
+ * AUFBAU
+ *   TEIL 1  Geld: Rechnen in ganzen Cent und centgenaues Verteilen
+ *   TEIL 2  Zeit: Tage, Monate, Zeitanteile
+ *   TEIL 3  Die Berechnung
+ *   TEIL 4  Die Prüfungen (Katalog aus SPEC.md)
+ *   TEIL 5  Export
+ *
+ * GRUNDREGEL DES GANZEN SYSTEMS
+ *   Intern wird ausschließlich in GANZEN CENT gerechnet (also 442,00 EUR = 44200).
+ *   Grund: Kommazahlen sind im Computer nicht exakt (0.1 + 0.2 ergibt 0.30000000000000004).
+ *   Bei Geld führt das früher oder später zu Cent-Differenzen. Ganze Zahlen sind
+ *   exakt. Erst bei der Anzeige wird wieder in Euro umgerechnet.
+ * ========================================================================== */
+
+(function (global) {
+  "use strict";
+
+  /* ===========================================================================
+   * TEIL 1 - GELD
+   * ========================================================================= */
+
+  /** Euro (z. B. 442.00) -> ganze Cent (44200). */
+  function zuCent(euro) {
+    return Math.round(euro * 100);
+  }
+
+  /** Ganze Cent (44200) -> Euro als Zahl (442). Nur für Anzeige/Export. */
+  function zuEuro(cent) {
+    return cent / 100;
+  }
+
+  /** Ganze Cent -> deutscher Text, z. B. 44200 -> "442,00 EUR". */
+  function alsEuroText(cent) {
+    const text = Math.abs(cent / 100).toLocaleString("de-DE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return (cent < 0 ? "−" : "") + text + " €";
+  }
+
+  /** "2025-08-01" -> "01.08.2025". Für Anzeige und Schreiben. */
+  function alsDatumText(iso) {
+    const [jahr, monat, tag] = iso.split("-");
+    return `${tag}.${monat}.${jahr}`;
+  }
+
+  /** 0.248 -> "24,800 %". Nachkommastellen einstellbar. */
+  function alsProzentText(anteil, nachkommastellen = 3) {
+    return (
+      (anteil * 100).toLocaleString("de-DE", {
+        minimumFractionDigits: nachkommastellen,
+        maximumFractionDigits: nachkommastellen,
+      }) + " %"
+    );
+  }
+
+  /** 62 -> "62,00". Für Quadratmeterangaben. */
+  function alsZahlText(zahl, nachkommastellen = 2) {
+    return zahl.toLocaleString("de-DE", {
+      minimumFractionDigits: nachkommastellen,
+      maximumFractionDigits: nachkommastellen,
+    });
+  }
+
+  /**
+   * VERTEILT EINEN BETRAG CENTGENAU (Largest-Remainder-Verfahren)
+   * ---------------------------------------------------------------------------
+   * Das Problem: 1.096,00 EUR sollen nach Wohnfläche auf vier Wohnungen verteilt
+   * werden. Die exakten Anteile sind 271,808 / 212,624 / 368,256 / 243,312 EUR.
+   * Rundet man jeden Wert einzeln kaufmännisch, ergibt die Summe der gerundeten
+   * Werte nicht mehr exakt 1.096,00 EUR - es fehlen oder es entstehen Cent.
+   * Genau dieser Fehler steckte in v1 (siehe SPEC.md § 9.2: 2 Cent Differenz).
+   *
+   * Die Lösung (Largest Remainder / Hare-Niemeyer, dasselbe Verfahren wie bei
+   * Sitzverteilungen):
+   *   1. Jeden Anteil exakt berechnen und ABRUNDEN.
+   *   2. Es bleibt ein Rest von wenigen Cent übrig (Gesamt minus Summe der
+   *      abgerundeten Werte).
+   *   3. Diese Rest-Cent bekommen die Anteile mit dem GRÖSSTEN abgeschnittenen
+   *      Nachkommateil - einer je Cent.
+   * Ergebnis: Die Summe stimmt danach immer exakt, und jeder Anteil weicht um
+   * höchstens einen Cent vom mathematisch exakten Wert ab.
+   *
+   * @param {number}   gesamtCent  zu verteilender Betrag in ganzen Cent (>= 0)
+   * @param {number[]} gewichte    z. B. Wohnflächen oder Nutzungstage
+   * @returns {number[]}           Anteile in ganzen Cent, Summe == gesamtCent
+   */
+  function verteileCentgenau(gesamtCent, gewichte) {
+    const summeGewichte = gewichte.reduce((a, b) => a + b, 0);
+
+    // Ohne Gewichte kann nichts verteilt werden (z. B. Einheit ohne Mieter).
+    if (summeGewichte <= 0) return gewichte.map(() => 0);
+
+    // Schritt 1: exakter Anteil und daraus der abgerundete Wert.
+    const exakt = gewichte.map((g) => (gesamtCent * g) / summeGewichte);
+    const anteile = exakt.map((wert) => Math.floor(wert));
+
+    // Schritt 2: wie viele Cent sind durch das Abrunden übrig geblieben?
+    let restCent = gesamtCent - anteile.reduce((a, b) => a + b, 0);
+
+    // Schritt 3: Rest-Cent nach Größe des abgeschnittenen Nachkommateils vergeben.
+    // Bei exaktem Gleichstand entscheidet die ursprüngliche Reihenfolge
+    // (JavaScript sortiert stabil) - damit ist das Ergebnis reproduzierbar.
+    const nachRestSortiert = exakt
+      .map((wert, index) => ({ index, nachkomma: wert - Math.floor(wert) }))
+      .sort((a, b) => b.nachkomma - a.nachkomma);
+
+    for (let i = 0; i < restCent; i++) {
+      anteile[nachRestSortiert[i % nachRestSortiert.length].index] += 1;
+    }
+    return anteile;
+  }
+
+  /* ===========================================================================
+   * TEIL 2 - ZEIT
+   * ========================================================================= */
+
+  /** "2025-08-01" -> Date. Immer UTC, damit Sommerzeit nichts verschiebt. */
+  function alsDatum(iso) {
+    return new Date(iso + "T00:00:00Z");
+  }
+
+  /** Anzahl Tage von..bis, beide Tage mitgezählt. 01.01.-31.12.2025 = 365. */
+  function tageZwischen(vonIso, bisIso) {
+    const EIN_TAG = 24 * 60 * 60 * 1000;
+    return Math.round((alsDatum(bisIso) - alsDatum(vonIso)) / EIN_TAG) + 1;
+  }
+
+  /** Angefangene Kalendermonate, beide mitgezählt. Januar..Juli = 7. */
+  function monateZwischen(vonIso, bisIso) {
+    const a = alsDatum(vonIso);
+    const b = alsDatum(bisIso);
+    return (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + (b.getUTCMonth() - a.getUTCMonth()) + 1;
+  }
+
+  /** Das spätere von zwei Daten (als ISO-Text). */
+  const spaeteres = (a, b) => (a > b ? a : b);
+  /** Das frühere von zwei Daten (als ISO-Text). */
+  const frueheres = (a, b) => (a < b ? a : b);
+
+  /* ===========================================================================
+   * TEIL 3 - DIE BERECHNUNG
+   * ===========================================================================
+   *
+   * Der Rechenweg in einem Satz:
+   *
+   *   Anteil = Gesamtkosten der Kostenart
+   *            x  Wohnfläche der Einheit / Gesamtwohnfläche
+   *            x  Nutzungstage des Mietverhältnisses / Tage im Abrechnungsjahr
+   *
+   * Umgesetzt wird das in ZWEI Verteilschritten, beide centgenau:
+   *   Schritt A: Kostenart  ->  die vier Einheiten   (Gewicht: Wohnfläche)
+   *   Schritt B: Einheit    ->  ihre Mietverhältnisse (Gewicht: Nutzungstage)
+   *
+   * Warum zwei Schritte und nicht eine Multiplikation? Weil so per Konstruktion
+   * gilt: Summe aller Mieteranteile == Gesamtkosten, auf den Cent. Die Prüfungen
+   * A-02/A-03/F-09 können danach gar nicht mehr fehlschlagen.
+   * ========================================================================= */
+
+  function berechne(fall) {
+    const zeitraumVon = fall.abrechnung.von;
+    const zeitraumBis = fall.abrechnung.bis;
+    const tageImJahr = tageZwischen(zeitraumVon, zeitraumBis);
+    const einstellungen = fall.einstellungen;
+
+    // -----------------------------------------------------------------------
+    // 3.1  Mietverhältnisse vorbereiten: Wie lange war wer im Jahr Mieter?
+    // -----------------------------------------------------------------------
+    const mietverhaeltnisse = fall.mietverhaeltnisse.map((m) => {
+      // Ein Mietverhältnis kann vor dem Jahr begonnen und nach ihm geendet haben.
+      // Uns interessiert nur der Teil, der IM Abrechnungszeitraum liegt.
+      const nutzungVon = spaeteres(m.beginn, zeitraumVon);
+      const nutzungBis = frueheres(m.ende || zeitraumBis, zeitraumBis);
+
+      const tage = tageZwischen(nutzungVon, nutzungBis);
+      const monate = monateZwischen(nutzungVon, nutzungBis);
+
+      // Das Gewicht für Schritt B. "tage" ist der Normalfall (taggenau),
+      // "monate" die Alternative aus den Einstellungen.
+      const gewicht = einstellungen.zeitanteil_methode === "monate" ? monate : tage;
+
+      return {
+        ...m,
+        nutzung_von: nutzungVon,
+        nutzung_bis: nutzungBis,
+        tage,
+        monate,
+        gewicht,
+        ganzjahr: tage === tageImJahr,
+        zeit_text:
+          einstellungen.zeitanteil_methode === "monate"
+            ? `${monate}/12 Monate`
+            : `${tage}/${tageImJahr} Tage`,
+        zeilen: [],       // wird in 3.3 gefüllt
+        summe_cent: 0,    // ebenso
+      };
+    });
+
+    // -----------------------------------------------------------------------
+    // 3.2  Kosten je Kostenart aus den Belegen zusammenzählen
+    // -----------------------------------------------------------------------
+    const kostenarten = [];
+    for (const [schluessel, stamm] of Object.entries(fall.kostenarten)) {
+      kostenarten.push({
+        schluessel,
+        bezeichnung: stamm.bezeichnung,
+        betrkv: stamm.betrkv,           // Rechtsgrundlage (Betriebskostenverordnung)
+        vertrag: stamm.vertrag || "",   // Vertragsgrundlage (§ 4 des Mietvertrags)
+        warum: stamm.warum || "",       // dieselbe Aussage in normaler Sprache
+        konto: stamm.konto,
+        umlagefaehig_bis: stamm.umlagefaehig_bis || null,
+        gesamt_cent: 0,
+        positionen: [],
+        umlagefaehig: stamm.umlagefaehig,
+      });
+    }
+    const kostenartNach = {};
+    kostenarten.forEach((k) => (kostenartNach[k.schluessel] = k));
+
+    for (const beleg of fall.belege) {
+      // Beim Abflussprinzip zählt nicht der Rechnungsbetrag, sondern was im
+      // Abrechnungsjahr tatsächlich vom Konto abgeflossen ist. Betroffen ist hier
+      // nur die RheinEnergie-Jahresrechnung (Rechnung 2026, Abschläge 2025).
+      const abflussAbweichend =
+        einstellungen.kostenansatz === "abfluss" && typeof beleg.abfluss_im_abrechnungsjahr === "number";
+
+      for (const position of beleg.positionen) {
+        let betragCent = zuCent(position.betrag);
+        if (abflussAbweichend) {
+          betragCent = Math.round(
+            (betragCent * zuCent(beleg.abfluss_im_abrechnungsjahr)) / zuCent(beleg.rechnungsbetrag)
+          );
+        }
+
+        const kostenart = kostenartNach[position.kostenart];
+        kostenart.gesamt_cent += betragCent;
+        kostenart.positionen.push({
+          beleg: beleg.beleg,
+          lieferant: beleg.lieferant,
+          datum: beleg.datum,
+          leistungszeitraum: beleg.leistungszeitraum,
+          bezeichnung: position.bezeichnung,
+          betrag_cent: betragCent,
+          umlagefaehig: position.umlagefaehig,
+          begruendung: position.begruendung || "",
+        });
+      }
+    }
+
+    // Eine Kostenart gilt als umlagefähig, wenn ALLE ihre Positionen es sind.
+    // Maßgeblich ist immer die Position, nicht die Kostenart - so kann eine
+    // Hauswartrechnung teils umlagefähig, teils Instandhaltung sein.
+    for (const k of kostenarten) {
+      if (k.positionen.length > 0) {
+        k.umlagefaehig = k.positionen.every((p) => p.umlagefaehig);
+      }
+    }
+
+    const benutzteKostenarten = kostenarten.filter((k) => k.positionen.length > 0);
+    const umlagefaehige = benutzteKostenarten.filter((k) => k.umlagefaehig);
+    const nichtUmlagefaehige = benutzteKostenarten.filter((k) => !k.umlagefaehig);
+
+    // -----------------------------------------------------------------------
+    // 3.3  Verteilen: Kostenart -> Einheiten -> Mietverhältnisse
+    // -----------------------------------------------------------------------
+    // Gewicht für Schritt A: die Wohnfläche. Wir nehmen sie mal 100 als ganze
+    // Zahl (62,00 m² -> 6200), damit auch hier keine Kommazahlen mitrechnen.
+    const einheiten = fall.einheiten.map((e) => ({
+      ...e,
+      flaeche_gewicht: Math.round(e.wohnflaeche_qm * 100),
+      jahresanteil_cent: 0,
+    }));
+    const flaecheGesamt = einheiten.reduce((summe, e) => summe + e.wohnflaeche_qm, 0);
+
+    for (const kostenart of umlagefaehige) {
+      // --- Schritt A: Gesamtkosten auf die Einheiten -----------------------
+      const anteileJeEinheit = verteileCentgenau(
+        kostenart.gesamt_cent,
+        einheiten.map((e) => e.flaeche_gewicht)
+      );
+      kostenart.anteile_je_einheit = {};
+
+      einheiten.forEach((einheit, i) => {
+        const einheitAnteilCent = anteileJeEinheit[i];
+        kostenart.anteile_je_einheit[einheit.we] = einheitAnteilCent;
+        einheit.jahresanteil_cent += einheitAnteilCent;
+
+        // --- Schritt B: Anteil der Einheit auf ihre Mietverhältnisse -------
+        const mieterDieserEinheit = mietverhaeltnisse.filter((m) => m.we === einheit.we);
+        const anteileJeMieter = verteileCentgenau(
+          einheitAnteilCent,
+          mieterDieserEinheit.map((m) => m.gewicht)
+        );
+
+        mieterDieserEinheit.forEach((mietverhaeltnis, j) => {
+          mietverhaeltnis.zeilen.push({
+            kostenart: kostenart.schluessel,
+            bezeichnung: kostenart.bezeichnung,
+            betrkv: kostenart.betrkv,
+            gesamt_cent: kostenart.gesamt_cent,
+            anteil_einheit_jahr_cent: einheitAnteilCent,
+            betrag_cent: anteileJeMieter[j],
+          });
+          mietverhaeltnis.summe_cent += anteileJeMieter[j];
+        });
+      });
+    }
+
+    // -----------------------------------------------------------------------
+    // 3.4  Vorauszahlungen und Ergebnis je Mietverhältnis
+    // -----------------------------------------------------------------------
+    for (const m of mietverhaeltnisse) {
+      const vorauszahlungMonatlichCent = zuCent(m.nk_vorauszahlung);
+      const nettokaltmieteCent = zuCent(m.nettokaltmiete);
+      const gesamtmieteCent = nettokaltmieteCent + vorauszahlungMonatlichCent;
+
+      // SOLL: was laut Vertrag zu zahlen gewesen wäre.
+      m.vorauszahlung_soll_cent = vorauszahlungMonatlichCent * m.monate;
+
+      // IST: was laut Kontoauszug tatsächlich eingegangen ist.
+      // Zuordnung über die "zahler_kennung" (z. B. "OHLWEIN") im Buchungstext.
+      m.zahlungen = fall.buchungen
+        .filter(
+          (b) =>
+            b.betrag > 0 &&
+            b.gegenpartei.toUpperCase().includes(m.zahler_kennung) &&
+            b.datum >= m.nutzung_von &&
+            b.datum <= m.nutzung_bis
+        )
+        .map((b) => {
+          const betragCent = zuCent(b.betrag);
+          // Bei voller Miete steckt genau die vertragliche Vorauszahlung darin.
+          // Bei einer Teilzahlung wird der Rest nach Abzug der Kaltmiete als
+          // Vorauszahlung gewertet (nie negativ).
+          const vorauszahlungsanteilCent =
+            betragCent >= gesamtmieteCent
+              ? vorauszahlungMonatlichCent
+              : Math.max(0, betragCent - nettokaltmieteCent);
+          return {
+            datum: b.datum,
+            zweck: b.zweck,
+            betrag_cent: betragCent,
+            vorauszahlungsanteil_cent: vorauszahlungsanteilCent,
+          };
+        });
+
+      m.vorauszahlung_ist_cent = m.zahlungen.reduce(
+        (summe, z) => summe + z.vorauszahlungsanteil_cent,
+        0
+      );
+      m.vorauszahlung_monatlich_cent = vorauszahlungMonatlichCent;
+      m.fehlende_zahlungen = m.monate - m.zahlungen.length;
+
+      // Welcher der beiden Werte angerechnet wird, steht in den Einstellungen.
+      // Voreinstellung ist "ist" - nur tatsächlich geleistete Vorauszahlungen
+      // dürfen angerechnet werden (BGH VIII ZR 57/04).
+      m.vorauszahlung_angesetzt_cent =
+        einstellungen.vorauszahlungen_ansatz === "soll"
+          ? m.vorauszahlung_soll_cent
+          : m.vorauszahlung_ist_cent;
+
+      // Positiver Saldo = Nachzahlung des Mieters, negativer = Guthaben.
+      m.saldo_cent = m.summe_cent - m.vorauszahlung_angesetzt_cent;
+      m.ergebnis = m.saldo_cent > 0 ? "Nachzahlung" : m.saldo_cent < 0 ? "Guthaben" : "ausgeglichen";
+
+      // Flächenanteil nur zur Anzeige im Schreiben.
+      const einheit = einheiten.find((e) => e.we === m.we);
+      m.lage = einheit.lage;                 // z. B. "Erdgeschoss links" - steht im Schreiben
+      m.hinweis = einheit.hinweis || "";     // z. B. abweichende Flächenangabe im Altvertrag
+      m.wohnflaeche_qm = einheit.wohnflaeche_qm;
+      m.flaechen_anteil = einheit.wohnflaeche_qm / flaecheGesamt;
+      m.jahresanteil_einheit_cent = einheit.jahresanteil_cent;
+
+      // Vorschlag für die künftige Vorauszahlung (§ 560 Abs. 4 BGB):
+      // Jahresbetrag der Wohnung durch 12, aufgerundet auf volle Euro.
+      m.empfohlene_vorauszahlung_cent = Math.ceil(einheit.jahresanteil_cent / 12 / 100) * 100;
+    }
+
+    // -----------------------------------------------------------------------
+    // 3.5  Summen fürs Gesamtbild
+    // -----------------------------------------------------------------------
+    const summeUmlagefaehigCent = umlagefaehige.reduce((s, k) => s + k.gesamt_cent, 0);
+    const summeNichtUmlagefaehigCent = nichtUmlagefaehige.reduce((s, k) => s + k.gesamt_cent, 0);
+
+    const ergebnis = {
+      fall_bezeichnung: fall.bezeichnung,
+      objekt: fall.objekt,
+      vermieterin: fall.vermieterin,
+      abrechnung: fall.abrechnung,
+      einstellungen,
+      tage_im_jahr: tageImJahr,
+      flaeche_gesamt_qm: flaecheGesamt,
+      einheiten,
+      kostenarten: benutzteKostenarten,
+      umlagefaehige,
+      nicht_umlagefaehige: nichtUmlagefaehige,
+      mietverhaeltnisse,
+      summe_umlagefaehig_cent: summeUmlagefaehigCent,
+      summe_nicht_umlagefaehig_cent: summeNichtUmlagefaehigCent,
+      summe_belege_cent: benutzteKostenarten.reduce((s, k) => s + k.gesamt_cent, 0),
+      kosten_je_qm_jahr_cent: Math.round(summeUmlagefaehigCent / flaecheGesamt),
+      befunde: fall.befunde || [],
+    };
+
+    // Die Prüfungen laufen IMMER mit - man kann kein Ergebnis bekommen, ohne zu
+    // wissen, ob es geprüft wurde (SPEC.md § 5.1, "fail-closed").
+    ergebnis.pruefungen = pruefeAlles(fall, ergebnis);
+    ergebnis.blocker = ergebnis.pruefungen.filter((p) => !p.bestanden && p.schwere === "blocker");
+    ergebnis.warnungen = ergebnis.pruefungen.filter((p) => !p.bestanden && p.schwere === "warnung");
+    ergebnis.freigegeben = ergebnis.blocker.length === 0;
+
+    return ergebnis;
+  }
+
+  /* ===========================================================================
+   * TEIL 4 - DIE PRÜFUNGEN
+   * ===========================================================================
+   *
+   * Jede Prüfung hat eine feste Nummer aus SPEC.md, damit man von einem Befund
+   * im Prüfprotokoll direkt zur Begründung in der Spezifikation kommt.
+   *
+   *   schwere "blocker" -> es werden KEINE Abrechnungen erzeugt
+   *   schwere "warnung" -> Abrechnung entsteht, muss aber in den Annahmen stehen
+   *   schwere "info"    -> reine Beobachtung
+   * ========================================================================= */
+
+  /** Kleiner Helfer, damit jede Prüfung gleich aussieht. */
+  function pruefung(id, titel, schwere, bestanden, befund) {
+    return { id, titel, schwere, bestanden, befund };
+  }
+
+  function pruefeAlles(fall, e) {
+    const p = [];
+    const euro = alsEuroText;
+
+    /* --- L0: Stimmen die Daten mit den Belegen überein? -------------------- */
+
+    // I-04: Die Positionen eines Belegs müssen seine Rechnungssumme ergeben.
+    const belegeMitSummenfehler = fall.belege.filter((b) => {
+      const summePositionen = b.positionen.reduce((s, pos) => s + zuCent(pos.betrag), 0);
+      return summePositionen !== zuCent(b.rechnungsbetrag);
+    });
+    p.push(
+      pruefung("I-04", "Positionen ergeben die Belegsumme", "blocker",
+        belegeMitSummenfehler.length === 0,
+        belegeMitSummenfehler.length === 0
+          ? `${fall.belege.length} Belege geprüft`
+          : belegeMitSummenfehler.map((b) => b.beleg).join(", "))
+    );
+
+    // I-06 (schließt I-05 ein): Saldenkette der Kontoauszüge. Je Monat muss
+    // Anfangsbestand + Buchungen den Endbestand ergeben (das ist I-05), und der
+    // Endbestand eines Monats muss der Anfangsbestand des nächsten sein (I-06).
+    // Beides in einer Schleife zu prüfen ist klarer als zwei getrennte Läufe.
+    const kettenfehler = [];
+    const auszuege = (fall.kontoauszuege || []).slice().sort((a, b) => a.monat - b.monat);
+    auszuege.forEach((auszug, i) => {
+      const monatsText = String(auszug.monat).padStart(2, "0");
+      const buchungenDesMonats = fall.buchungen.filter(
+        (b) => b.datum.slice(0, 7) === `${auszug.jahr}-${monatsText}`
+      );
+      const summe = buchungenDesMonats.reduce((s, b) => s + zuCent(b.betrag), 0);
+      if (zuCent(auszug.anfangsbestand) + summe !== zuCent(auszug.endbestand)) {
+        kettenfehler.push(`${auszug.datei}: Saldo passt nicht zu den Buchungen`);
+      }
+      if (i > 0 && zuCent(auszuege[i - 1].endbestand) !== zuCent(auszug.anfangsbestand)) {
+        kettenfehler.push(`${auszug.datei}: Anfangsbestand != Endbestand des Vormonats`);
+      }
+    });
+    p.push(
+      pruefung("I-06", "Saldenkette der Kontoauszüge lückenlos", "blocker",
+        kettenfehler.length === 0,
+        kettenfehler.length === 0
+          ? `${auszuege.length} Auszüge, ${fall.buchungen.length} Buchungen`
+          : kettenfehler.join(" | "))
+    );
+
+    // I-07: Derselbe Beleg zweimal erfasst?
+    const gesehen = new Map();
+    const dubletten = [];
+    for (const b of fall.belege) {
+      const schluessel = `${b.lieferant}|${b.rechnungsbetrag}|${b.datum}`;
+      if (gesehen.has(schluessel)) dubletten.push(`${b.beleg} ~ ${gesehen.get(schluessel)}`);
+      gesehen.set(schluessel, b.beleg);
+    }
+    p.push(
+      pruefung("I-07", "Keine doppelt erfassten Belege", "warnung",
+        dubletten.length === 0, dubletten.join(", ") || "keine Dubletten")
+    );
+
+    // I-12: Datumslogik der Belege.
+    const datumsfehler = fall.belege.filter((b) => b.datum > "2027-01-01" || !b.datum);
+    p.push(
+      pruefung("I-12", "Belegdaten plausibel", "blocker",
+        datumsfehler.length === 0, datumsfehler.map((b) => b.beleg).join(", ") || "alle plausibel")
+    );
+
+    /* --- L1: Stimmt die Arithmetik? --------------------------------------- */
+
+    // A-01: Die Wohnflächen müssen die Gesamtwohnfläche ergeben.
+    const flaecheLautStammdaten = fall.objekt.wohnflaeche_gesamt_qm;
+    const flaecheSumme = e.flaeche_gesamt_qm;
+    p.push(
+      pruefung("A-01", "Summe der Wohnflächen == Gesamtwohnfläche", "blocker",
+        Math.abs(flaecheSumme - flaecheLautStammdaten) < 0.005,
+        `${flaecheSumme.toFixed(2)} m² vs. ${flaecheLautStammdaten.toFixed(2)} m² laut Stammdaten`)
+    );
+
+    // A-02: Je Kostenart muss die Summe der Einheitenanteile exakt die
+    // Gesamtkosten ergeben. Das ist die Prüfung, die in v1 fehlgeschlagen wäre.
+    const verteilfehler = e.umlagefaehige.filter((k) => {
+      const summe = Object.values(k.anteile_je_einheit).reduce((a, b) => a + b, 0);
+      return summe !== k.gesamt_cent;
+    });
+    p.push(
+      pruefung("A-02", "Verteilung je Kostenart centgenau", "blocker",
+        verteilfehler.length === 0,
+        verteilfehler.map((k) => k.bezeichnung).join(", ") ||
+          `${e.umlagefaehige.length} Kostenarten, Differenz 0 Cent`)
+    );
+
+    // A-03: Je Einheit müssen sich die Mietverhältnisse lückenlos und
+    // überschneidungsfrei über das Jahr verteilen - sonst zahlt jemand doppelt
+    // oder ein Zeitraum fällt unter den Tisch.
+    const zeitfehler = [];
+    for (const einheit of e.einheiten) {
+      const mieter = e.mietverhaeltnisse
+        .filter((m) => m.we === einheit.we)
+        .sort((a, b) => a.nutzung_von.localeCompare(b.nutzung_von));
+      const summeTage = mieter.reduce((s, m) => s + m.tage, 0);
+      if (summeTage !== e.tage_im_jahr) {
+        zeitfehler.push(`${einheit.we}: ${summeTage} statt ${e.tage_im_jahr} Tage belegt`);
+      }
+      for (let i = 1; i < mieter.length; i++) {
+        if (mieter[i].nutzung_von <= mieter[i - 1].nutzung_bis) {
+          zeitfehler.push(`${einheit.we}: Zeiträume überschneiden sich`);
+        }
+      }
+      // Summe der verteilten Anteile muss den Jahresanteil der Einheit ergeben.
+      const summeAnteile = mieter.reduce((s, m) => s + m.summe_cent, 0);
+      if (summeAnteile !== einheit.jahresanteil_cent) {
+        zeitfehler.push(`${einheit.we}: Anteile der Mieter != Jahresanteil der Einheit`);
+      }
+    }
+    p.push(
+      pruefung("A-03", "Zeitanteile je Einheit vollständig und überschneidungsfrei", "blocker",
+        zeitfehler.length === 0, zeitfehler.join(" | ") || "alle 4 Einheiten ganzjährig belegt")
+    );
+
+    // A-04: Nichts darf beim Sortieren verloren gehen.
+    const summeAllerPositionen = fall.belege.reduce(
+      (s, b) => s + b.positionen.reduce((s2, pos) => s2 + zuCent(pos.betrag), 0), 0);
+    const summeSortiert = e.summe_umlagefaehig_cent + e.summe_nicht_umlagefaehig_cent;
+    const abflussAktiv = e.einstellungen.kostenansatz === "abfluss";
+    p.push(
+      pruefung("A-04", "umlagefähig + nicht umlagefähig == alle Belegpositionen", "blocker",
+        abflussAktiv || summeSortiert === summeAllerPositionen,
+        abflussAktiv
+          ? "übersprungen: Abflussprinzip aktiv, Belegsummen weichen bewusst ab"
+          : `${euro(summeSortiert)} == ${euro(summeAllerPositionen)}`)
+    );
+
+    // A-05: Saldo == Anteil minus angerechnete Vorauszahlung.
+    const saldofehler = e.mietverhaeltnisse.filter(
+      (m) => m.saldo_cent !== m.summe_cent - m.vorauszahlung_angesetzt_cent);
+    p.push(
+      pruefung("A-05", "Saldo == Anteil - Vorauszahlungen", "blocker",
+        saldofehler.length === 0, saldofehler.map((m) => m.id).join(", ") || "5 Mietverhältnisse")
+    );
+
+    // A-06: Beim Ist-Ansatz muss die angerechnete Summe den erfassten
+    // Zahlungseingängen entsprechen - kein frei gewählter Wert.
+    const vzFehler = e.mietverhaeltnisse.filter((m) => {
+      const erwartet = e.einstellungen.vorauszahlungen_ansatz === "soll"
+        ? m.vorauszahlung_soll_cent : m.vorauszahlung_ist_cent;
+      return m.vorauszahlung_angesetzt_cent !== erwartet;
+    });
+    p.push(
+      pruefung("A-06", "Angerechnete Vorauszahlungen == erfasste Zahlungen", "blocker",
+        vzFehler.length === 0,
+        vzFehler.map((m) => m.id).join(", ") ||
+          `Ansatz "${e.einstellungen.vorauszahlungen_ansatz}"`)
+    );
+
+    /* --- L2: Recht und Vertrag -------------------------------------------- */
+
+    // R-01: Eine Kostenart darf nur umgelegt werden, wenn sie im § 4 DIESES
+    // Mietvertrags steht. Der Katalog liegt als Daten am Mietverhältnis.
+    const nichtVereinbart = [];
+    for (const m of e.mietverhaeltnisse) {
+      const katalog = m.vereinbarte_kostenarten || [];
+      for (const zeile of m.zeilen) {
+        if (zeile.betrag_cent > 0 && !katalog.includes(zeile.kostenart)) {
+          nichtVereinbart.push(`${m.id}: ${zeile.bezeichnung}`);
+        }
+      }
+    }
+    const ohneVertragsgrundlage = e.umlagefaehige.filter((k) => !k.vertrag);
+    p.push(
+      pruefung("R-01", "Nur vertraglich vereinbarte Kostenarten umgelegt, Fundstelle benannt", "blocker",
+        nichtVereinbart.length === 0 && ohneVertragsgrundlage.length === 0,
+        [...nichtVereinbart, ...ohneVertragsgrundlage.map((k) => `${k.bezeichnung}: Vertragsfundstelle fehlt`)]
+          .join(", ") || "alle umgelegten Kostenarten stehen in § 4 der Verträge, Fundstelle je Kostenart benannt")
+    );
+
+    // R-02: War die Kostenart im Abrechnungsjahr überhaupt noch umlagefähig?
+    // (Gültigkeitsfenster, z. B. Kabel-TV nur bis 30.06.2024.)
+    const abgelaufen = e.umlagefaehige.filter(
+      (k) => k.umlagefaehig_bis && k.umlagefaehig_bis < e.abrechnung.von);
+    p.push(
+      pruefung("R-02", "Keine Kostenart außerhalb ihres Gültigkeitszeitraums umgelegt", "blocker",
+        abgelaufen.length === 0,
+        abgelaufen.map((k) => `${k.bezeichnung} (nur bis ${k.umlagefaehig_bis})`).join(", ") ||
+          "Gültigkeitsfenster eingehalten")
+    );
+
+    // R-03: Jede Nicht-Umlage braucht eine Begründung mit Fundstelle.
+    const ohneBegruendung = [];
+    for (const beleg of fall.belege) {
+      for (const pos of beleg.positionen) {
+        if (pos.umlagefaehig) continue;
+        const text = pos.begruendung || fall.kostenarten[pos.kostenart]?.betrkv || "";
+        const hatFundstelle = /§|BGH|TKG|BetrKV|Urteil/i.test(text);
+        if (!hatFundstelle) ohneBegruendung.push(`${beleg.beleg}: ${pos.bezeichnung}`);
+      }
+    }
+    p.push(
+      pruefung("R-03", "Jede Nicht-Umlage ist mit Fundstelle begründet", "blocker",
+        ohneBegruendung.length === 0, ohneBegruendung.join(", ") || "alle begründet")
+    );
+
+    // R-04: Jede umgelegte Kostenart braucht eine BetrKV-Ziffer.
+    const ohneZiffer = e.umlagefaehige.filter((k) => !/§\s*2\s*Nr\./.test(k.betrkv || ""));
+    p.push(
+      pruefung("R-04", "Jede umgelegte Kostenart nennt ihre BetrKV-Ziffer", "blocker",
+        ohneZiffer.length === 0, ohneZiffer.map((k) => k.bezeichnung).join(", ") || "vollständig")
+    );
+
+    // R-05: Der Abrechnungszeitraum darf höchstens 12 Monate umfassen.
+    p.push(
+      pruefung("R-05", "Abrechnungszeitraum <= 12 Monate", "blocker",
+        e.tage_im_jahr <= 366, `${e.tage_im_jahr} Tage`)
+    );
+
+    // R-06: Ausschlussfrist - die Abrechnung muss dem Mieter binnen 12 Monaten
+    // nach Ende des Zeitraums zugehen (§ 556 Abs. 3 S. 2 BGB).
+    const fristende = `${Number(e.abrechnung.bis.slice(0, 4)) + 1}-12-31`;
+    p.push(
+      pruefung("R-06", "Abrechnung innerhalb der Ausschlussfrist", "blocker",
+        e.abrechnung.erstellt_am <= fristende,
+        `erstellt ${e.abrechnung.erstellt_am}, Frist ${fristende}`)
+    );
+
+    // R-07: Der Soll-Ansatz ist rechtlich die Ausnahme und muss bewusst gewählt
+    // sein - er darf nie stillschweigend die Voreinstellung sein.
+    p.push(
+      pruefung("R-07", "Vorauszahlungen nach Ist (BGH VIII ZR 57/04)",
+        e.einstellungen.vorauszahlungen_ansatz === "soll" ? "warnung" : "blocker",
+        e.einstellungen.vorauszahlungen_ansatz === "ist",
+        e.einstellungen.vorauszahlungen_ansatz === "ist"
+          ? "nur tatsächlich geleistete Vorauszahlungen angerechnet"
+          : "ACHTUNG: Soll-Ansatz aktiv - muss in den Annahmen begründet werden")
+    );
+
+    // R-08: Gehört der Beleg überhaupt in dieses Abrechnungsjahr?
+    // Ein Beleg aus dem Vorjahr, der versehentlich mitgebucht wird, fällt sonst
+    // niemandem auf - die Summe sieht ja plausibel aus.
+    const ausserhalb = [];
+    for (const beleg of fall.belege) {
+      // Alle Datumsangaben aus dem Leistungszeitraum ziehen; fehlt er, gilt das
+      // Belegdatum. Frühestes und spätestes Datum spannen den Leistungszeitraum auf.
+      const daten = (String(beleg.leistungszeitraum || "").match(/\d{2}\.\d{2}\.\d{4}/g) || [])
+        .map((d) => { const [tag, monat, jahr] = d.split("."); return `${jahr}-${monat}-${tag}`; });
+      const von = daten.length ? daten.reduce((a, b) => (a < b ? a : b)) : beleg.datum;
+      const bis = daten.length ? daten.reduce((a, b) => (a > b ? a : b)) : beleg.datum;
+      if (bis < e.abrechnung.von || von > e.abrechnung.bis) {
+        ausserhalb.push(`${beleg.beleg} (Leistung ${von} bis ${bis})`);
+      }
+    }
+    p.push(
+      pruefung("R-08", "Jeder Beleg betrifft den Abrechnungszeitraum", "blocker",
+        ausserhalb.length === 0,
+        ausserhalb.join(", ") || `${fall.belege.length} Belege, Leistung jeweils im Zeitraum`)
+    );
+
+    // R-09: Der Kostenansatz ist EINE Einstellung für alle Kostenarten. Ein
+    // Mischen wäre nur möglich, wenn es die Einstellung je Kostenart gäbe - die
+    // Prüfung hält das ausdrücklich fest, statt sich stillschweigend darauf zu verlassen.
+    p.push(
+      pruefung("R-09", "Kostenansatz einheitlich über alle Kostenarten", "blocker",
+        ["leistung", "abfluss"].includes(e.einstellungen.kostenansatz),
+        `"${e.einstellungen.kostenansatz}" gilt für alle ${e.kostenarten.length} Kostenarten`)
+    );
+
+    // R-11: Weicht die verwendete Fläche vom Mietvertrag ab, muss das eine
+    // begründete Entscheidung sein - kein stiller Zahlendreher.
+    const mitFlaechenhinweis = e.einheiten.filter((u) => u.hinweis);
+    p.push(
+      pruefung("R-11", "Abweichende Wohnflächen sind als Entscheidung dokumentiert", "warnung",
+        mitFlaechenhinweis.every((u) => /BGH|Aufmaß|maßgeblich/i.test(u.hinweis)),
+        mitFlaechenhinweis.length
+          ? mitFlaechenhinweis.map((u) => `${u.we}: begründet`).join(", ")
+          : "keine abweichenden Flächenangaben")
+    );
+
+    // R-10: Diese Kostenarten dürfen niemals im umgelegten Block auftauchen.
+    const niemalsUmlagefaehig = ["verwaltung", "instandhaltung", "kleinreparaturen", "neuanlage", "rechtsschutz"];
+    const verbotenUmgelegt = e.umlagefaehige.filter((k) => niemalsUmlagefaehig.includes(k.schluessel));
+    p.push(
+      pruefung("R-10", "Verwaltung/Instandhaltung/Neuanlage nicht umgelegt", "blocker",
+        verbotenUmgelegt.length === 0,
+        verbotenUmgelegt.map((k) => k.bezeichnung).join(", ") ||
+          "§ 1 Abs. 2 BetrKV eingehalten")
+    );
+
+    // R-13: Eine Paragrafenangabe ist für die Eigentümerin und die Mieter keine
+    // Begründung. Jede tatsächlich verwendete Kostenart muss zusätzlich in
+    // normaler Sprache erklären, warum sie umgelegt wird oder eben nicht.
+    const ohneKlartext = e.kostenarten.filter((k) => !k.warum);
+    p.push(
+      pruefung("R-13", "Jede verwendete Kostenart ist in normaler Sprache begründet", "blocker",
+        ohneKlartext.length === 0,
+        ohneKlartext.map((k) => k.bezeichnung).join(", ") ||
+          `${e.kostenarten.length} Kostenarten mit Begründung und Vertragsgrundlage`)
+    );
+
+    // R-12: Kein Befund darf unter den Tisch fallen.
+    const ohneBehandlung = (fall.befunde || []).filter((b) => !b.behandlung);
+    p.push(
+      pruefung("R-12", "Jeder Befund hat eine dokumentierte Behandlung", "blocker",
+        ohneBehandlung.length === 0,
+        ohneBehandlung.map((b) => b.id).join(", ") ||
+          `${(fall.befunde || []).length} Befunde dokumentiert`)
+    );
+
+    /* --- L4: Plausibilität ------------------------------------------------ */
+
+    // P-01: Jeder Beleg muss bezahlt worden sein, und jede Abbuchung muss zu
+    // einem Beleg gehören. Beide Richtungen, sonst fehlt etwas.
+    const lieferantenSummen = new Map();
+    for (const b of fall.belege) {
+      const kennung = b.bank_kennung;
+      const eintrag = lieferantenSummen.get(kennung) || { rechnung: 0, zahlung: 0, belege: 0 };
+      eintrag.rechnung += zuCent(
+        typeof b.abfluss_im_abrechnungsjahr === "number" ? b.abfluss_im_abrechnungsjahr : b.rechnungsbetrag);
+      eintrag.belege += 1;
+      lieferantenSummen.set(kennung, eintrag);
+    }
+    const abbuchungenOhneBeleg = [];
+    for (const buchung of fall.buchungen.filter((b) => b.betrag < 0)) {
+      const treffer = [...lieferantenSummen.keys()].find((k) =>
+        buchung.gegenpartei.toUpperCase().includes(k));
+      if (treffer) lieferantenSummen.get(treffer).zahlung += zuCent(-buchung.betrag);
+      else abbuchungenOhneBeleg.push(`${buchung.datum} ${buchung.gegenpartei}`);
+    }
+    const abweichungen = [...lieferantenSummen.entries()]
+      .filter(([, v]) => v.rechnung !== v.zahlung)
+      .map(([k, v]) => `${k}: Rechnungen ${euro(v.rechnung)} vs. Zahlungen ${euro(v.zahlung)}`);
+    p.push(
+      pruefung("P-01", "Belege und Kontobewegungen decken sich", "warnung",
+        abweichungen.length === 0 && abbuchungenOhneBeleg.length === 0,
+        [...abweichungen, ...abbuchungenOhneBeleg.map((t) => `ohne Beleg: ${t}`)].join(" | ") ||
+          `${lieferantenSummen.size} Lieferanten abgeglichen`)
+    );
+
+    // P-02: Fehlt ein Mieteingang?
+    const fehlendeZahlungen = e.mietverhaeltnisse
+      .filter((m) => m.fehlende_zahlungen > 0)
+      .map((m) => {
+        const gezahlteMonate = new Set(m.zahlungen.map((z) => z.datum.slice(0, 7)));
+        const erwartet = [];
+        const start = alsDatum(m.nutzung_von);
+        for (let i = 0; i < m.monate; i++) {
+          const d = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + i, 1));
+          erwartet.push(d.toISOString().slice(0, 7));
+        }
+        const fehlt = erwartet.filter((monat) => !gezahlteMonate.has(monat));
+        return `${m.mieter} (${m.we}): ${fehlt.join(", ")} fehlt`;
+      });
+    p.push(
+      pruefung("P-02", "Mieteingänge vollständig", "warnung",
+        fehlendeZahlungen.length === 0, fehlendeZahlungen.join(" | ") || "alle Monate bezahlt")
+    );
+
+    // P-02b: Vereinbarte Staffelmiete auch tatsächlich vereinnahmt?
+    const staffelabweichungen = [];
+    for (const m of e.mietverhaeltnisse) {
+      if (!m.staffelmiete) continue;
+      let ausfallCent = 0;
+      for (const zahlung of m.zahlungen) {
+        const stufe = m.staffelmiete
+          .filter((s) => s.ab <= zahlung.datum)
+          .sort((a, b) => a.ab.localeCompare(b.ab))
+          .pop();
+        if (!stufe) continue;
+        const gezahlteKaltmiete = zahlung.betrag_cent - zahlung.vorauszahlungsanteil_cent;
+        if (zuCent(stufe.nettokaltmiete) > gezahlteKaltmiete) {
+          ausfallCent += zuCent(stufe.nettokaltmiete) - gezahlteKaltmiete;
+        }
+      }
+      if (ausfallCent > 0) {
+        staffelabweichungen.push(`${m.mieter} (${m.we}): Mindereinnahme ${euro(ausfallCent)} in ${e.abrechnung.von.slice(0, 4)}`);
+      }
+    }
+    p.push(
+      pruefung("P-02b", "Vereinbarte Staffelmiete wird vereinnahmt", "warnung",
+        staffelabweichungen.length === 0,
+        staffelabweichungen.join(" | ") || "keine Abweichung")
+    );
+
+    return p;
+  }
+
+  /* ===========================================================================
+   * TEIL 5 - EXPORT
+   * ===========================================================================
+   * Dieser Block sorgt dafür, dass dieselbe Datei an zwei Orten funktioniert:
+   *   - im Browser, eingebunden per <script src="...">   -> window.Nebenkosten
+   *   - in Node, für die Tests, per require(...)         -> module.exports
+   * ========================================================================= */
+
+  const API = {
+    berechne,
+    pruefeAlles,
+    // Hilfsfunktionen, die auch die Oberfläche und die Tests brauchen:
+    verteileCentgenau,
+    zuCent,
+    zuEuro,
+    alsEuroText,
+    alsDatumText,
+    alsProzentText,
+    alsZahlText,
+    tageZwischen,
+    monateZwischen,
+  };
+
+  if (typeof module === "object" && module.exports) module.exports = API;
+  else global.Nebenkosten = API;
+})(typeof self !== "undefined" ? self : globalThis);
+
+</script>
+  <script>
+/* =============================================================================
+ * DAS ABRECHNUNGSSCHREIBEN
+ * =============================================================================
+ *
+ * Erzeugt aus einem Mietverhältnis das fertige Schreiben an den Mieter - als
+ * HTML-Text. Dasselbe HTML wird am Bildschirm angezeigt und gedruckt; es gibt
+ * also keine zweite Fassung, die abweichen könnte.
+ *
+ * WAS IM SCHREIBEN STEHEN MUSS (SPEC.md § 2.1)
+ * Vier Angaben entscheiden darüber, ob eine Betriebskostenabrechnung überhaupt
+ * wirksam ist. Fehlt eine davon, ist das ganze Schreiben unwirksam:
+ *   1. die Gesamtkosten je Kostenart          -> Spalte "Gesamtkosten Haus"
+ *   2. der Verteilerschlüssel, erklärt        -> Kopfzeile + Spaltenüberschrift
+ *   3. die Berechnung des Mieteranteils       -> eine Zeile je Kostenart
+ *   4. der Abzug der Vorauszahlungen          -> Abrechnungsblock am Ende
+ * Im Code sind diese Stellen mit MINDESTANGABE 1..4 markiert. Die Prüfungen
+ * F-01 bis F-04 kontrollieren am fertigen HTML, ob sie wirklich da sind.
+ * ========================================================================== */
+
+(function (global) {
+  "use strict";
+
+  const N = global.Nebenkosten;
+  const eur = N.alsEuroText;
+  const dat = N.alsDatumText;
+  const pro = N.alsProzentText;
+  const zahl = N.alsZahlText;
+
+  /** Macht Text sicher für HTML (aus < wird &lt; usw.). */
+  function sicher(text) {
+    return String(text === null || text === undefined ? "" : text).replace(
+      /[&<>"]/g,
+      (zeichen) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[zeichen])
+    );
+  }
+
+  /**
+   * Wie der Abrechnungszeitraum im Brief benannt wird.
+   * Deckt sich der Zeitraum mit einem Kalenderjahr, heißt es schlicht "2025".
+   * Weicht er ab (etwa bei einem abweichenden Wirtschaftsjahr), wird das
+   * Datumspaar genannt. So steht nirgends eine fest eingebaute Jahreszahl.
+   */
+  function zeitraumBezeichnung(abrechnung) {
+    const jahrVon = abrechnung.von.slice(0, 4);
+    const jahrBis = abrechnung.bis.slice(0, 4);
+    const ganzesKalenderjahr =
+      jahrVon === jahrBis && abrechnung.von.endsWith("-01-01") && abrechnung.bis.endsWith("-12-31");
+    return {
+      ganzesKalenderjahr,
+      kurz: ganzesKalenderjahr ? jahrVon : `${dat(abrechnung.von)} – ${dat(abrechnung.bis)}`,
+      satz: ganzesKalenderjahr
+        ? `das Kalenderjahr ${jahrVon}`
+        : `den Zeitraum ${dat(abrechnung.von)} bis ${dat(abrechnung.bis)}`,
+      jahr: jahrVon,
+    };
+  }
+
+  /** Addiert Tage auf ein ISO-Datum (für die Zahlungsfrist). */
+  function plusTage(iso, tage) {
+    const d = new Date(iso + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() + tage);
+    return d.toISOString().slice(0, 10);
+  }
+
+  /**
+   * Baut das komplette Schreiben.
+   * @param {object} m  ein Mietverhältnis aus dem Ergebnis
+   * @param {object} e  das Gesamtergebnis (für Gesamtkosten und Objektdaten)
+   * @returns {string}  HTML
+   */
+  function schreiben(m, e) {
+    const v = e.vermieterin;
+    const o = e.objekt;
+    const erstelltAm = e.abrechnung.erstellt_am;
+    const zeitraum = zeitraumBezeichnung(e.abrechnung);
+    const zahlungsfrist = plusTage(erstelltAm, e.abrechnung.zahlungsfrist_tage);
+
+    // --- MINDESTANGABE 1 + 3: Gesamtkosten und Anteilsberechnung je Kostenart -
+    const kostenzeilen = m.zeilen
+      .map(
+        (z) => `
+      <tr>
+        <td>${sicher(z.bezeichnung)}<div class="klein">${sicher(z.betrkv)}</div></td>
+        <td class="r">${eur(z.gesamt_cent)}</td>
+        <td class="r">${eur(z.anteil_einheit_jahr_cent)}</td>
+        <td class="r">${eur(z.betrag_cent)}</td>
+      </tr>`
+      )
+      .join("");
+
+    // Zur Transparenz: was NICHT umgelegt wurde und warum.
+    const nichtUmgelegt = e.nicht_umlagefaehige
+      .map(
+        (k) => `
+      <tr>
+        <td>${sicher(k.bezeichnung)}
+          ${k.warum ? `<div class="grund">${sicher(k.warum)}</div>` : ""}
+          <div class="klein">${sicher(k.betrkv)}</div></td>
+        <td class="r">${eur(k.gesamt_cent)}</td>
+      </tr>`
+      )
+      .join("");
+
+    const zahlungszeilen = m.zahlungen
+      .map(
+        (z) => `
+      <tr>
+        <td>${dat(z.datum)}</td>
+        <td>${sicher(z.zweck)}</td>
+        <td class="r">${eur(z.betrag_cent)}</td>
+        <td class="r">${eur(z.vorauszahlungsanteil_cent)}</td>
+      </tr>`
+      )
+      .join("");
+
+    // --- Ergebnissatz und Zahlungsaufforderung -------------------------------
+    let ergebnisText;
+    let zahlungsabsatz;
+    if (m.saldo_cent > 0) {
+      ergebnisText = `Nachzahlung zu Ihren Lasten`;
+      zahlungsabsatz = `<p>Bitte überweisen Sie den Nachzahlungsbetrag von <b>${eur(
+        m.saldo_cent
+      )}</b> bis zum <b>${dat(zahlungsfrist)}</b> auf das Konto <span class="iban">${sicher(v.iban)}</span> (${sicher(
+        v.bank
+      )}), Verwendungszweck „Betriebskosten ${zeitraum.kurz} ${sicher(m.we)}".</p>`;
+    } else if (m.saldo_cent < 0) {
+      ergebnisText = `Guthaben zu Ihren Gunsten`;
+      zahlungsabsatz = `<p>Das Guthaben von <b>${eur(-m.saldo_cent)}</b> überweisen wir Ihnen
+        innerhalb von ${e.abrechnung.zahlungsfrist_tage} Tagen auf das uns bekannte Konto.</p>`;
+    } else {
+      ergebnisText = `Die Abrechnung ist ausgeglichen`;
+      zahlungsabsatz = "";
+    }
+
+    // Erklärung des Zeitanteils - nur nötig, wenn nicht ganzjährig gemietet.
+    const zeitErklaerung = m.ganzjahr
+      ? `Sie haben die Wohnung im gesamten Abrechnungsjahr gemietet; Ihr Zeitanteil beträgt 100 %.`
+      : `Ihr Mietverhältnis bestand im Abrechnungsjahr vom ${dat(m.nutzung_von)} bis ${dat(
+          m.nutzung_bis
+        )}. Die auf die Wohnung entfallenden Jahreskosten werden deshalb gemäß § 4 Abs. 5 Ihres
+         Mietvertrags zeitanteilig aufgeteilt (${sicher(m.zeit_text)}).`;
+
+    // Hinweis, wenn Vorauszahlungen fehlen (Ist-Ansatz).
+    const fehlhinweis =
+      m.fehlende_zahlungen > 0 && e.einstellungen.vorauszahlungen_ansatz === "ist"
+        ? `<div class="hinweis"><b>Hinweis zu Ihren Vorauszahlungen.</b> Für den Abrechnungszeitraum
+           sind ${m.monate} monatliche Vorauszahlungen vereinbart. Auf dem Objektkonto sind
+           ${m.zahlungen.length} Mietzahlungen eingegangen. Angerechnet werden können nur die
+           tatsächlich geleisteten Vorauszahlungen. Die offene Monatsmiete machen wir gesondert
+           geltend. Sollten Sie die Zahlung nachweisen können, korrigieren wir die Abrechnung
+           selbstverständlich.</div>`
+        : "";
+
+    // Anpassung der Vorauszahlung - nur bei laufendem Mietverhältnis sinnvoll.
+    const laufend = m.nutzung_bis === e.abrechnung.bis;
+    const anpassung = laufend
+      ? `<h2>Anpassung Ihrer Vorauszahlung</h2>
+         <p>Auf Ihre Wohnung entfällt ein Jahresbetrag von ${eur(m.jahresanteil_einheit_cent)},
+         das sind rund ${eur(Math.round(m.jahresanteil_einheit_cent / 12))} je Monat. Ihre bisherige
+         Vorauszahlung von ${eur(m.vorauszahlung_monatlich_cent)} deckt diesen Betrag nicht.
+         Wir passen die monatliche Betriebskostenvorauszahlung daher gemäß § 560 Abs. 4 BGB ab dem
+         übernächsten Monat nach Zugang dieses Schreibens auf <b>${eur(
+           m.empfohlene_vorauszahlung_cent
+         )}</b> an.</p>`
+      : "";
+
+    const anschrift = m.anschrift_hinweis
+      ? `<span class="offen">[Anschrift ergänzen — ${sicher(m.anschrift_hinweis)}]</span>`
+      : `${sicher(o.strasse)}<br>${sicher(o.plz_ort)}`;
+
+    const flaechenhinweis = m.hinweis
+      ? `<p class="klein">${sicher(m.hinweis)}</p>`
+      : "";
+
+    return `
+<article class="schreiben" data-mietverhaeltnis="${sicher(m.id)}">
+
+  <header class="briefkopf">
+    <div><b>${sicher(v.name)}</b><br>vertreten durch ${sicher(v.vertreten_durch)} ·
+      ${sicher(v.strasse)} · ${sicher(v.plz_ort)}</div>
+    <div class="rechts">Objekt ${sicher(o.strasse)}<br>${sicher(o.plz_ort)}</div>
+  </header>
+
+  <div class="datumzeile">Köln, ${dat(erstelltAm)}<br>Wohnung ${sicher(m.we)} · ${sicher(m.lage || "")}</div>
+
+  <div class="anschriftenfeld">
+    <div class="absenderzeile">${sicher(v.name)} · ${sicher(v.strasse)} · ${sicher(v.plz_ort)}</div>
+    ${sicher(m.mieter)}<br>${anschrift}
+  </div>
+
+  <h1>Betriebskostenabrechnung ${zeitraum.kurz}</h1>
+  <div class="untertitel">Abrechnungszeitraum ${dat(e.abrechnung.von)} – ${dat(
+      e.abrechnung.bis
+    )} · ${sicher(o.bezeichnung)}</div>
+
+  <!-- MINDESTANGABE 2: Verteilerschlüssel, angegeben und erläutert -->
+  <table class="eckdaten">
+    <tr><td>Ihre Wohnung</td><td>${sicher(m.we)}, ${sicher(m.lage || "")}</td></tr>
+    <tr><td>Wohnfläche</td><td>${zahl(m.wohnflaeche_qm)} m² von ${zahl(
+      e.flaeche_gesamt_qm
+    )} m² Gesamtwohnfläche — Ihr Anteil beträgt ${pro(m.flaechen_anteil)}</td></tr>
+    <tr><td>Ihr Nutzungszeitraum</td><td>${dat(m.nutzung_von)} – ${dat(m.nutzung_bis)} (${sicher(
+      m.zeit_text
+    )})</td></tr>
+    <tr><td>Verteilerschlüssel</td><td>Wohnfläche — für sämtliche Kostenarten
+      (§ 4 Abs. 3 Mietvertrag, § 556a Abs. 1 BGB)</td></tr>
+  </table>
+  ${flaechenhinweis}
+
+  <p class="anrede">${sicher(m.anrede)}</p>
+  <p>hiermit rechnen wir die Betriebskosten für ${zeitraum.satz} ab. Die Gesamtkosten des
+  Hauses werden nach dem Verhältnis der Wohnflächen auf die vier Wohnungen verteilt.
+  ${zeitErklaerung}</p>
+
+  <p>Umgelegt wird eine Kostenart nur dann, wenn <b>beides</b> zutrifft: Sie ist in § 2 der
+  Betriebskostenverordnung aufgeführt <b>und</b> sie ist in § 4 Ihres Mietvertrags vereinbart. Die
+  Nummer hinter jeder Kostenart verweist auf die entsprechende Stelle der Verordnung. Kosten, auf
+  die das nicht zutrifft, sind am Ende dieses Schreibens aufgeführt — sie trägt die Vermieterin.</p>
+
+  <!-- MINDESTANGABE 1 (Spalte 2) und 3 (Spalten 3 und 4) -->
+  <table class="kosten">
+    <thead>
+      <tr>
+        <th>Kostenart</th>
+        <th class="r">Gesamtkosten Haus</th>
+        <th class="r">Anteil Ihrer Wohnung<div class="klein">${pro(
+          m.flaechen_anteil
+        )}, ganzes Jahr</div></th>
+        <th class="r">Ihr Anteil<div class="klein">${sicher(m.zeit_text)}</div></th>
+      </tr>
+    </thead>
+    <tbody>
+      ${kostenzeilen}
+      <tr class="summe">
+        <td>Summe umlagefähige Betriebskosten</td>
+        <td class="r">${eur(e.summe_umlagefaehig_cent)}</td>
+        <td class="r">${eur(m.jahresanteil_einheit_cent)}</td>
+        <td class="r">${eur(m.summe_cent)}</td>
+      </tr>
+      <!-- MINDESTANGABE 4: Abzug der Vorauszahlungen -->
+      <tr>
+        <td colspan="3">abzüglich Ihrer Vorauszahlungen (${
+          m.zahlungen.length
+        } × ${eur(m.vorauszahlung_monatlich_cent)})</td>
+        <td class="r">− ${eur(m.vorauszahlung_angesetzt_cent)}</td>
+      </tr>
+      <tr class="ergebnis">
+        <td colspan="3">${ergebnisText}</td>
+        <td class="r">${eur(Math.abs(m.saldo_cent))}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  ${zahlungsabsatz}
+  ${fehlhinweis}
+  ${anpassung}
+
+  <h2>Ihre Zahlungseingänge im Abrechnungszeitraum</h2>
+  <table class="kosten">
+    <thead><tr><th>Datum</th><th>Verwendungszweck</th><th class="r">Zahlung</th>
+      <th class="r">davon Vorauszahlung</th></tr></thead>
+    <tbody>
+      ${zahlungszeilen}
+      <tr class="summe"><td colspan="3">Summe Ihrer Vorauszahlungen</td>
+        <td class="r">${eur(m.vorauszahlung_ist_cent)}</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Zu Ihrer Information: nicht umgelegte Kosten</h2>
+  <p>Für das Haus sind ${zeitraum.ganzesKalenderjahr ? zeitraum.jahr : "im Abrechnungszeitraum"} weitere Kosten angefallen, die keine umlagefähigen Betriebskosten sind
+  und deshalb von der Vermieterin getragen werden. Wir führen sie auf, damit Sie nachvollziehen
+  können, was <i>nicht</i> in Ihre Abrechnung eingeflossen ist:</p>
+  <table class="kosten">
+    <thead><tr><th>Position</th><th class="r">Betrag</th></tr></thead>
+    <tbody>
+      ${nichtUmgelegt}
+      <tr class="summe"><td>Summe nicht umgelegt</td>
+        <td class="r">${eur(e.summe_nicht_umlagefaehig_cent)}</td></tr>
+    </tbody>
+  </table>
+
+  <div class="abschluss">
+  <h2>Herleitung und Belege</h2>
+  <p>Rechenweg je Zeile: Gesamtkosten × Wohnflächenanteil (${zahl(m.wohnflaeche_qm)} m² /
+  ${zahl(e.flaeche_gesamt_qm)} m²) × Zeitanteil (${sicher(m.zeit_text)}). Die Beträge sind so auf
+  Cent gerundet, dass die Summe aller Wohnungen exakt den Gesamtkosten entspricht.</p>
+  <p>Sämtliche Belege — Grundbesitzabgabenbescheid, Jahresrechnung der RheinEnergie,
+  Versicherungsbeitrag, Hauswart-, Reinigungs- und Gartenpflegerechnungen, Schornsteinfeger und
+  Rauchwarnmelderwartung — können Sie nach Terminvereinbarung einsehen. Einwendungen gegen diese
+  Abrechnung teilen Sie uns bitte gemäß § 556 Abs. 3 Satz 5 BGB innerhalb von zwölf Monaten nach
+  Zugang mit.</p>
+
+  <p class="gruss">Mit freundlichen Grüßen<br><br>${sicher(v.name)}<br>${sicher(
+      v.vertreten_durch
+    )}</p>
+  </div>
+
+  <footer class="brieffuss">
+    Betriebskostenabrechnung ${zeitraum.kurz} · ${sicher(m.we)} · ${sicher(m.mieter)} · erstellt am
+    ${dat(erstelltAm)}. Heizung und Warmwasser werden nicht abgerechnet: Ihre Wohnung hat eine
+    eigene Gas-Etagenheizung mit eigenem Liefervertrag.
+  </footer>
+</article>`;
+  }
+
+  /* -------------------------------------------------------------------------
+   * PRÜFUNGEN AM FERTIGEN SCHREIBEN (SPEC.md § 5, Gruppe F)
+   * Diese Prüfungen können erst laufen, wenn das Schreiben gebaut ist - sie
+   * schauen in das erzeugte HTML hinein. Damit ist sichergestellt, dass die
+   * Mindestangaben nicht nur berechnet, sondern auch abgedruckt wurden.
+   * ----------------------------------------------------------------------- */
+  function pruefeSchreiben(m, e) {
+    const html = schreiben(m, e);
+    const ergebnisse = [];
+    const pruefe = (id, titel, bestanden, befund) =>
+      ergebnisse.push({ id, titel, schwere: "blocker", bestanden, befund, mietverhaeltnis: m.id });
+
+    pruefe("F-01", "Gesamtkosten je Kostenart abgedruckt",
+      html.includes("Gesamtkosten Haus") && html.includes(N.alsEuroText(e.summe_umlagefaehig_cent)),
+      "Spalte und Summe vorhanden");
+
+    pruefe("F-02", "Verteilerschlüssel genannt und erläutert",
+      html.includes("Verteilerschlüssel") &&
+        html.includes("Gesamtwohnfläche") &&
+        html.includes(N.alsProzentText(m.flaechen_anteil)) &&
+        (m.ganzjahr || html.includes(m.zeit_text)),
+      "Fläche, Prozentsatz und Zeitanteil angegeben");
+
+    pruefe("F-03", "Anteilsberechnung je Kostenart sichtbar",
+      m.zeilen.every((z) => html.includes(N.alsEuroText(z.betrag_cent))),
+      `${m.zeilen.length} Kostenartenzeilen`);
+
+    pruefe("F-04", "Vorauszahlungen abgezogen und Saldo ausgewiesen",
+      html.includes("abzüglich Ihrer Vorauszahlungen") &&
+        html.includes(N.alsEuroText(Math.abs(m.saldo_cent))),
+      "Abzug und Ergebnis vorhanden");
+
+    pruefe("F-05", "Adressat, Zeitraum, Einheit und Datum vorhanden",
+      html.includes(m.mieter) &&
+        html.includes(N.alsDatumText(e.abrechnung.von)) &&
+        html.includes(m.we) &&
+        html.includes(N.alsDatumText(e.abrechnung.erstellt_am)),
+      "vollständig");
+
+    pruefe("F-06", "Hinweis auf Einwendungsfrist und Belegeinsicht",
+      html.includes("556 Abs. 3") && html.includes("einsehen"), "enthalten");
+    ergebnisse[ergebnisse.length - 1].schwere = "warnung";
+
+    // F-07: Die Vorauszahlung darf sich nur durch eine ausdrückliche Erklärung
+    // ändern (§ 560 Abs. 4 BGB). Bei beendeten Mietverhältnissen entfällt sie.
+    const laufendesMietverhaeltnis = m.nutzung_bis === e.abrechnung.bis;
+    pruefe("F-07", "Vorauszahlungsanpassung als ausdrückliche Erklärung",
+      !laufendesMietverhaeltnis || (html.includes("560 Abs. 4") && html.includes("Anpassung Ihrer Vorauszahlung")),
+      laufendesMietverhaeltnis ? "eigener Absatz mit Rechtsgrundlage vorhanden"
+        : "entfällt: Mietverhältnis endete im Abrechnungszeitraum");
+    ergebnisse[ergebnisse.length - 1].schwere = "warnung";
+
+    pruefe("F-08", "Keine offenen Platzhalter im Schreiben",
+      !html.includes('class="offen"'),
+      m.anschrift_hinweis ? "ACHTUNG: Anschrift fehlt noch" : "keine Platzhalter");
+
+    return ergebnisse;
+  }
+
+  /* -------------------------------------------------------------------------
+   * DAS VERSANDFERTIGE SCHREIBEN
+   * Ruft erst die Prüfungen auf und setzt, falls etwas Blockierendes offen ist,
+   * sichtbar ein ENTWURF-Band über das Schreiben. So kann ein Schreiben, das
+   * noch nicht versandt werden darf, nicht versehentlich verschickt werden -
+   * man sieht es auf dem Papier (SPEC.md Q-04, "fail-closed").
+   * ----------------------------------------------------------------------- */
+  function schreibenFertig(m, e) {
+    const offeneBlocker = pruefeSchreiben(m, e).filter(
+      (p) => !p.bestanden && p.schwere === "blocker"
+    );
+    if (offeneBlocker.length === 0) return schreiben(m, e);
+
+    const band = `
+      <div class="entwurfsband">
+        <b>ENTWURF – noch nicht versandfertig</b>
+        ${offeneBlocker.map((p) => `${p.id}: ${sicher(p.befund)}`).join(" · ")}
+      </div>`;
+    // Das Band wird in das <article> eingesetzt, damit es mitgedruckt wird.
+    return schreiben(m, e).replace(/(<article[^>]*>)/, `$1${band}`);
+  }
+
+  global.Schreiben = { schreiben, schreibenFertig, pruefeSchreiben, sicher, zeitraumBezeichnung };
+})(typeof self !== "undefined" ? self : globalThis);
+
+</script>
+  <script>
+/* =============================================================================
+ * BELEGE EINLESEN
+ * =============================================================================
+ *
+ * Aus einem PDF (oder eingefügtem Text) wird ein VORSCHLAG für einen Beleg.
+ * Ein Vorschlag ist noch kein Beleg: Er muss geprüft und von einem Menschen
+ * bestätigt werden, bevor er in die Abrechnung wandert.
+ *
+ * DIE DREI REGELN, DIE DAS SICHER MACHEN (SPEC.md § 3)
+ *
+ *   1. ANKER-REGEL
+ *      Jeder erkannte Wert muss WÖRTLICH im Text des Dokuments vorkommen, und
+ *      es wird gespeichert, an welcher Stelle. Was nicht im Dokument steht,
+ *      wird nicht übernommen. Damit kann kein Wert "erfunden" werden - weder
+ *      durch einen fehlerhaften Ausdruck noch durch ein Sprachmodell.
+ *
+ *   2. RECHNEN GEGEN DAS DOKUMENT
+ *      Die erkannten Positionen müssen die im Dokument ausgewiesene Summe
+ *      ergeben, Netto plus Umsatzsteuer muss den Bruttobetrag ergeben, Menge
+ *      mal Einzelpreis den Positionsbetrag. Stimmt das nicht, geht der Beleg in
+ *      QUARANTÄNE und nicht in die Abrechnung.
+ *
+ *   3. VORSCHLAG, NICHT BUCHUNG
+ *      Die Kostenart und die Frage "umlagefähig ja/nein" werden vorgeschlagen,
+ *      aber nie automatisch übernommen. Das ist die fachliche Entscheidung, und
+ *      die trifft ein Mensch - nachvollziehbar im Protokoll.
+ *
+ * WARUM DER FEHLER HIER ABGEFANGEN WERDEN MUSS
+ * Ein falsch gelesener Betrag wäre ab hier in allen weiteren Schritten drin:
+ * in den Gesamtkosten, in fünf Abrechnungen, in der Nachzahlung des Mieters.
+ * Je später ein Fehler auffällt, desto teurer wird er - deshalb steht die
+ * Prüfung direkt an der Eingangstür.
+ *
+ * Diese Datei läuft im Browser UND in Node (für die Tests). Das Lesen der
+ * PDF-Datei selbst geht nur im Browser - alles andere arbeitet auf Text.
+ * ========================================================================== */
+
+(function (global) {
+  "use strict";
+
+  // Der Rechenkern wird für die centgenaue Verteilung der Umsatzsteuer
+  // gebraucht. Im Browser liegt er als globales Objekt bereit, in Node wird er
+  // geladen - in beiden Fällen ist es derselbe Code, keine zweite Fassung.
+  const RECHENKERN =
+    typeof module === "object" && module.exports ? require("../rechenkern/nebenkosten.js") : null;
+  const verteileCentgenau = (gesamtCent, gewichte) =>
+    (RECHENKERN || global.Nebenkosten).verteileCentgenau(gesamtCent, gewichte);
+
+  /* ===========================================================================
+   * TEIL 1 - TEXT AUFBEREITEN
+   * ========================================================================= */
+
+  /**
+   * Räumt den Rohtext auf, ohne Inhalte zu verändern:
+   * weiche Trennstriche auflösen, Mehrfach-Leerzeichen verdichten, Leerzeilen
+   * zusammenfassen, wiederkehrende Seitenfußzeilen entfernen.
+   * Das spart Platz und macht die Mustererkennung zuverlässiger.
+   */
+  function normalisiereText(roh) {
+    return String(roh)
+      .replace(/\r\n?/g, "\n")
+      .replace(/­/g, "")               // weiches Trennzeichen
+      .replace(/(\w)-\n(\w)/g, "$1$2")      // am Zeilenende getrenntes Wort
+      .split("\n")
+      .map((zeile) => zeile.replace(/[ \t]+/g, " ").trim())
+      .filter((zeile, i, alle) => !(zeile === "" && alle[i - 1] === ""))
+      .join("\n")
+      .replace(/^\s*Seite \d+( von \d+)?\s*$/gim, "")
+      .trim();
+  }
+
+  /**
+   * NUR IM BROWSER: liest den Text aus einer PDF-Datei.
+   *
+   * PDF.js liefert einzelne Textstücke mit Koordinaten, nicht Zeilen. Wir bauen
+   * die Zeilen wieder zusammen, indem wir Stücke mit derselben Höhe (y) zu einer
+   * Zeile gruppieren und nach links/rechts (x) sortieren. Ohne diesen Schritt
+   * käme eine einzige lange Textwurst heraus, in der man Positionen nicht mehr
+   * erkennen kann.
+   */
+  async function textAusPdf(datei) {
+    if (typeof global.pdfjsLib === "undefined") {
+      throw new Error(
+        "PDF.js ist nicht geladen. Beleg bitte über 'Text einfügen' oder das Formular erfassen."
+      );
+    }
+    global.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      global.PDFJS_WORKER_PFAD || "../vendor/pdf.worker.min.js";
+
+    const puffer = await datei.arrayBuffer();
+    const dokument = await global.pdfjsLib.getDocument({ data: new Uint8Array(puffer) }).promise;
+
+    const seiten = [];
+    for (let nummer = 1; nummer <= dokument.numPages; nummer++) {
+      const seite = await dokument.getPage(nummer);
+      const inhalt = await seite.getTextContent();
+
+      // Textstücke nach Zeilen gruppieren (y-Position, auf 2 Punkte gerundet).
+      const zeilen = new Map();
+      for (const stueck of inhalt.items) {
+        if (!stueck.str) continue;
+        const y = Math.round(stueck.transform[5] / 2) * 2;
+        const x = stueck.transform[4];
+        if (!zeilen.has(y)) zeilen.set(y, []);
+        zeilen.get(y).push({ x, text: stueck.str });
+      }
+      const sortiert = [...zeilen.entries()]
+        .sort((a, b) => b[0] - a[0])                    // von oben nach unten
+        .map(([, stuecke]) =>
+          stuecke.sort((a, b) => a.x - b.x).map((s) => s.text).join(" "));
+      seiten.push(sortiert.join("\n"));
+    }
+    return { text: normalisiereText(seiten.join("\n")), seiten: dokument.numPages };
+  }
+
+  /* ===========================================================================
+   * TEIL 2 - ZAHLEN UND DATEN LESEN
+   * ========================================================================= */
+
+  /** "1.234,56" -> 1234.56 · "1.234,56 €" -> 1234.56 */
+  function zahlAusText(text) {
+    if (text === null || text === undefined) return null;
+    const bereinigt = String(text).replace(/[€\s]/g, "").replace(/\./g, "").replace(",", ".");
+    const wert = Number(bereinigt);
+    return Number.isFinite(wert) ? wert : null;
+  }
+
+  /** "02.01.2025" -> "2025-01-02" */
+  function datumAusText(text) {
+    const treffer = /(\d{2})\.(\d{2})\.(\d{4})/.exec(String(text || ""));
+    return treffer ? `${treffer[3]}-${treffer[2]}-${treffer[1]}` : null;
+  }
+
+  /**
+   * Sucht ein Muster im Text und gibt Wert UND Fundstelle zurück.
+   * Die Fundstelle ist die Umsetzung der Anker-Regel: Zu jedem Wert lässt sich
+   * später zeigen, wo im Dokument er steht.
+   */
+  function sucheMitAnker(text, muster, gruppe = 1) {
+    const treffer = muster.exec(text);
+    if (!treffer) return null;
+    return {
+      roh: treffer[gruppe],
+      stelle: treffer.index,
+      zeile: text.slice(0, treffer.index).split("\n").length,
+      quelle: "regel",
+    };
+  }
+
+  /* ===========================================================================
+   * TEIL 3 - DEN BELEG VORSCHLAGEN
+   * ========================================================================= */
+
+  /**
+   * Schlägt anhand des Textes eine Kostenart vor.
+   * Bewusst einfach gehalten: Stichwörter, keine Statistik. Wer den Vorschlag
+   * ändern will, tut das in der Oberfläche - der Vorschlag spart Tipparbeit,
+   * er entscheidet nichts.
+   */
+  const STICHWOERTER = [
+    ["kleinreparaturen", /kleinreparatur/i],
+    ["instandhaltung", /instandsetzung|instandhaltung|reparatur des|defekt/i],
+    ["neuanlage", /neuanlage|bodenaustausch|pflanzarbeiten/i],
+    ["hauswart", /hauswart/i],
+    ["gebaeudereinigung", /unterhaltsreinigung|treppenhausreinigung|gebäudereinigung/i],
+    ["gartenpflege", /pflegeeinsatz|gartenpflege|grünpflege|heckenschnitt|rasen/i],
+    ["grundsteuer", /grundsteuer/i],
+    ["muell", /abfallentsorgung|müllbeseitigung|restabfall/i],
+    ["strassenreinigung", /straßenreinigung/i],
+    ["entwaesserung", /entwässerung|niederschlagswasser|schmutzwasser/i],
+    ["wasser", /trinkwasser|wasserversorgung|frischwasser/i],
+    ["allgemeinstrom", /allgemeinstrom|beleuchtung|arbeitspreis.*kwh/i],
+    ["schornsteinfeger", /schornstein|feuerstättenschau|kehrung|abgasanlage/i],
+    ["rauchwarnmelder", /rauchwarnmelder/i],
+    ["rechtsschutz", /rechtsschutz/i],
+    ["versicherung", /versicherung|haftpflicht/i],
+    ["verwaltung", /verwaltervergütung|verwalterhonorar|verwaltung/i],
+    ["kabel", /kabelanschluss|sammelinkasso|breitband/i],
+  ];
+
+  function schlageKostenartVor(bezeichnung, kontext = "") {
+    // Erst die Position selbst ansehen - sie ist am aussagekräftigsten.
+    for (const [schluessel, muster] of STICHWOERTER) {
+      if (muster.test(bezeichnung)) return schluessel;
+    }
+    // Sonst die Überschrift des Belegs heranziehen. Beispiel: Die Positionen
+    // "Absperrventil", "Monteurstunden", "Kleinmaterial" sagen für sich genommen
+    // nichts aus - erst die Betreffzeile "Rechnung – Instandsetzung
+    // Kaltwassersteigleitung" ordnet sie ein.
+    for (const [schluessel, muster] of STICHWOERTER) {
+      if (muster.test(kontext)) return schluessel;
+    }
+    return null;
+  }
+
+  /** Holt die Betreffzeile des Belegs ("Rechnung – ..."), als Kontext für oben. */
+  function findeBetreff(text) {
+    const zeilen = text.split("\n");
+    const treffer = zeilen.find((z) =>
+      /^(Rechnung|Gebührenbescheid|Beitragsrechnung|Jahresrechnung|Jahresübersicht|Grundbesitzabgabenbescheid)/i.test(z));
+    return treffer || zeilen.slice(0, 12).join(" ");
+  }
+
+  /**
+   * Liest Rechnungspositionen aus dem Text.
+   * Erkannt wird das übliche Muster deutscher Rechnungen:
+   *   <Nr.> <Bezeichnung> ... <weitere Zahlen> <Betrag> €
+   * Der LETZTE Betrag einer Zeile ist der Positionsbetrag.
+   */
+  // Zeilen, die eine Summe oder Zahlungsmodalität sind und deshalb keine
+  // Position sein können - sonst würde doppelt gezählt.
+  const KEINE_POSITION =
+    /^(summe|gesamt|zwischensumme|zzgl|abzgl|abzüglich|nachzahlung|rechnungsbetrag|betrag|netto|brutto|\d+\. rate|rate|gesamtbetrag|gesamtbeitrag|festsetzung|fälligkeit)/i;
+
+  function findePositionen(text) {
+    const positionen = [];
+    const zeilen = text.split("\n");
+    const betreff = findeBetreff(text);
+
+    zeilen.forEach((zeile, index) => {
+      // Zeile beginnt mit einer Positionsnummer (1..99) und endet mit einem Betrag.
+      const treffer = /^(\d{1,2})\s+(.+?)\s+([\d.]+,\d{2})\s*€?\s*$/.exec(zeile);
+      if (!treffer) return;
+
+      const betrag = zahlAusText(treffer[3]);
+      if (betrag === null || betrag === 0) return;
+
+      // Aus der Beschreibung die Mengen-/Preisangaben entfernen, damit eine
+      // lesbare Bezeichnung übrig bleibt.
+      const bezeichnung = treffer[2]
+        .replace(/\s+[\d.]+,\d{2}\s*€?\s*$/, "")
+        .replace(/\s+\d+(,\d+)?\s*(Monate?|Stück|Std\.?|Pausch\.|Einsatz|lfm|m²|Melder|WE-Mon\.)\s*/gi, " ")
+        .replace(/\s+[\d.]+,\d{2,3}\s*€(\/[A-Za-z²³.]+)?/g, "")
+        .replace(/\s{2,}/g, " ")
+        .trim();
+
+      positionen.push({
+        nummer: Number(treffer[1]),
+        bezeichnung: bezeichnung || treffer[2].trim(),
+        betrag,
+        zeile: index + 1,
+        quelle: "regel",
+        kostenart_vorschlag: schlageKostenartVor(zeile, betreff),
+      });
+    });
+
+    if (positionen.length > 0) return positionen;
+
+    // ZWEITE STRATEGIE - für Belege ohne nummerierte Positionen (Bescheide,
+    // Jahresübersichten). Hier steht je Zeile eine Bezeichnung und rechts ein
+    // Betrag. Das ist unsicherer, deshalb entscheidet anschließend die Prüfung
+    // I-04: Nur wenn die gefundenen Zeilen exakt die ausgewiesene Summe ergeben,
+    // gilt der Beleg als gelesen - sonst geht er in Quarantäne.
+    zeilen.forEach((zeile, index) => {
+      if (KEINE_POSITION.test(zeile.trim())) return;
+      const treffer = /^(.{3,}?)\s+([\d.]+,\d{2})\s*€?\s*$/.exec(zeile.trim());
+      if (!treffer) return;
+
+      const betrag = zahlAusText(treffer[2]);
+      if (betrag === null || betrag === 0) return;
+
+      // Aus der Bezeichnung die Zwischenzahlen entfernen (Mengen, Einzelpreise,
+      // Steueranteile), damit eine lesbare Bezeichnung übrig bleibt.
+      const bezeichnung = treffer[1]
+        .replace(/\s*[\d.]+,\d{2,3}\s*€(\/[A-Za-z²³.]+)?/g, " ")
+        .replace(/\s*\d+(,\d+)?\s*(m³|m²|kWh|Stück|Monate?)\b/gi, " ")
+        .replace(/\s{2,}/g, " ")
+        .trim();
+      if (!bezeichnung || /^[\d.,\s€%]+$/.test(bezeichnung)) return;
+
+      positionen.push({
+        nummer: positionen.length + 1,
+        bezeichnung,
+        betrag,
+        zeile: index + 1,
+        quelle: "regel-tabelle",
+        kostenart_vorschlag: schlageKostenartVor(zeile, betreff),
+      });
+    });
+    return positionen;
+  }
+
+  /**
+   * Baut aus einem Dokumenttext einen Belegvorschlag mitsamt Prüfungen.
+   *
+   * @param {string} rohtext    Text des Dokuments (aus PDF oder eingefügt)
+   * @param {string} dateiname  nur zur Kennzeichnung
+   * @param {object} objekt     Objektstammdaten, um den Objektbezug zu prüfen (optional)
+   * @returns {{vorschlag, pruefungen, status}}
+   */
+  function schlageBelegVor(rohtext, dateiname, objekt) {
+    const text = normalisiereText(rohtext);
+
+    // --- Kopfdaten suchen (jeweils mit Fundstelle) -------------------------
+    const lieferantZeile = text.split("\n").find((z) => z.length > 3) || "";
+    const rechnungsnr = sucheMitAnker(text, /Rechnungsnr\.?\s*([A-Za-z0-9\-\/]+)/i)
+      || sucheMitAnker(text, /Kassenzeichen\s*([A-Za-z0-9\-\/]+)/i)
+      || sucheMitAnker(text, /Versicherungsschein\s*([A-Za-z0-9\-\/]+)/i);
+    // ZWEI DATEN, ZWEI BEDEUTUNGEN - und sie sind oft verschieden:
+    //   Rechnungsdatum  = wann die Rechnung geschrieben wurde
+    //   Leistungsdatum  = wann die Leistung erbracht wurde
+    // Für die Abrechnung nach dem Leistungsprinzip zählt das LEISTUNGSdatum:
+    // Eine am 21.08. geschriebene Rechnung für eine Reparatur vom 19.08. gehört
+    // in das Jahr der Reparatur. Deshalb hat das Leistungsdatum Vorrang.
+    const rechnungsdatum = sucheMitAnker(text, /Datum\s+(\d{2}\.\d{2}\.\d{4})/i);
+    const leistungsdatumFeld = sucheMitAnker(text, /Leistungsdatum\s+([^\n]+)/i);
+    let leistungsdatum = null;
+    if (leistungsdatumFeld) {
+      // Bei einem Zeitraum ("22.–25.04.2025") gilt der Abschluss der Leistung,
+      // also das letzte Datum im Feld.
+      const alleDaten = leistungsdatumFeld.roh.match(/\d{2}\.\d{2}\.\d{4}/g);
+      if (alleDaten) {
+        leistungsdatum = { ...leistungsdatumFeld, roh: alleDaten[alleDaten.length - 1] };
+      }
+    }
+    // Bewusst KEIN Rückgriff auf "irgendein Datum im Dokument": Ein geratenes
+    // Datum wäre schlimmer als gar keines. Fehlt beides, meldet Prüfung I-01
+    // ein Pflichtfeld und der Beleg geht in Quarantäne.
+    const datum = leistungsdatum || rechnungsdatum;
+    const zeitraum = sucheMitAnker(
+      text, /(?:Leistungszeitraum|Abrechnungszeitraum|Erhebungszeitraum|Versicherungsjahr)\s+(\d{2}\.\d{2}\.\d{4}\s*[–—-]\s*\d{2}\.\d{2}\.\d{4})/i)
+      || sucheMitAnker(text, /Leistungsdatum\s+([\d.–—\s-]+\d{4})/i);
+
+    // Gesamtbetrag: mehrere übliche Bezeichnungen, in dieser Reihenfolge.
+    const betragTreffer =
+      sucheMitAnker(text, /Rechnungsbetrag\s+([\d.]+,\d{2})/i) ||
+      sucheMitAnker(text, /Gesamtbetrag(?:\s+\d{4})?\s+([\d.]+,\d{2})/i) ||
+      sucheMitAnker(text, /Gesamtbeitrag(?:\s+\d{4})?\s+([\d.]+,\d{2})/i) ||
+      sucheMitAnker(text, /Summe Verbrauchskosten(?:\s+\d{4})?\s+([\d.]+,\d{2})/i) ||
+      sucheMitAnker(text, /Summe\s+\d{4}\s+[\d.]+,\d{2}\s*€?\s+[\d.]+,\d{2}\s*€?\s+([\d.]+,\d{2})/i);
+
+    const umsatzsteuer = sucheMitAnker(text, /zzgl\.\s*\d+\s*%\s*Umsatzsteuer\s+([\d.]+,\d{2})/i);
+    const netto = sucheMitAnker(text, /(?:Zwischensumme netto|Netto)\s+([\d.]+,\d{2})/i);
+
+    let positionen = findePositionen(text);
+
+    // NETTO ODER BRUTTO? Viele Rechnungen weisen die Positionen netto aus und
+    // schlagen die Umsatzsteuer erst am Ende auf. Umgelegt wird aber der
+    // Bruttobetrag (die Vermieterin kann bei Wohnraum keine Vorsteuer ziehen).
+    // Deshalb wird die ausgewiesene Steuer centgenau auf die Positionen verteilt
+    // - mit derselben Funktion, die auch die Kosten auf die Wohnungen verteilt.
+    const bruttoBetrag = betragTreffer ? zahlAusText(betragTreffer.roh) : null;
+    const nettoBetrag = netto ? zahlAusText(netto.roh) : null;
+    const ustBetrag = umsatzsteuer ? zahlAusText(umsatzsteuer.roh) : null;
+    let ustVerteilt = false;
+
+    if (positionen.length && nettoBetrag !== null && ustBetrag !== null && bruttoBetrag !== null) {
+      const summePositionen = Math.round(positionen.reduce((s, p) => s + p.betrag, 0) * 100);
+      const passtZuNetto = summePositionen === Math.round(nettoBetrag * 100);
+      const bruttoStimmt = Math.round((nettoBetrag + ustBetrag) * 100) === Math.round(bruttoBetrag * 100);
+
+      if (passtZuNetto && bruttoStimmt) {
+        const anteile = verteileCentgenau(
+          Math.round(ustBetrag * 100),
+          positionen.map((p) => Math.round(p.betrag * 100))
+        );
+        positionen = positionen.map((p, i) => ({
+          ...p,
+          betrag: Math.round(p.betrag * 100 + anteile[i]) / 100,
+          netto: p.betrag,
+          hinweis: "brutto, Umsatzsteuer anteilig aufgeschlagen",
+        }));
+        ustVerteilt = true;
+      }
+    }
+
+    const vorschlag = {
+      beleg: dateiname || "unbenannt.pdf",
+      lieferant: lieferantZeile.replace(/\s{2,}.*$/, "").trim(),
+      rechnungsnr: rechnungsnr ? rechnungsnr.roh : null,
+      datum: datum ? datumAusText(datum.roh) : null,
+      datum_art: leistungsdatum ? "Leistungsdatum" : rechnungsdatum ? "Rechnungsdatum" : null,
+      rechnungsdatum: rechnungsdatum ? datumAusText(rechnungsdatum.roh) : null,
+      leistungszeitraum: zeitraum ? zeitraum.roh.replace(/\s+/g, " ") : null,
+      rechnungsbetrag: bruttoBetrag,
+      netto: nettoBetrag,
+      umsatzsteuer: ustBetrag,
+      ust_auf_positionen_verteilt: ustVerteilt,
+      bank_kennung: "",
+      positionen: positionen.map((p) => ({
+        bezeichnung: p.bezeichnung,
+        betrag: p.betrag,
+        // Der Nettowert bleibt erhalten: Er ist die Stelle, die wörtlich im
+        // Dokument steht, und damit der Anker für den aufgeschlagenen Bruttowert.
+        ...(p.netto !== undefined ? { netto: p.netto, hinweis: p.hinweis } : {}),
+        kostenart: p.kostenart_vorschlag,   // VORSCHLAG - muss bestätigt werden
+        umlagefaehig: null,                 // bewusst offen
+        begruendung: "",
+      })),
+      anker: {
+        rechnungsnr: rechnungsnr || null,
+        datum: datum || null,
+        leistungszeitraum: zeitraum || null,
+        rechnungsbetrag: betragTreffer || null,
+      },
+      text,
+    };
+
+    const pruefungen = pruefeVorschlag(vorschlag, text, objekt);
+    const blocker = pruefungen.filter((p) => !p.bestanden && p.schwere === "blocker");
+
+    return {
+      vorschlag,
+      pruefungen,
+      status: blocker.length === 0 ? "geprueft" : "quarantaene",
+    };
+  }
+
+  /* ===========================================================================
+   * TEIL 4 - DIE PRÜFUNGEN AM EINZELNEN DOKUMENT
+   * Diese laufen, BEVOR der Beleg in die Abrechnung darf (SPEC.md § 5, L0).
+   * ========================================================================= */
+
+  function pruefeVorschlag(v, text, objekt) {
+    const p = [];
+    const pruefe = (id, titel, schwere, bestanden, befund) =>
+      p.push({ id, titel, schwere, bestanden, befund });
+
+    // I-13: Anker-Regel - jeder Wert muss wörtlich im Dokument stehen.
+    const nichtVerankert = [];
+    if (v.rechnungsbetrag !== null) {
+      const alsText = v.rechnungsbetrag.toLocaleString("de-DE", {
+        minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      if (!text.includes(alsText)) nichtVerankert.push(`Rechnungsbetrag ${alsText}`);
+    }
+    for (const pos of v.positionen) {
+      // Wurde die Umsatzsteuer auf die Position aufgeschlagen, steht der
+      // Bruttobetrag nicht im Dokument - dann wird der NETTOwert verankert,
+      // aus dem er entstanden ist. Der Rechenweg dorthin ist geprüft (I-04/I-09).
+      const zuPruefen = pos.netto !== undefined ? pos.netto : pos.betrag;
+      const alsText = zuPruefen.toLocaleString("de-DE", {
+        minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      if (!text.includes(alsText)) nichtVerankert.push(`Position ${alsText}`);
+    }
+    pruefe("I-13", "Jeder Wert steht wörtlich im Dokument (Anker-Regel)", "blocker",
+      nichtVerankert.length === 0,
+      nichtVerankert.length ? nichtVerankert.join(", ") : "alle Werte belegt");
+
+    // Pflichtfelder - ohne die kann nicht gebucht werden.
+    const fehlt = [];
+    if (!v.lieferant) fehlt.push("Lieferant");
+    if (!v.datum) fehlt.push("Datum");
+    if (v.rechnungsbetrag === null) fehlt.push("Rechnungsbetrag");
+    if (v.positionen.length === 0) fehlt.push("mindestens eine Position");
+    pruefe("I-01", "Pflichtfelder erkannt", "blocker", fehlt.length === 0,
+      fehlt.length ? "nicht erkannt: " + fehlt.join(", ") : "vollständig");
+
+    // I-02: Ist der ausgelesene Text überhaupt brauchbar? Ein eingescanntes
+    // Dokument ohne Texterkennung liefert wenige, oft sinnlose Zeichen. Dann ist
+    // nichts zu retten - der Beleg muss von Hand erfasst werden.
+    const buchstaben = (text.match(/[A-Za-zÄÖÜäöüß]/g) || []).length;
+    pruefe("I-02", "Text aus dem Dokument ist verwertbar", "blocker",
+      text.length >= 120 && buchstaben / Math.max(1, text.length) > 0.3,
+      text.length < 120
+        ? `nur ${text.length} Zeichen gefunden - vermutlich ein Scan ohne Texterkennung`
+        : `${text.length} Zeichen, davon ${Math.round((buchstaben / text.length) * 100)} % Buchstaben`);
+
+    // I-08: Gehört der Beleg zu DIESEM Objekt? Eine Rechnung für ein anderes
+    // Haus sieht sonst völlig plausibel aus und wandert stillschweigend in die
+    // Umlage. Geprüft wird gegen Straße und Postleitzahl des Objekts.
+    if (objekt && objekt.strasse) {
+      const strasse = objekt.strasse.replace(/\s*\d+.*$/, "").trim();   // "Berrenrather Straße"
+      const hausnummer = (objekt.strasse.match(/\d+/) || [""])[0];
+      const plz = (objekt.plz_ort || "").match(/\d{5}/);
+      const treffer = text.includes(strasse) && text.includes(hausnummer);
+      pruefe("I-08", "Beleg nennt dieses Objekt", "warnung",
+        treffer || (plz && text.includes(plz[0])),
+        treffer ? `Objektbezug "${strasse} ${hausnummer}" im Dokument gefunden`
+          : "ACHTUNG: weder Anschrift noch Postleitzahl des Objekts im Dokument - falscher Beleg?");
+    }
+
+    // I-11: Manche Bescheide nennen zusätzlich Raten oder Monatszeilen. Ergeben
+    // die zusammen den Jahresbetrag, ist das ein zweiter, unabhängiger Beleg
+    // dafür, dass der Gesamtbetrag richtig gelesen wurde.
+    const raten = [...text.matchAll(/(?:\d\.\s*Rate|Rate)\s+\d{2}\.\d{2}\.\d{4}\s+([\d.]+,\d{2})/gi)]
+      .map((m) => zahlAusText(m[1]));
+    if (raten.length >= 2 && v.rechnungsbetrag !== null) {
+      const summeRaten = Math.round(raten.reduce((a, b) => a + b, 0) * 100);
+      pruefe("I-11", "Summe der Raten ergibt den Jahresbetrag", "blocker",
+        summeRaten === Math.round(v.rechnungsbetrag * 100),
+        `${raten.length} Raten ergeben ${(summeRaten / 100).toFixed(2)} € ` +
+          `(Jahresbetrag ${v.rechnungsbetrag.toFixed(2)} €)`);
+    }
+
+    // I-04: Positionen müssen die Rechnungssumme ergeben.
+    if (v.rechnungsbetrag !== null && v.positionen.length) {
+      const summe = Math.round(v.positionen.reduce((s, pos) => s + pos.betrag, 0) * 100);
+      const soll = Math.round(v.rechnungsbetrag * 100);
+      pruefe("I-04", "Positionen ergeben den Rechnungsbetrag", "blocker", summe === soll,
+        summe === soll
+          ? (v.ust_auf_positionen_verteilt
+              ? "Positionen = Rechnungsbetrag (Umsatzsteuer anteilig verteilt)"
+              : "Positionen = Rechnungsbetrag")
+          : `Positionen ${(summe / 100).toFixed(2)} vs. Rechnungsbetrag ${v.rechnungsbetrag.toFixed(2)}`);
+    }
+
+    // I-09: Netto + Umsatzsteuer muss den Bruttobetrag ergeben.
+    if (v.netto !== null && v.umsatzsteuer !== null && v.rechnungsbetrag !== null) {
+      const summe = Math.round((v.netto + v.umsatzsteuer) * 100);
+      pruefe("I-09", "Netto + Umsatzsteuer == Bruttobetrag", "blocker",
+        summe === Math.round(v.rechnungsbetrag * 100),
+        `${v.netto.toFixed(2)} + ${v.umsatzsteuer.toFixed(2)} = ${(summe / 100).toFixed(2)}`);
+    }
+
+    // I-12: Datum plausibel.
+    if (v.datum) {
+      const jahr = Number(v.datum.slice(0, 4));
+      pruefe("I-12", "Datum plausibel", "blocker", jahr >= 2000 && jahr <= 2100, v.datum);
+    }
+
+    // Fachliche Zuordnung fehlt noch - das ist keine Störung, sondern der
+    // vorgesehene nächste Schritt durch einen Menschen.
+    const ohneKostenart = v.positionen.filter((pos) => !pos.kostenart).length;
+    pruefe("Z-01", "Kostenart je Position vorgeschlagen", "warnung", ohneKostenart === 0,
+      ohneKostenart ? `${ohneKostenart} Position(en) ohne Vorschlag - bitte zuordnen`
+        : "für alle Positionen vorgeschlagen");
+
+    pruefe("Z-02", "Umlagefähigkeit bestätigt", "warnung",
+      v.positionen.every((pos) => pos.umlagefaehig !== null),
+      "muss vor der Übernahme bestätigt werden");
+
+    return p;
+  }
+
+  /* ===========================================================================
+   * TEIL 5 - ÜBERNAHME IN DEN FALL
+   * ========================================================================= */
+
+  /**
+   * Prüft, ob ein bestätigter Vorschlag in den Fall übernommen werden darf,
+   * und hängt ihn an. Gibt zurück, was passiert ist.
+   */
+  function uebernimm(fall, vorschlag) {
+    const fehler = [];
+
+    if (!vorschlag.positionen.length) fehler.push("keine Positionen");
+    for (const pos of vorschlag.positionen) {
+      if (!pos.kostenart) fehler.push(`Position "${pos.bezeichnung}": keine Kostenart gewählt`);
+      else if (!fall.kostenarten[pos.kostenart]) fehler.push(`unbekannte Kostenart "${pos.kostenart}"`);
+      if (pos.umlagefaehig === null) fehler.push(`Position "${pos.bezeichnung}": Umlagefähigkeit nicht bestätigt`);
+      if (pos.umlagefaehig === false && !/§|BGH|TKG|BetrKV|Urteil/i.test(pos.begruendung || ""))
+        fehler.push(`Position "${pos.bezeichnung}": Nicht-Umlage braucht eine Begründung mit Fundstelle (R-03)`);
+    }
+    const summe = Math.round(vorschlag.positionen.reduce((s, p) => s + p.betrag, 0) * 100);
+    if (summe !== Math.round(vorschlag.rechnungsbetrag * 100))
+      fehler.push("Positionen ergeben nicht den Rechnungsbetrag (I-04)");
+
+    if (fall.belege.some((b) => b.beleg === vorschlag.beleg))
+      fehler.push(`Ein Beleg mit dem Namen "${vorschlag.beleg}" ist bereits erfasst (I-07)`);
+
+    if (fehler.length) return { uebernommen: false, fehler };
+
+    fall.belege.push({
+      id: "neu-" + Date.now(),
+      beleg: vorschlag.beleg,
+      lieferant: vorschlag.lieferant,
+      datum: vorschlag.datum,
+      leistungszeitraum: vorschlag.leistungszeitraum || "",
+      rechnungsbetrag: vorschlag.rechnungsbetrag,
+      bank_kennung: vorschlag.bank_kennung || vorschlag.lieferant.split(" ")[0].toUpperCase(),
+      positionen: vorschlag.positionen.map((p) => ({
+        bezeichnung: p.bezeichnung,
+        betrag: p.betrag,
+        kostenart: p.kostenart,
+        umlagefaehig: p.umlagefaehig,
+        ...(p.begruendung ? { begruendung: p.begruendung } : {}),
+      })),
+    });
+
+    fall.protokoll = fall.protokoll || [];
+    fall.protokoll.push({
+      zeitpunkt: new Date().toISOString().slice(0, 19).replace("T", " "),
+      wer: "Oberfläche",
+      was: `Beleg "${vorschlag.beleg}" über ${vorschlag.rechnungsbetrag.toFixed(2)} € erfasst`,
+      warum: "Einlesen und Bestätigung durch Benutzer",
+    });
+
+    return { uebernommen: true, fehler: [] };
+  }
+
+  const API = {
+    normalisiereText, textAusPdf, schlageBelegVor, pruefeVorschlag, uebernimm,
+    zahlAusText, datumAusText, findePositionen, schlageKostenartVor,
+  };
+
+  if (typeof module === "object" && module.exports) module.exports = API;
+  else global.Einlesen = API;
+})(typeof self !== "undefined" ? self : globalThis);
+
+</script>
+  <script>
+/* =============================================================================
+ * DIE BEDIENOBERFLÄCHE
+ * =============================================================================
+ *
+ * Diese Datei zeigt an - sie rechnet nicht. Jede Zahl auf dem Bildschirm kommt
+ * aus rechenkern/nebenkosten.js. Dadurch kann die Oberfläche gar nicht etwas
+ * anderes anzeigen, als in den Abrechnungen steht.
+ *
+ * ABLAUF
+ *   1. beim Start: Fall laden  ->  berechnen  ->  anzeigen
+ *   2. Reiter wechseln         ->  denselben Ergebnisstand neu darstellen
+ *   3. Einstellung ändern      ->  neu berechnen, Unterschied zeigen, anzeigen
+ *
+ * WO WAS LIEGT
+ *   fall        - die Eingabedaten (aus fall.js oder einer geladenen Datei)
+ *   ergebnis    - das Ergebnis des Rechenkerns (wird bei jeder Änderung neu gebaut)
+ *   vergleich   - das vorige Ergebnis, um Änderungen sichtbar zu machen (Q-02)
+ * ========================================================================== */
+
+(function () {
+  "use strict";
+
+  const N = window.Nebenkosten;
+  const S = window.Schreiben;
+  const EIN = window.Einlesen;
+  const eur = N.alsEuroText;
+  const dat = N.alsDatumText;
+  const pro = N.alsProzentText;
+  const zahl = N.alsZahlText;
+  const sicher = S.sicher;
+
+  // --- Zustand der Anwendung ------------------------------------------------
+  let fall = JSON.parse(JSON.stringify(window.FALL)); // Kopie, damit das Original unberührt bleibt
+  let ergebnis = null;
+  let vergleich = null;       // Ergebnis VOR der letzten Änderung
+  let aktiverReiter = "uebersicht";
+  let gewaehltesMietverhaeltnis = null;
+  let vorschlag = null;        // der gerade eingelesene, noch nicht übernommene Beleg
+  let einlesefehler = null;
+
+  const $ = (auswahl) => document.querySelector(auswahl);
+
+  /* =========================================================================
+   * Neu berechnen und alles neu zeichnen
+   * ======================================================================= */
+  function neuBerechnen(merkeVergleich) {
+    if (merkeVergleich) vergleich = ergebnis;
+    ergebnis = N.berechne(fall);
+    zeichne();
+  }
+
+  function zeichne() {
+    // Kopfzeile
+    $("#kopfzeile").textContent =
+      `${ergebnis.objekt.bezeichnung} · ${dat(ergebnis.abrechnung.von)} – ` +
+      `${dat(ergebnis.abrechnung.bis)} · ${ergebnis.einheiten.length} Wohneinheiten, ` +
+      `${zahl(ergebnis.flaeche_gesamt_qm)} m²`;
+
+    // Reiter markieren
+    document.querySelectorAll("nav.reiter button").forEach((b) =>
+      b.classList.toggle("aktiv", b.dataset.reiter === aktiverReiter));
+
+    // Inhalt
+    $("#inhalt").innerHTML = ansichten[aktiverReiter]();
+
+    // Druckbereich immer aktuell halten (enthält alle fünf Schreiben)
+    $("#druckbereich").innerHTML = ergebnis.mietverhaeltnisse
+      .map((m) => S.schreibenFertig(m, ergebnis)).join("");
+
+    verdrahteKnoepfe();
+  }
+
+  /* =========================================================================
+   * Ansicht 1: Übersicht
+   * ======================================================================= */
+  const ansichten = {};
+
+  ansichten.uebersicht = function () {
+    const summeSaldo = ergebnis.mietverhaeltnisse.reduce((s, m) => s + m.saldo_cent, 0);
+
+    const zeilenMietverhaeltnisse = ergebnis.mietverhaeltnisse.map((m) => `
+      <tr class="klickbar" data-oeffne="${m.id}">
+        <td>${m.we}</td>
+        <td>${sicher(m.mieter)}</td>
+        <td>${dat(m.nutzung_von)} – ${dat(m.nutzung_bis)}<div class="klein">${m.zeit_text}</div></td>
+        <td class="r">${zahl(m.wohnflaeche_qm)} m²</td>
+        <td class="r">${eur(m.summe_cent)}</td>
+        <td class="r">${eur(m.vorauszahlung_angesetzt_cent)}
+          ${m.fehlende_zahlungen > 0 ? `<span class="marke warnung">${m.fehlende_zahlungen} Zahlung fehlt</span>` : ""}</td>
+        <td class="r ${m.saldo_cent > 0 ? "plus" : "minus"}">${m.ergebnis} ${eur(Math.abs(m.saldo_cent))}</td>
+      </tr>`).join("");
+
+    // Tabelle der Kostenarten mit einer Spalte je Wohnung.
+    const spaltenKopf = ergebnis.einheiten.map((e) =>
+      `<th class="r">${e.we}<div class="klein">${zahl(e.wohnflaeche_qm)} m²</div></th>`).join("");
+
+    const kostenzeilen = ergebnis.umlagefaehige.map((k) => `
+      <tr>
+        <td>${sicher(k.bezeichnung)}
+          ${k.warum ? `<div class="grund">${sicher(k.warum)}</div>` : ""}
+          <div class="klein"><b>umlagefähig, weil beides zutrifft:</b> ${sicher(k.betrkv)}
+            · vereinbart in ${sicher(k.vertrag)} · Konto ${k.konto}</div>
+          <details><summary>${k.positionen.length} Belegposition(en)</summary>
+            <table>${k.positionen.map((p) => `
+              <tr><td class="klein">${sicher(p.beleg)}<br>${sicher(p.bezeichnung)}</td>
+                  <td class="r klein">${eur(p.betrag_cent)}</td></tr>`).join("")}
+            </table></details></td>
+        <td class="r">${eur(k.gesamt_cent)}</td>
+        ${ergebnis.einheiten.map((e) => `<td class="r">${eur(k.anteile_je_einheit[e.we])}</td>`).join("")}
+      </tr>`).join("");
+
+    const nichtUmgelegt = ergebnis.nicht_umlagefaehige.map((k) => `
+      <tr>
+        <td>${sicher(k.bezeichnung)}
+          ${k.warum ? `<div class="grund">${sicher(k.warum)}</div>` : ""}
+          <div class="klein"><b>nicht umlagefähig:</b> ${sicher(k.betrkv)}
+            · ${sicher(k.vertrag)} · Konto ${k.konto}</div>
+          <details><summary>${k.positionen.length} Belegposition(en)</summary>
+            <table>${k.positionen.map((p) => `
+              <tr><td class="klein">${sicher(p.beleg)}<br>${sicher(p.bezeichnung)}
+                ${p.begruendung ? `<br><i>${sicher(p.begruendung)}</i>` : ""}</td>
+                  <td class="r klein">${eur(p.betrag_cent)}</td></tr>`).join("")}
+            </table></details></td>
+        <td class="r">${eur(k.gesamt_cent)}</td>
+      </tr>`).join("");
+
+    return `
+      ${zeigeDiff()}
+      <div class="kacheln">
+        <div class="kachel"><div class="titel">Belegsumme 2025</div>
+          <div class="wert">${eur(ergebnis.summe_belege_cent)}</div>
+          <div class="klein">${fall.belege.length} Belege</div></div>
+        <div class="kachel"><div class="titel">davon umlagefähig</div>
+          <div class="wert">${eur(ergebnis.summe_umlagefaehig_cent)}</div>
+          <div class="klein">${pro(ergebnis.summe_umlagefaehig_cent / ergebnis.summe_belege_cent, 1)} der Belegsumme</div></div>
+        <div class="kachel"><div class="titel">trägt die Eigentümerin</div>
+          <div class="wert">${eur(ergebnis.summe_nicht_umlagefaehig_cent)}</div></div>
+        <div class="kachel"><div class="titel">je m² und Jahr</div>
+          <div class="wert">${eur(ergebnis.kosten_je_qm_jahr_cent)}</div>
+          <div class="klein">${eur(Math.round(ergebnis.kosten_je_qm_jahr_cent / 12))} je m² und Monat</div></div>
+        <div class="kachel"><div class="titel">Summe der Nachzahlungen</div>
+          <div class="wert">${eur(summeSaldo)}</div></div>
+      </div>
+
+      <div class="karte">
+        <h2>Ergebnis je Mietverhältnis</h2>
+        <table>
+          <tr><th>WE</th><th>Mieter</th><th>Nutzungszeitraum</th><th class="r">Fläche</th>
+              <th class="r">Anteil Kosten</th><th class="r">Vorauszahlungen</th><th class="r">Ergebnis</th></tr>
+          ${zeilenMietverhaeltnisse}
+        </table>
+        <p class="klein">Zeile anklicken öffnet die vollständige Herleitung und das Schreiben.</p>
+      </div>
+
+      <div class="karte">
+        <h2>Umlagefähige Kostenarten und Verteilung nach Wohnfläche</h2>
+        <table>
+          <tr><th>Kostenart</th><th class="r">Gesamt</th>${spaltenKopf}</tr>
+          ${kostenzeilen}
+          <tr class="summe"><td>Summe umlagefähig</td>
+            <td class="r">${eur(ergebnis.summe_umlagefaehig_cent)}</td>
+            ${ergebnis.einheiten.map((e) => `<td class="r">${eur(e.jahresanteil_cent)}</td>`).join("")}</tr>
+        </table>
+        <p class="klein">Die Spaltensummen ergeben zusammen exakt die Gesamtkosten — die Verteilung
+        erfolgt centgenau (Prüfung A-02).</p>
+      </div>
+
+      <div class="karte">
+        <h2>Nicht umlagefähig — trägt die Eigentümerin</h2>
+        <table>
+          <tr><th>Position</th><th class="r">Gesamt</th></tr>
+          ${nichtUmgelegt}
+          <tr class="summe"><td>Summe</td><td class="r">${eur(ergebnis.summe_nicht_umlagefaehig_cent)}</td></tr>
+        </table>
+      </div>`;
+  };
+
+  /* =========================================================================
+   * Ansicht 2: Abrechnungen (Herleitung + fertiges Schreiben)
+   * ======================================================================= */
+  ansichten.abrechnungen = function () {
+    const m = ergebnis.mietverhaeltnisse.find((x) => x.id === gewaehltesMietverhaeltnis)
+      || ergebnis.mietverhaeltnisse[0];
+    gewaehltesMietverhaeltnis = m.id;
+
+    const auswahl = ergebnis.mietverhaeltnisse.map((x) => `
+      <button class="knopf ${x.id === m.id ? "haupt" : ""}" data-oeffne="${x.id}">
+        ${x.we} · ${sicher(x.mieter)}</button>`).join(" ");
+
+    const herleitung = m.zeilen.map((z) => `
+      <tr>
+        <td>${sicher(z.bezeichnung)}<div class="klein">${sicher(z.betrkv)}</div></td>
+        <td class="r">${eur(z.gesamt_cent)}</td>
+        <td class="r">${eur(z.anteil_einheit_jahr_cent)}</td>
+        <td class="r">${eur(z.betrag_cent)}</td>
+      </tr>`).join("");
+
+    return `
+      ${zeigeDiff()}
+      <div class="karte">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          ${auswahl}
+          <span style="margin-left:auto"></span>
+          <button class="knopf" data-drucke="${m.id}">Dieses Schreiben drucken</button>
+          <button class="knopf haupt" data-drucke="alle">Alle 5 drucken</button>
+        </div>
+      </div>
+
+      <div class="karte">
+        <h2>Herleitung: Gesamtkosten × Flächenanteil (${pro(m.flaechen_anteil)}) × Zeitanteil (${m.zeit_text})</h2>
+        <table>
+          <tr><th>Kostenart</th><th class="r">Gesamtkosten Haus</th>
+              <th class="r">Anteil Wohnung / Jahr</th><th class="r">Anteil Mietverhältnis</th></tr>
+          ${herleitung}
+          <tr class="summe"><td>Summe</td>
+            <td class="r">${eur(ergebnis.summe_umlagefaehig_cent)}</td>
+            <td class="r">${eur(m.jahresanteil_einheit_cent)}</td>
+            <td class="r">${eur(m.summe_cent)}</td></tr>
+          <tr><td colspan="3">abzüglich Vorauszahlungen (${m.zahlungen.length} × ${eur(m.vorauszahlung_monatlich_cent)})</td>
+            <td class="r">− ${eur(m.vorauszahlung_angesetzt_cent)}</td></tr>
+          <tr class="summe"><td colspan="3">${m.ergebnis}</td>
+            <td class="r ${m.saldo_cent > 0 ? "plus" : "minus"}">${eur(Math.abs(m.saldo_cent))}</td></tr>
+        </table>
+      </div>
+
+      <div class="karte">
+        <h2>Prüfung dieses Schreibens</h2>
+        ${S.pruefeSchreiben(m, ergebnis).map((p) => `
+          <div class="befund ${p.bestanden ? "ok" : ""}">
+            <b>${p.id} ${sicher(p.titel)} — ${p.bestanden ? "erfüllt" : "OFFEN"}</b>
+            ${sicher(p.befund)}</div>`).join("")}
+      </div>
+
+      <h2 style="font-size:15px">So geht das Schreiben beim Mieter ein</h2>
+      <div class="papier">${S.schreibenFertig(m, ergebnis)}</div>`;
+  };
+
+  /* =========================================================================
+   * Ansicht 3: Prüfungen
+   * ======================================================================= */
+  ansichten.pruefungen = function () {
+    // Prüfungen am Datenbestand plus Prüfungen an allen fünf Schreiben.
+    const dokumentpruefungen = ergebnis.mietverhaeltnisse
+      .flatMap((m) => S.pruefeSchreiben(m, ergebnis));
+    const alle = ergebnis.pruefungen.concat(dokumentpruefungen);
+    const offen = alle.filter((p) => !p.bestanden);
+    const blocker = offen.filter((p) => p.schwere === "blocker");
+
+    // Ein Blocker sperrt nur das betroffene Schreiben, nicht alle. Deshalb wird
+    // hier je Mietverhältnis ausgewertet, welches versandt werden darf.
+    const gesperrteSchreiben = ergebnis.mietverhaeltnisse
+      .filter((m) => dokumentpruefungen.some(
+        (p) => p.mietverhaeltnis === m.id && !p.bestanden && p.schwere === "blocker"))
+      .map((m) => m.we + " " + m.mieter.split(" ").pop());
+    const versandfertig = ergebnis.mietverhaeltnisse.length - gesperrteSchreiben.length;
+
+    const zeile = (p) => `
+      <tr>
+        <td>${p.id}</td>
+        <td>${sicher(p.titel)}${p.mietverhaeltnis ? `<div class="klein">${p.mietverhaeltnis}</div>` : ""}</td>
+        <td><span class="marke ${p.bestanden ? "gut" : p.schwere === "blocker" ? "schlecht" : "warnung"}">
+          ${p.bestanden ? "bestanden" : p.schwere === "blocker" ? "Blocker" : "Warnung"}</span></td>
+        <td class="klein">${sicher(p.befund)}</td>
+      </tr>`;
+
+    return `
+      ${zeigeDiff()}
+      <div class="kacheln">
+        <div class="kachel"><div class="titel">Prüfungen gesamt</div><div class="wert">${alle.length}</div></div>
+        <div class="kachel"><div class="titel">bestanden</div><div class="wert">${alle.length - offen.length}</div></div>
+        <div class="kachel"><div class="titel">Blocker</div>
+          <div class="wert ${blocker.length ? "plus" : ""}">${blocker.length}</div></div>
+        <div class="kachel"><div class="titel">Warnungen</div>
+          <div class="wert">${offen.length - blocker.length}</div></div>
+        <div class="kachel"><div class="titel">Versandfertig</div>
+          <div class="wert">${versandfertig} von ${ergebnis.mietverhaeltnisse.length}</div>
+          <div class="klein">${gesperrteSchreiben.length === 0
+            ? "alle Schreiben dürfen versandt werden"
+            : gesperrteSchreiben.join(", ") + " als ENTWURF gesperrt"}</div></div>
+      </div>
+
+      ${offen.length ? `<div class="karte"><h2>Offene Punkte</h2>
+        ${offen.map((p) => `<div class="befund"><b>${p.id} ${sicher(p.titel)}</b>${sicher(p.befund)}</div>`).join("")}
+        <p class="klein">Jede Warnung muss in ANNAHMEN_UND_RUECKFRAGEN.md auftauchen (SPEC.md § 5.1).</p>
+      </div>` : ""}
+
+      <div class="karte">
+        <h2>Prüfprotokoll — Daten und Rechnung</h2>
+        <table><tr><th>ID</th><th>Prüfung</th><th>Ergebnis</th><th>Befund</th></tr>
+          ${ergebnis.pruefungen.map(zeile).join("")}</table>
+      </div>
+
+      <div class="karte">
+        <h2>Prüfprotokoll — die fünf Schreiben (formelle Wirksamkeit)</h2>
+        <table><tr><th>ID</th><th>Prüfung</th><th>Ergebnis</th><th>Befund</th></tr>
+          ${dokumentpruefungen.map(zeile).join("")}</table>
+      </div>
+
+      <div class="karte">
+        <h2>Fachliche Befunde aus den Unterlagen</h2>
+        ${ergebnis.befunde.map((b) => `
+          <div class="befund">
+            <b>${b.id} · ${sicher(b.kategorie)}: ${sicher(b.titel)}</b>
+            <div><b style="display:inline">Behandlung:</b> ${sicher(b.behandlung)}</div>
+            <div class="klein"><b style="display:inline">Auswirkung:</b> ${sicher(b.auswirkung)}</div>
+          </div>`).join("")}
+      </div>`;
+  };
+
+  /* =========================================================================
+   * Ansicht 4: Belege
+   * ======================================================================= */
+  ansichten.belege = function () {
+    const zeilen = fall.belege.map((b) => {
+      const summePositionen = b.positionen.reduce((s, p) => s + N.zuCent(p.betrag), 0);
+      const stimmt = summePositionen === N.zuCent(b.rechnungsbetrag);
+      return `
+        <tr>
+          <td>${sicher(b.beleg)}<div class="klein">${sicher(b.lieferant)}</div></td>
+          <td>${dat(b.datum)}<div class="klein">${sicher(b.leistungszeitraum || "")}</div></td>
+          <td>${b.positionen.map((p) => {
+            const k = fall.kostenarten[p.kostenart] || {};
+            return `
+            <div style="margin-bottom:8px">
+              ${sicher(p.bezeichnung)}
+              <span class="marke ${p.umlagefaehig ? "gut" : "schlecht"}">
+                ${p.umlagefaehig ? "umlagefähig" : "nicht umlagefähig"}</span>
+              <div class="grund">${sicher(k.warum || "")}</div>
+              <div class="klein">${sicher(k.bezeichnung)} · ${sicher(k.betrkv || "")}
+                ${k.vertrag ? " · " + sicher(k.vertrag) : ""}</div>
+              ${p.begruendung ? `<div class="klein"><b>Zu diesem Beleg:</b> ${sicher(p.begruendung)}</div>` : ""}
+            </div>`; }).join("")}</td>
+          <td class="r">${eur(N.zuCent(b.rechnungsbetrag))}
+            <div class="klein">${stimmt ? "Positionen stimmen" : "PRÜFEN"}</div></td>
+        </tr>`;
+    }).join("");
+
+    return `
+      ${zeigeDiff()}
+      <div class="karte">
+        <h2>Belege (${fall.belege.length})</h2>
+        <table><tr><th>Beleg</th><th>Datum</th><th>Positionen</th><th class="r">Betrag</th></tr>
+          ${zeilen}</table>
+      </div>
+      <div class="karte">
+        <h2>Objektkonto 2025</h2>
+        <p class="klein">${fall.buchungen.length} Buchungen aus ${fall.kontoauszuege.length}
+        Kontoauszügen. Die Saldenkette wird bei jedem Lauf geprüft (Prüfung I-06).</p>
+        <table><tr><th>Monat</th><th class="r">Anfangsbestand</th><th class="r">Endbestand</th></tr>
+          ${fall.kontoauszuege.map((a) => `
+            <tr><td>${String(a.monat).padStart(2, "0")}/${a.jahr}</td>
+              <td class="r">${eur(N.zuCent(a.anfangsbestand))}</td>
+              <td class="r">${eur(N.zuCent(a.endbestand))}</td></tr>`).join("")}
+        </table>
+      </div>`;
+  };
+
+  /* =========================================================================
+   * Ansicht 5: Einstellungen (die Stellschrauben)
+   * ======================================================================= */
+  ansichten.einstellungen = function () {
+    const e = fall.einstellungen;
+
+    // Baut eine Reihe Auswahlknöpfe für eine Einstellung.
+    const wahl = (name, optionen) => `
+      <div class="auswahl">
+        ${optionen.map((o) => `
+          <button class="${e[name] === o.wert ? "aktiv" : ""}"
+                  data-einstellung="${name}" data-wert="${o.wert}">${o.text}</button>`).join("")}
+      </div>`;
+
+    return `
+      ${zeigeDiff()}
+      <div class="karte">
+        <h2>Stellschrauben</h2>
+        <p class="klein">Jede Änderung berechnet die Abrechnung sofort neu und zeigt oben, was sich
+        dadurch je Mieter ändert. Die fachliche Begründung steht jeweils daneben.</p>
+        <div class="schalter">
+          <label>Zeitanteil bei Mieterwechsel</label>
+          <div>
+            ${wahl("zeitanteil_methode", [
+              { wert: "tage", text: "taggenau (212/153 Tage)" },
+              { wert: "monate", text: "volle Monate (7/12, 5/12)" },
+            ])}
+            <div class="klein">§ 4 Abs. 5 der Mietverträge verlangt eine zeitanteilige Aufteilung,
+            legt die Methode aber nicht fest. Taggenau ist die genauere Variante.</div>
+          </div>
+
+          <label>Vorauszahlungen</label>
+          <div>
+            ${wahl("vorauszahlungen_ansatz", [
+              { wert: "ist", text: "tatsächlich gezahlt (Kontoauszug)" },
+              { wert: "soll", text: "vertraglich geschuldet" },
+            ])}
+            <div class="klein">Angerechnet werden dürfen nur tatsächlich geleistete Vorauszahlungen
+            (BGH VIII ZR 57/04). Der Soll-Ansatz löst deshalb bewusst eine Warnung aus.</div>
+          </div>
+
+          <label>Kostenansatz</label>
+          <div>
+            ${wahl("kostenansatz", [
+              { wert: "leistung", text: "Leistungsprinzip (Kosten des Jahres)" },
+              { wert: "abfluss", text: "Abflussprinzip (Zahlungen des Jahres)" },
+            ])}
+            <div class="klein">Betrifft nur die RheinEnergie-Jahresrechnung: 1.276,60 € Kosten für
+            2025 gegenüber 1.200,00 € Abschlägen, die 2025 abgeflossen sind. Beide Verfahren sind
+            zulässig, müssen aber einheitlich angewandt werden.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="karte">
+        <h2>Falldatei</h2>
+        <p class="klein">Alle Eingaben stehen in einer einzigen Datei. Herunterladen, bearbeiten,
+        wieder laden — oder weitergeben.</p>
+        <button class="knopf" data-aktion="export">Falldatei herunterladen</button>
+        <button class="knopf" data-aktion="import">Falldatei laden</button>
+        <button class="knopf" data-aktion="zuruecksetzen">Auf Auslieferungsstand zurücksetzen</button>
+        <input type="file" id="dateiwahl" accept="application/json" style="display:none">
+      </div>`;
+  };
+
+  /* =========================================================================
+   * Ansicht 6: Beleg erfassen
+   * =========================================================================
+   * Ablauf: Dokument einlesen -> Vorschlag prüfen -> fachlich zuordnen ->
+   * bestätigen -> übernehmen. Zwischen "gelesen" und "gebucht" steht immer ein
+   * Mensch (SPEC.md § 3).
+   * ======================================================================= */
+  ansichten.erfassen = function () {
+    const kopf = `
+      <div class="karte">
+        <h2>Beleg einlesen</h2>
+        <p class="klein">Ein PDF hierher ziehen oder den Text einer Rechnung einfügen. Aus dem
+        Dokument wird ein <b>Vorschlag</b>. Übernommen wird er erst, wenn die Prüfungen bestanden
+        sind und die Zuordnung bestätigt wurde.</p>
+        <div id="ablage" class="ablage">
+          <b>PDF hierher ziehen</b>
+          <div class="klein">oder <button class="knopf" data-aktion="dateiwaehlen">Datei auswählen</button></div>
+          <input type="file" id="pdfwahl" accept="application/pdf" style="display:none">
+        </div>
+        <details style="margin-top:10px">
+          <summary>Kein PDF zur Hand? Text einfügen</summary>
+          <textarea id="textfeld" rows="7" placeholder="Text der Rechnung hier einfügen …"></textarea>
+          <button class="knopf" data-aktion="textauswerten">Text auswerten</button>
+        </details>
+        ${einlesefehler ? `<div class="befund"><b>Einlesen nicht möglich</b>${sicher(einlesefehler)}</div>` : ""}
+      </div>`;
+
+    if (!vorschlag) return kopf;
+    return kopf + zeigeVorschlag();
+  };
+
+  /** Stellt den eingelesenen Vorschlag zum Prüfen und Zuordnen dar. */
+  function zeigeVorschlag() {
+    const v = vorschlag.vorschlag;
+    const kostenartenListe = Object.entries(fall.kostenarten);
+
+    const kopfzeile = (bezeichnung, feld, wert, anker) => `
+      <tr>
+        <td>${bezeichnung}</td>
+        <td><input class="feld" data-kopf="${feld}" value="${sicher(wert === null ? "" : wert)}"></td>
+        <td class="klein">${anker ? `Zeile ${anker.zeile} im Dokument` : "nicht im Dokument gefunden"}</td>
+      </tr>`;
+
+    const positionen = v.positionen.map((pos, i) => `
+      <tr>
+        <td><input class="feld" data-position="${i}" data-feld="bezeichnung" value="${sicher(pos.bezeichnung)}"></td>
+        <td class="r">${eur(N.zuCent(pos.betrag))}
+          ${pos.hinweis ? `<div class="klein">${sicher(pos.hinweis)}</div>` : ""}</td>
+        <td>
+          <select class="feld" data-position="${i}" data-feld="kostenart">
+            <option value="">— bitte wählen —</option>
+            ${kostenartenListe.map(([schluessel, k]) => `
+              <option value="${schluessel}" ${pos.kostenart === schluessel ? "selected" : ""}>
+                ${sicher(k.bezeichnung)}</option>`).join("")}
+          </select>
+          ${pos.kostenart ? `
+            <div class="grund">${sicher(fall.kostenarten[pos.kostenart].warum || "")}</div>
+            <div class="klein">${sicher(fall.kostenarten[pos.kostenart].betrkv)}
+              · ${sicher(fall.kostenarten[pos.kostenart].vertrag || "")}</div>` : ""}
+        </td>
+        <td>
+          <div class="auswahl">
+            <button class="${pos.umlagefaehig === true ? "aktiv" : ""}"
+                    data-umlage="${i}" data-wert="ja">umlagefähig</button>
+            <button class="${pos.umlagefaehig === false ? "aktiv" : ""}"
+                    data-umlage="${i}" data-wert="nein">nicht umlagefähig</button>
+          </div>
+          ${pos.umlagefaehig === false ? `
+            <input class="feld" data-position="${i}" data-feld="begruendung"
+                   placeholder="Begründung mit Fundstelle, z. B. § 1 Abs. 2 Nr. 2 BetrKV"
+                   value="${sicher(pos.begruendung)}">` : ""}
+        </td>
+      </tr>`).join("");
+
+    return `
+      <div class="karte">
+        <h2>Vorschlag aus „${sicher(v.beleg)}"</h2>
+        <table>
+          ${kopfzeile("Lieferant", "lieferant", v.lieferant, { zeile: 1 })}
+          ${kopfzeile("Rechnungsnummer", "rechnungsnr", v.rechnungsnr, v.anker.rechnungsnr)}
+          ${kopfzeile("Datum", "datum", v.datum, v.anker.datum)}
+          ${kopfzeile("Leistungszeitraum", "leistungszeitraum", v.leistungszeitraum, v.anker.leistungszeitraum)}
+          ${kopfzeile("Rechnungsbetrag", "rechnungsbetrag", v.rechnungsbetrag, v.anker.rechnungsbetrag)}
+          ${kopfzeile("Kennung im Kontoauszug", "bank_kennung", v.bank_kennung, null)}
+        </table>
+        ${v.datum_art ? `<p class="klein">Als Datum wurde das <b>${v.datum_art}</b> übernommen.
+          ${v.datum_art === "Leistungsdatum" && v.rechnungsdatum
+            ? `Die Rechnung wurde am ${dat(v.rechnungsdatum)} geschrieben; für die Zuordnung zum
+               Abrechnungsjahr zählt beim Leistungsprinzip der Tag der Leistung.` : ""}</p>` : ""}
+        ${v.ust_auf_positionen_verteilt ? `<p class="klein">Die Positionen waren netto ausgewiesen.
+          Die Umsatzsteuer von ${eur(N.zuCent(v.umsatzsteuer))} wurde centgenau auf die Positionen
+          verteilt, weil umgelegt wird, was tatsächlich bezahlt wurde.</p>` : ""}
+      </div>
+
+      <div class="karte">
+        <h2>Positionen zuordnen</h2>
+        <p class="klein">Kostenart und Umlagefähigkeit sind die fachliche Entscheidung — sie werden
+        vorgeschlagen, aber nicht automatisch übernommen.</p>
+        <table>
+          <tr><th>Bezeichnung</th><th class="r">Betrag</th><th>Kostenart</th><th>Umlage</th></tr>
+          ${positionen}
+          <tr class="summe"><td>Summe</td>
+            <td class="r">${eur(N.zuCent(v.positionen.reduce((s, p) => s + p.betrag, 0)))}</td>
+            <td colspan="2" class="klein">muss dem Rechnungsbetrag entsprechen (Prüfung I-04)</td></tr>
+        </table>
+      </div>
+
+      <div class="karte" id="vorschlagstatus">${zeigeVorschlagStatus()}</div>
+
+      <div class="karte">
+        <details><summary>Text des Dokuments ansehen (Grundlage aller erkannten Werte)</summary>
+          <pre class="dokumenttext">${sicher(v.text)}</pre></details>
+      </div>`;
+  }
+
+  /** Prüfungen und Übernahme-Knopf - wird nach jeder Eingabe neu gezeichnet. */
+  function zeigeVorschlagStatus() {
+    const v = vorschlag.vorschlag;
+    const pruefungen = EIN.pruefeVorschlag(v, v.text, fall.objekt);
+    const blocker = pruefungen.filter((p) => !p.bestanden && p.schwere === "blocker");
+
+    // Probelauf der Übernahme, ohne etwas zu verändern.
+    const probe = EIN.uebernimm(JSON.parse(JSON.stringify(fall)), JSON.parse(JSON.stringify(v)));
+
+    return `
+      <h2>Prüfung des Belegs</h2>
+      ${pruefungen.map((p) => `
+        <div class="befund ${p.bestanden ? "ok" : p.schwere === "blocker" ? "" : "info"}">
+          <b>${p.id} ${sicher(p.titel)} — ${p.bestanden ? "erfüllt" : "offen"}</b>
+          ${sicher(p.befund)}</div>`).join("")}
+      ${blocker.length
+        ? `<p class="klein">Dieser Beleg steht in <b>Quarantäne</b>: Er kann nicht übernommen werden,
+           solange ein blockierender Punkt offen ist. Werte oben korrigieren oder den Beleg von Hand
+           erfassen.</p>`
+        : ""}
+      ${probe.fehler.length
+        ? `<div class="befund"><b>Vor der Übernahme zu erledigen</b>
+             ${probe.fehler.map((f) => sicher(f)).join("<br>")}</div>`
+        : ""}
+      <button class="knopf haupt" data-aktion="uebernehmen"
+              ${probe.uebernommen ? "" : "disabled"}>Beleg übernehmen</button>
+      <button class="knopf" data-aktion="verwerfen">Verwerfen</button>`;
+  }
+
+  /** Liest eine PDF-Datei ein und baut daraus den Vorschlag. */
+  async function leseDatei(datei) {
+    einlesefehler = null;
+    try {
+      const { text } = await EIN.textAusPdf(datei);
+      vorschlag = EIN.schlageBelegVor(text, datei.name, fall.objekt);
+    } catch (fehler) {
+      vorschlag = null;
+      einlesefehler = fehler.message;
+    }
+    zeichne();
+  }
+
+  /* =========================================================================
+   * Änderungsanzeige (SPEC.md Q-02)
+   * Nach einer Änderung sieht man sofort, was sie bei jedem Mieter bewirkt -
+   * bevor man irgendetwas verschickt.
+   * ======================================================================= */
+  function zeigeDiff() {
+    if (!vergleich) return "";
+    const zeilen = ergebnis.mietverhaeltnisse.map((neu) => {
+      const alt = vergleich.mietverhaeltnisse.find((m) => m.id === neu.id);
+      const differenz = neu.saldo_cent - alt.saldo_cent;
+      return { neu, alt, differenz };
+    });
+    if (zeilen.every((z) => z.differenz === 0)) return "";
+
+    return `
+      <div class="diff">
+        <b>Wirkung der letzten Änderung</b>
+        <table>
+          <tr><th>Mietverhältnis</th><th class="r">vorher</th><th class="r">nachher</th><th class="r">Differenz</th></tr>
+          ${zeilen.map((z) => `
+            <tr><td>${z.neu.we} · ${sicher(z.neu.mieter)}</td>
+              <td class="r">${eur(Math.abs(z.alt.saldo_cent))}</td>
+              <td class="r">${eur(Math.abs(z.neu.saldo_cent))}</td>
+              <td class="r ${z.differenz > 0 ? "plus" : z.differenz < 0 ? "minus" : ""}">
+                ${z.differenz === 0 ? "unverändert" : (z.differenz > 0 ? "+" : "−") + eur(Math.abs(z.differenz)).replace("−", "")}</td>
+            </tr>`).join("")}
+        </table>
+      </div>`;
+  }
+
+  /* =========================================================================
+   * Knöpfe und Klicks
+   * ======================================================================= */
+  function verdrahteKnoepfe() {
+    // Zeile oder Knopf öffnet ein Mietverhältnis
+    document.querySelectorAll("[data-oeffne]").forEach((el) =>
+      el.addEventListener("click", () => {
+        gewaehltesMietverhaeltnis = el.dataset.oeffne;
+        aktiverReiter = "abrechnungen";
+        zeichne();
+      }));
+
+    // Drucken
+    document.querySelectorAll("[data-drucke]").forEach((el) =>
+      el.addEventListener("click", () => drucke(el.dataset.drucke)));
+
+    // Einstellung ändern
+    document.querySelectorAll("[data-einstellung]").forEach((el) =>
+      el.addEventListener("click", () => {
+        fall.einstellungen[el.dataset.einstellung] = el.dataset.wert;
+        protokolliere(`Einstellung ${el.dataset.einstellung} auf "${el.dataset.wert}" gesetzt`);
+        neuBerechnen(true);
+      }));
+
+    // Falldatei
+    const aktion = (name, funktion) => {
+      const el = document.querySelector(`[data-aktion="${name}"]`);
+      if (el) el.addEventListener("click", funktion);
+    };
+    aktion("export", exportiere);
+    aktion("import", () => document.getElementById("dateiwahl").click());
+    aktion("zuruecksetzen", () => {
+      fall = JSON.parse(JSON.stringify(window.FALL));
+      vergleich = null;
+      neuBerechnen(false);
+    });
+    const dateiwahl = document.getElementById("dateiwahl");
+    if (dateiwahl) dateiwahl.addEventListener("change", importiere);
+
+    verdrahteErfassen();
+  }
+
+  /* ---- Knöpfe und Felder der Ansicht "Beleg erfassen" -------------------- */
+  function verdrahteErfassen() {
+    const ablage = document.getElementById("ablage");
+    if (ablage) {
+      // Datei per Ziehen und Fallenlassen
+      ablage.addEventListener("dragover", (e) => { e.preventDefault(); ablage.classList.add("bereit"); });
+      ablage.addEventListener("dragleave", () => ablage.classList.remove("bereit"));
+      ablage.addEventListener("drop", (e) => {
+        e.preventDefault();
+        ablage.classList.remove("bereit");
+        if (e.dataTransfer.files[0]) leseDatei(e.dataTransfer.files[0]);
+      });
+    }
+    const pdfwahl = document.getElementById("pdfwahl");
+    if (pdfwahl) pdfwahl.addEventListener("change", (e) => {
+      if (e.target.files[0]) leseDatei(e.target.files[0]);
+    });
+
+    const knopf = (name, fn) => {
+      const el = document.querySelector(`[data-aktion="${name}"]`);
+      if (el) el.addEventListener("click", fn);
+    };
+    knopf("dateiwaehlen", () => document.getElementById("pdfwahl").click());
+    knopf("textauswerten", () => {
+      const text = document.getElementById("textfeld").value;
+      if (!text.trim()) return;
+      einlesefehler = null;
+      vorschlag = EIN.schlageBelegVor(text, "eingefuegter_text.pdf", fall.objekt);
+      zeichne();
+    });
+    knopf("verwerfen", () => { vorschlag = null; einlesefehler = null; zeichne(); });
+    knopf("uebernehmen", () => {
+      const ergebnis = EIN.uebernimm(fall, vorschlag.vorschlag);
+      if (!ergebnis.uebernommen) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
+      vorschlag = null;
+      aktiverReiter = "belege";
+      neuBerechnen(true);      // mit Vorher/Nachher-Vergleich
+    });
+
+    // Eingaben schreiben direkt in den Vorschlag. Danach wird nur der
+    // Prüfblock neu gezeichnet - so springt der Eingabefokus nicht weg.
+    document.querySelectorAll("[data-kopf]").forEach((el) =>
+      el.addEventListener("input", () => {
+        const feld = el.dataset.kopf;
+        vorschlag.vorschlag[feld] =
+          feld === "rechnungsbetrag" ? Number(el.value.replace(",", ".")) : el.value;
+        aktualisiereVorschlagStatus();
+      }));
+
+    document.querySelectorAll("[data-position]").forEach((el) =>
+      el.addEventListener("input", () => {
+        const pos = vorschlag.vorschlag.positionen[Number(el.dataset.position)];
+        pos[el.dataset.feld] = el.dataset.feld === "betrag" ? Number(el.value) : el.value;
+        aktualisiereVorschlagStatus();
+      }));
+
+    document.querySelectorAll("[data-umlage]").forEach((el) =>
+      el.addEventListener("click", () => {
+        const pos = vorschlag.vorschlag.positionen[Number(el.dataset.umlage)];
+        pos.umlagefaehig = el.dataset.wert === "ja";
+        // Bei einer Nicht-Umlage schlagen wir die Begründung aus dem
+        // Kostenartenkatalog vor - sie muss aber bestätigt werden.
+        if (pos.umlagefaehig === false && !pos.begruendung && pos.kostenart) {
+          pos.begruendung = fall.kostenarten[pos.kostenart].betrkv || "";
+        }
+        zeichne();
+      }));
+  }
+
+  function aktualisiereVorschlagStatus() {
+    const block = document.getElementById("vorschlagstatus");
+    if (!block) return;
+    block.innerHTML = zeigeVorschlagStatus();
+    const neu = (name, fn) => {
+      const el = block.querySelector(`[data-aktion="${name}"]`);
+      if (el) el.addEventListener("click", fn);
+    };
+    neu("verwerfen", () => { vorschlag = null; einlesefehler = null; zeichne(); });
+    neu("uebernehmen", () => {
+      const ergebnis = EIN.uebernimm(fall, vorschlag.vorschlag);
+      if (!ergebnis.uebernommen) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
+      vorschlag = null;
+      aktiverReiter = "belege";
+      neuBerechnen(true);
+    });
+  }
+
+  /** Hält fest, wer wann was geändert hat (SPEC.md Q-05). */
+  function protokolliere(was) {
+    fall.protokoll = fall.protokoll || [];
+    fall.protokoll.push({
+      zeitpunkt: new Date().toISOString().slice(0, 19).replace("T", " "),
+      wer: "Oberfläche",
+      was,
+      warum: "Änderung im laufenden Betrieb",
+    });
+  }
+
+  /**
+   * Druckt entweder alle Schreiben oder genau eines.
+   * Der Trick: Im Druckbereich stehen immer alle fünf. Soll nur eines aufs
+   * Papier, markieren wir es und setzen ein Merkmal am <body> - der Rest wird
+   * per CSS ausgeblendet (siehe stil.css, Abschnitt DRUCK).
+   */
+  function drucke(welches) {
+    const schreiben = document.querySelectorAll("#druckbereich .schreiben");
+    schreiben.forEach((s) => s.classList.remove("drucken"));
+
+    if (welches === "alle") {
+      delete document.body.dataset.nurDrucken;
+    } else {
+      document.body.dataset.nurDrucken = welches;
+      const treffer = document.querySelector(`#druckbereich [data-mietverhaeltnis="${welches}"]`);
+      if (treffer) treffer.classList.add("drucken");
+    }
+    window.print();
+  }
+
+  function exportiere() {
+    const text = JSON.stringify(fall, null, 2);
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+    link.download = "fall_2025.json";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  function importiere(ereignis) {
+    const datei = ereignis.target.files[0];
+    if (!datei) return;
+    const leser = new FileReader();
+    leser.onload = () => {
+      try {
+        fall = JSON.parse(leser.result);
+        vergleich = null;
+        neuBerechnen(false);
+        alert("Falldatei geladen.");
+      } catch (fehler) {
+        alert("Die Datei konnte nicht gelesen werden: " + fehler.message);
+      }
+    };
+    leser.readAsText(datei);
+  }
+
+  /* =========================================================================
+   * Start
+   * ======================================================================= */
+  document.querySelectorAll("nav.reiter button").forEach((b) =>
+    b.addEventListener("click", () => {
+      aktiverReiter = b.dataset.reiter;
+      zeichne();
+    }));
+
+  document.getElementById("alleDrucken").addEventListener("click", () => drucke("alle"));
+
+  neuBerechnen(false);
+})();
+
+</script>
+</body>
+</html>

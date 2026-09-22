@@ -1,0 +1,69 @@
+ ENERGIEAUSWEIS FÜR WOHNGEBÄUDE
+
+
+ gemäß §§ 79 ff. Gebäudeenergiegesetz (GEG)
+ Bedarfsausweis · Gültig 10 Jahre ab Ausstellungsdatum
+
+
+
+ Gebäude                                        Berrenrather Straße 218, 50937 Köln
+ Gebäudeteil                                    Gesamtes Gebäude
+ Gebäudetyp                                     Mehrfamilienhaus, freistehend
+ Baujahr Gebäude                                1968
+ Baujahr Wärmeerzeuger                          2011 – 2016 (Etagenthermen, einheitenweise erneuert)
+ Anzahl Wohnungen                               4
+ Gebäudenutzfläche AN                           400,0 m²
+ Wohnfläche gesamt                              250,00 m²
+ Wesentliche Energieträger                      Erdgas H
+ Erneuerbare Energien                           keine
+ Lüftungskonzept                                Fensterlüftung
+ Anlass der Ausstellung                         Vermietung
+
+
+
+ Energetische Kennwerte
+   Kennwert                                                                                     Wert                 Einheit
+
+   Endenergiebedarf                                                                                          178,4   kWh/(m²·a)
+
+   Primärenergiebedarf                                                                                       196,2   kWh/(m²·a)
+
+   Anforderungswert Primärenergie (Neubau)                                                                    72,5   kWh/(m²·a)
+
+   CO■-Emissionen                                                                                              44    kg/(m²·a)
+
+
+
+ Effizienzklasse
+         A+                 A             B                C           D              E              F           G                H
+
+ Das Gebäude ist in Klasse F eingestuft.
+
+
+
+ Empfohlene Modernisierungsmaßnahmen
+   Nr.        Bauteil / Anlagenteil                 Maßnahme                                                            Aufwand
+
+   1          Oberste Geschossdecke                 Dämmung mit 200 mm WLG 035                                          gering
+
+   2          Außenwand                             WDVS 140 mm WLG 032                                                 hoch
+
+   3          Fenster                               Austausch der Verglasung Bj. 1994, Nordfassade                      mittel
+
+   4          Kellerdecke                           Dämmung von unten, 80 mm                                            gering
+
+ Die Empfehlungen sind unverbindlich und ersetzen keine Energieberatung.
+
+
+
+ Registriernummer                        NW-2022-004871239
+ Ausstellungsdatum                       14.03.2022
+ Gültig bis                              13.03.2032
+ Aussteller                              Dipl.-Ing. Marion Süßkind, Energieberaterin (BAFA-Nr. 51-448-902)
+ Anschrift Aussteller                    Weyertal 121, 50931 Köln
+ Datengrundlage                          Ortsbegehung 22.02.2022, Bauunterlagen der Eigentümerin
+
+
+
+Berrenrather Straße 218, 50937 Köln · Energieausweis                                                                              Seite 1
+

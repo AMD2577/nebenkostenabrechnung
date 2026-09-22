@@ -1,0 +1,1825 @@
+{
+  "schema": 1,
+  "bezeichnung": "Nebenkostenabrechnung 2025 – Berrenrather Straße 218",
+  "objekt": {
+    "bezeichnung": "Berrenrather Straße 218, 50937 Köln (Köln-Sülz)",
+    "strasse": "Berrenrather Straße 218",
+    "plz_ort": "50937 Köln",
+    "baujahr": 1968,
+    "wohnflaeche_gesamt_qm": 250
+  },
+  "vermieterin": {
+    "name": "Objektgesellschaft Berrenrather 218 GbR",
+    "vertreten_durch": "Frau Renate Kohlhaas",
+    "strasse": "Luxemburger Straße 44",
+    "plz_ort": "50674 Köln",
+    "iban": "DE21 3705 0198 1902 4471 88",
+    "bank": "Sparkasse KölnBonn"
+  },
+  "abrechnung": {
+    "von": "2025-01-01",
+    "bis": "2025-12-31",
+    "erstellt_am": "2026-02-16",
+    "zahlungsfrist_tage": 30
+  },
+  "einstellungen": {
+    "zeitanteil_methode": "tage",
+    "vorauszahlungen_ansatz": "ist",
+    "kostenansatz": "leistung"
+  },
+  "einheiten": [
+    {
+      "we": "WE 1",
+      "lage": "Erdgeschoss links",
+      "zimmer": 2.5,
+      "wohnflaeche_qm": 62,
+      "keller": "K1",
+      "quelle": "10_Einheiten-_und_Mieteruebersicht.pdf, Aufmaß Vermessungsbüro Terhoeven 12.04.2018"
+    },
+    {
+      "we": "WE 2",
+      "lage": "Erdgeschoss rechts",
+      "zimmer": 2,
+      "wohnflaeche_qm": 48.5,
+      "keller": "K2",
+      "quelle": "10_Einheiten-_und_Mieteruebersicht.pdf, Aufmaß 12.04.2018"
+    },
+    {
+      "we": "WE 3",
+      "lage": "1. Obergeschoss",
+      "zimmer": 3.5,
+      "wohnflaeche_qm": 84,
+      "keller": "K3",
+      "quelle": "10_Einheiten-_und_Mieteruebersicht.pdf, Aufmaß 12.04.2018",
+      "hinweis": "Mietvertrag Nowak (2016) nennt 'ca. 81 m²'. Maßgeblich ist die tatsächliche Fläche lt. Aufmaß 2018 (84,00 m²), vgl. BGH VIII ZR 220/17; Vertrag Kestner (2025) nennt bereits 84,00 m²."
+    },
+    {
+      "we": "WE 4",
+      "lage": "Dachgeschoss",
+      "zimmer": 2.5,
+      "wohnflaeche_qm": 55.5,
+      "keller": "K4",
+      "quelle": "10_Einheiten-_und_Mieteruebersicht.pdf, Aufmaß 12.04.2018"
+    }
+  ],
+  "mietverhaeltnisse": [
+    {
+      "id": "WE1_Yildirim",
+      "we": "WE 1",
+      "mieter": "Ahmet und Sevda Yildirim",
+      "anrede": "Sehr geehrte Frau Yildirim, sehr geehrter Herr Yildirim,",
+      "beginn": "2019-03-01",
+      "ende": null,
+      "nettokaltmiete": 520,
+      "nk_vorauszahlung": 130,
+      "zahler_kennung": "YILDIRIM",
+      "quelle": "20_Mietvertrag_WE1_Yildirim.pdf (Vertrag vom 18.02.2019)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    },
+    {
+      "id": "WE2_Bendel",
+      "we": "WE 2",
+      "mieter": "Marco Bendel",
+      "anrede": "Sehr geehrter Herr Bendel,",
+      "beginn": "2022-09-01",
+      "ende": null,
+      "nettokaltmiete": 465,
+      "nk_vorauszahlung": 120,
+      "staffelmiete": [
+        {
+          "ab": "2022-09-01",
+          "nettokaltmiete": 465
+        },
+        {
+          "ab": "2023-09-01",
+          "nettokaltmiete": 490
+        },
+        {
+          "ab": "2024-09-01",
+          "nettokaltmiete": 515
+        },
+        {
+          "ab": "2025-09-01",
+          "nettokaltmiete": 545
+        }
+      ],
+      "zahler_kennung": "BENDEL",
+      "quelle": "21_Mietvertrag_WE2_Bendel.pdf (Vertrag vom 11.08.2022, § 3a Staffelmiete)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    },
+    {
+      "id": "WE3_Nowak",
+      "we": "WE 3",
+      "mieter": "Christiane Nowak",
+      "anrede": "Sehr geehrte Frau Nowak,",
+      "beginn": "2016-11-01",
+      "ende": "2025-07-31",
+      "nettokaltmiete": 700,
+      "nk_vorauszahlung": 180,
+      "zahler_kennung": "NOWAK",
+      "anschrift_hinweis": "ausgezogen zum 31.07.2025 – neue Anschrift liegt nicht vor (Rückfrage)",
+      "quelle": "22_Mietvertrag_WE3_Nowak.pdf (Vertrag vom 22.09.2016, Nachtrag Nr. 1 vom 28.04.2025)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    },
+    {
+      "id": "WE3_Kestner",
+      "we": "WE 3",
+      "mieter": "Julian Kestner",
+      "anrede": "Sehr geehrter Herr Kestner,",
+      "beginn": "2025-08-01",
+      "ende": null,
+      "nettokaltmiete": 890,
+      "nk_vorauszahlung": 200,
+      "zahler_kennung": "KESTNER",
+      "quelle": "23_Mietvertrag_WE3_Kestner.pdf (Vertrag vom 09.07.2025)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    },
+    {
+      "id": "WE4_Ohlwein",
+      "we": "WE 4",
+      "mieter": "Petra Ohlwein",
+      "anrede": "Sehr geehrte Frau Ohlwein,",
+      "beginn": "2021-05-01",
+      "ende": null,
+      "nettokaltmiete": 610,
+      "nk_vorauszahlung": 150,
+      "zahler_kennung": "OHLWEIN",
+      "quelle": "24_Mietvertrag_WE4_Ohlwein.pdf (Vertrag vom 06.04.2021)",
+      "vereinbarte_kostenarten": [
+        "grundsteuer",
+        "wasser",
+        "entwaesserung",
+        "strassenreinigung",
+        "muell",
+        "gebaeudereinigung",
+        "gartenpflege",
+        "allgemeinstrom",
+        "schornsteinfeger",
+        "versicherung",
+        "hauswart",
+        "rauchwarnmelder"
+      ]
+    }
+  ],
+  "kostenarten": {
+    "grundsteuer": {
+      "bezeichnung": "Grundsteuer",
+      "betrkv": "§ 2 Nr. 1 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („laufende öffentliche Lasten, insbesondere die Grundsteuer“)",
+      "warum": "Die Grundsteuer ist eine laufende öffentliche Last des Grundstücks. Sie fällt Jahr für Jahr an, solange das Haus vermietet wird, und darf deshalb auf die Mieter umgelegt werden.",
+      "konto": "6100",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "wasser": {
+      "bezeichnung": "Wasserversorgung",
+      "betrkv": "§ 2 Nr. 2 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Wasserversorgung“)",
+      "warum": "Das Wasser, das im Haus verbraucht wird, bezahlt die Eigentümerin an die RheinEnergie und legt es um. Es gibt keine Wohnungszähler, deshalb wird nach Wohnfläche verteilt.",
+      "konto": "6140",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "entwaesserung": {
+      "bezeichnung": "Entwässerung (Schmutz- und Niederschlagswasser)",
+      "betrkv": "§ 2 Nr. 3 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („der Entwässerung einschließlich Niederschlagswasser“)",
+      "warum": "Die Stadt Köln stellt das Ableiten von Schmutzwasser und von Regenwasser vom Grundstück in Rechnung. Beides sind laufende Kosten des Betriebs.",
+      "konto": "6130",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "strassenreinigung": {
+      "bezeichnung": "Straßenreinigung",
+      "betrkv": "§ 2 Nr. 8 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Straßenreinigung“)",
+      "warum": "Die Stadt reinigt die Straße vor dem Haus und stellt das nach Frontlänge in Rechnung. Eine laufende Leistung für alle Bewohner.",
+      "konto": "6120",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "muell": {
+      "bezeichnung": "Müllbeseitigung",
+      "betrkv": "§ 2 Nr. 8 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („der Müllbeseitigung“)",
+      "warum": "Die Abfallbehälter werden regelmäßig geleert. Die Gebühr richtet sich nach Zahl und Größe der Tonnen und fällt laufend an.",
+      "konto": "6110",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "gebaeudereinigung": {
+      "bezeichnung": "Gebäudereinigung (Treppenhaus)",
+      "betrkv": "§ 2 Nr. 9 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Gebäudereinigung“)",
+      "warum": "Treppenhaus, Eingang und Kellergang werden wöchentlich gereinigt. Eine wiederkehrende Leistung, von der alle Mietparteien etwas haben.",
+      "konto": "6320",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "gartenpflege": {
+      "bezeichnung": "Gartenpflege",
+      "betrkv": "§ 2 Nr. 10 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Gartenpflege“)",
+      "warum": "Rasen, Hecken und Beete werden mehrmals im Jahr gepflegt. Umlagefähig ist die laufende Pflege – nicht das erstmalige Anlegen eines Gartens.",
+      "konto": "6310",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "allgemeinstrom": {
+      "bezeichnung": "Beleuchtung / Allgemeinstrom",
+      "betrkv": "§ 2 Nr. 11 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Beleuchtung der gemeinschaftlich genutzten Flächen“)",
+      "warum": "Strom für Treppenhaus, Keller und Außenbeleuchtung. Er wird über einen eigenen Zähler abgerechnet und von allen gemeinsam genutzt.",
+      "konto": "6150",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "schornsteinfeger": {
+      "bezeichnung": "Schornsteinfeger",
+      "betrkv": "§ 2 Nr. 12 BetrKV",
+      "vertrag": "§ 4 Abs. 1 und § 5 Abs. 2 Mietvertrag („legt sie nach § 4 um“)",
+      "warum": "Der Bezirksschornsteinfeger prüft die vier Gasthermen und misst die Abgaswerte – gesetzlich vorgeschrieben und wiederkehrend. Der Mietvertrag regelt ausdrücklich, dass die Vermieterin diese Kosten trägt und nach Wohnfläche umlegt.",
+      "konto": "6330",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "versicherung": {
+      "bezeichnung": "Sach- und Haftpflichtversicherung",
+      "betrkv": "§ 2 Nr. 13 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten der Sach- und Haftpflichtversicherung des Gebäudes“)",
+      "warum": "Gebäude- und Haftpflichtversicherung schützen das Haus und seine Bewohner, etwa bei Feuer, Leitungswasser oder einem Sturmschaden. Der Beitrag fällt jedes Jahr an.",
+      "konto": "6200",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "hauswart": {
+      "bezeichnung": "Hauswart",
+      "betrkv": "§ 2 Nr. 14 BetrKV",
+      "vertrag": "§ 4 Abs. 1 Mietvertrag („die Kosten des Hauswarts“)",
+      "warum": "Der Hauswart kümmert sich laufend um das Haus: Müllplatz, Beleuchtung, Winterdienst. Umlagefähig ist nur diese laufende Betreuung – Reparaturen, die er nebenbei erledigt, gehören nicht dazu.",
+      "konto": "6300",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "rauchwarnmelder": {
+      "bezeichnung": "Wartung Rauchwarnmelder",
+      "betrkv": "§ 2 Nr. 17 BetrKV (sonstige, lt. § 4 Abs. 2 Mietvertrag)",
+      "vertrag": "§ 4 Abs. 2 Mietvertrag (ausdrücklich als sonstige Betriebskosten vereinbart)",
+      "warum": "Rauchwarnmelder müssen jährlich geprüft werden. Solche „sonstigen“ Betriebskosten darf man nur umlegen, wenn sie im Mietvertrag ausdrücklich genannt sind – hier ist das der Fall.",
+      "konto": "6340",
+      "umlagefaehig": true,
+      "verteilerschluessel": "flaeche"
+    },
+    "kabel": {
+      "bezeichnung": "Breitband-/Kabelanschluss",
+      "betrkv": "§ 2 Nr. 15 BetrKV a.F. – seit 01.07.2024 nicht mehr umlagefähig (§ 71 TKG)",
+      "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
+      "warum": "Bis Juni 2024 durfte ein Kabelanschluss über die Nebenkosten abgerechnet werden. Diese Möglichkeit ist entfallen: Seit dem 01.07.2024 muss jeder Haushalt seinen Fernsehanschluss selbst beauftragen. Die Kosten bleiben deshalb bei der Eigentümerin – zusätzlich fehlt eine entsprechende Vereinbarung im Mietvertrag.",
+      "konto": "6350",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche",
+      "umlagefaehig_bis": "2024-06-30",
+      "rechtsgrundlage": "§ 71 TKG"
+    },
+    "rechtsschutz": {
+      "bezeichnung": "Rechtsschutzversicherung",
+      "betrkv": "keine Betriebskosten (nicht in § 2 BetrKV)",
+      "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
+      "warum": "Eine Rechtsschutzversicherung schützt die Vermieterin bei Streitigkeiten – etwa gegen einen Mieter. Sie nützt allein ihr und ist keine Sach- oder Haftpflichtversicherung des Gebäudes. Umlage deshalb ausgeschlossen.",
+      "konto": "6210",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    },
+    "verwaltung": {
+      "bezeichnung": "Verwaltervergütung",
+      "betrkv": "§ 1 Abs. 2 Nr. 1 BetrKV – Verwaltungskosten, nicht umlagefähig",
+      "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
+      "warum": "Was die Hausverwaltung für Buchhaltung, Zahlungsverkehr und Mieterkorrespondenz bekommt, ist Aufwand der Eigentümerin für ihr eigenes Geschäft. Die Betriebskostenverordnung nimmt Verwaltungskosten ausdrücklich aus.",
+      "konto": "6500",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    },
+    "instandhaltung": {
+      "bezeichnung": "Instandhaltung / Instandsetzung",
+      "betrkv": "§ 1 Abs. 2 Nr. 2 BetrKV – nicht umlagefähig; § 7 Abs. 2 Mietvertrag",
+      "vertrag": "§ 7 Abs. 2 Mietvertrag: „Kosten der Instandhaltung und Instandsetzung trägt die Vermieterin“",
+      "warum": "Eine Reparatur stellt etwas wieder her, das kaputtgegangen ist. Das gehört zur Erhaltung des Gebäudes und ist Sache der Eigentümerin – auch wenn alle Mietparteien davon profitieren.",
+      "konto": "6400",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    },
+    "kleinreparaturen": {
+      "bezeichnung": "Kleinreparaturen (durch Hauswart)",
+      "betrkv": "§ 2 Nr. 14 BetrKV schließt Instandhaltung ausdrücklich aus",
+      "vertrag": "§ 7 Abs. 2 Mietvertrag",
+      "warum": "Auch kleine Reparaturen bleiben Reparaturen. Der Hauswart rechnet sie getrennt von seiner Pauschale ab, und genau diese Positionen werden herausgerechnet.",
+      "konto": "6410",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    },
+    "neuanlage": {
+      "bezeichnung": "Außenanlagen – Neuanlage",
+      "betrkv": "einmalige Herstellung/Erweiterung, keine laufende Gartenpflege (§ 2 Nr. 10 BetrKV)",
+      "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
+      "warum": "Der Vorgarten wurde neu angelegt: Boden ausgetauscht, neue Sträucher gepflanzt, Beeteinfassung gesetzt. Das ist eine einmalige Verbesserung auf Wunsch der Eigentümerin und keine laufende Gartenpflege.",
+      "konto": "6600",
+      "umlagefaehig": false,
+      "verteilerschluessel": "flaeche"
+    }
+  },
+  "belege": [
+    {
+      "id": "30",
+      "beleg": "30_Stadt-Koeln_Grundbesitzabgaben_2025.pdf",
+      "lieferant": "Stadt Köln – Amt für Finanzen",
+      "datum": "2025-01-14",
+      "leistungszeitraum": "01.01.2025 – 31.12.2025",
+      "rechnungsbetrag": 3234.8,
+      "bank_kennung": "STADT KOELN",
+      "zahlung_erwartet": "4 Raten à 808,70 € (15.02./15.05./15.08./15.11.2025)",
+      "positionen": [
+        {
+          "bezeichnung": "Grundsteuer B (Messbetrag 274,00 € × 400 v.H.)",
+          "betrag": 1096,
+          "kostenart": "grundsteuer",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Abfallentsorgung (2× Restabfall 240 l, Bio, Papier)",
+          "betrag": 764,
+          "kostenart": "muell",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Straßenreinigung (16 m Front, Klasse 2)",
+          "betrag": 214.4,
+          "kostenart": "strassenreinigung",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Entwässerung Schmutzwasser (320 m³ × 2,87 €)",
+          "betrag": 918.4,
+          "kostenart": "entwaesserung",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Entwässerung Niederschlagswasser (220 m² × 1,10 €)",
+          "betrag": 242,
+          "kostenart": "entwaesserung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "31",
+      "beleg": "31_RheinEnergie_Jahresrechnung_2025.pdf",
+      "lieferant": "RheinEnergie AG",
+      "datum": "2026-01-22",
+      "leistungszeitraum": "01.01.2025 – 31.12.2025",
+      "rechnungsbetrag": 1276.6,
+      "bank_kennung": "RHEINENERGIE",
+      "zahlung_erwartet": "12 Abschläge à 100,00 € in 2025; Nachzahlung 76,60 € am 06.02.2026",
+      "abfluss_im_abrechnungsjahr": 1200,
+      "hinweis": "Jahresrechnung datiert 22.01.2026. Nach Leistungsprinzip werden die vollen Jahreskosten 2025 (1.276,60 €) angesetzt, nicht nur die 2025 abgeflossenen Abschläge (1.200,00 €).",
+      "positionen": [
+        {
+          "bezeichnung": "Trinkwasser 320 m³ inkl. Grundpreis (brutto, 7 % USt)",
+          "betrag": 892.4,
+          "kostenart": "wasser",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Allgemeinstrom 912 kWh inkl. Grundpreis (brutto, 19 % USt)",
+          "betrag": 384.2,
+          "kostenart": "allgemeinstrom",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "32",
+      "beleg": "32_Provinzial_Versicherungsbeitrag_2025.pdf",
+      "lieferant": "Provinzial Rheinland Versicherung AG",
+      "datum": "2024-12-12",
+      "leistungszeitraum": "01.01.2025 – 31.12.2025",
+      "rechnungsbetrag": 1337.52,
+      "bank_kennung": "PROVINZIAL",
+      "positionen": [
+        {
+          "bezeichnung": "Wohngebäudeversicherung (Feuer, Leitungswasser, Sturm/Hagel, Elementar)",
+          "betrag": 986.4,
+          "kostenart": "versicherung",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Haus- und Grundbesitzerhaftpflicht",
+          "betrag": 162.12,
+          "kostenart": "versicherung",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Rechtsschutz für Vermieter",
+          "betrag": 189,
+          "kostenart": "rechtsschutz",
+          "umlagefaehig": false,
+          "begruendung": "Rechtsschutz ist keine Sach-/Haftpflichtversicherung i.S.d. § 2 Nr. 13 BetrKV und dient allein dem Vermieterinteresse."
+        }
+      ]
+    },
+    {
+      "id": "331",
+      "beleg": "331_Hausservice-Wilms_Q1.pdf",
+      "lieferant": "Hausservice Wilms e.K.",
+      "datum": "2025-01-02",
+      "leistungszeitraum": "01.01.2025 – 31.03.2025",
+      "rechnungsbetrag": 442,
+      "bank_kennung": "WILMS",
+      "hinweis": "Position 1 nennt 'Kontrolle Heizungsraum' – das Haus hat keinen Heizungsraum (Gas-Etagenheizungen). Rückfrage.",
+      "positionen": [
+        {
+          "bezeichnung": "Hauswartstätigkeit Q1 (3 × 120,00 €)",
+          "betrag": 360,
+          "kostenart": "hauswart",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten (Leuchtmittel, Türschließer, Briefkastenschloss)",
+          "betrag": 82,
+          "kostenart": "kleinreparaturen",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "332",
+      "beleg": "332_Hausservice-Wilms_Q2.pdf",
+      "lieferant": "Hausservice Wilms e.K.",
+      "datum": "2025-04-01",
+      "leistungszeitraum": "01.04.2025 – 30.06.2025",
+      "rechnungsbetrag": 428,
+      "bank_kennung": "WILMS",
+      "positionen": [
+        {
+          "bezeichnung": "Hauswartstätigkeit Q2 (3 × 120,00 €)",
+          "betrag": 360,
+          "kostenart": "hauswart",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten (Kellerfensterdichtung, Handlauf)",
+          "betrag": 68,
+          "kostenart": "kleinreparaturen",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "333",
+      "beleg": "333_Hausservice-Wilms_Q3.pdf",
+      "lieferant": "Hausservice Wilms e.K.",
+      "datum": "2025-07-01",
+      "leistungszeitraum": "01.07.2025 – 30.09.2025",
+      "rechnungsbetrag": 451,
+      "bank_kennung": "WILMS",
+      "positionen": [
+        {
+          "bezeichnung": "Hauswartstätigkeit Q3 (3 × 120,00 €)",
+          "betrag": 360,
+          "kostenart": "hauswart",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten (Gartentor, Türgriff, Fallrohr)",
+          "betrag": 91,
+          "kostenart": "kleinreparaturen",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "334",
+      "beleg": "334_Hausservice-Wilms_Q4.pdf",
+      "lieferant": "Hausservice Wilms e.K.",
+      "datum": "2025-10-01",
+      "leistungszeitraum": "01.10.2025 – 31.12.2025",
+      "rechnungsbetrag": 419,
+      "bank_kennung": "WILMS",
+      "positionen": [
+        {
+          "bezeichnung": "Hauswartstätigkeit Q4 (3 × 120,00 €)",
+          "betrag": 360,
+          "kostenart": "hauswart",
+          "umlagefaehig": true
+        },
+        {
+          "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten (Leuchtmittel Keller, Hoftorschloss)",
+          "betrag": 59,
+          "kostenart": "kleinreparaturen",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "341",
+      "beleg": "341_Clean-and-Go_Q1.pdf",
+      "lieferant": "Clean&Go Gebäudeservice GmbH",
+      "datum": "2025-01-02",
+      "leistungszeitraum": "01.01.2025 – 31.03.2025",
+      "rechnungsbetrag": 189,
+      "bank_kennung": "CLEAN+GO",
+      "positionen": [
+        {
+          "bezeichnung": "Unterhaltsreinigung Treppenhaus Q1 (wöchentlich)",
+          "betrag": 189,
+          "kostenart": "gebaeudereinigung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "342",
+      "beleg": "342_Clean-and-Go_Q2.pdf",
+      "lieferant": "Clean&Go Gebäudeservice GmbH",
+      "datum": "2025-04-01",
+      "leistungszeitraum": "01.04.2025 – 30.06.2025",
+      "rechnungsbetrag": 189,
+      "bank_kennung": "CLEAN+GO",
+      "positionen": [
+        {
+          "bezeichnung": "Unterhaltsreinigung Treppenhaus Q2 (wöchentlich)",
+          "betrag": 189,
+          "kostenart": "gebaeudereinigung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "343",
+      "beleg": "343_Clean-and-Go_Q3.pdf",
+      "lieferant": "Clean&Go Gebäudeservice GmbH",
+      "datum": "2025-07-01",
+      "leistungszeitraum": "01.07.2025 – 30.09.2025",
+      "rechnungsbetrag": 189,
+      "bank_kennung": "CLEAN+GO",
+      "positionen": [
+        {
+          "bezeichnung": "Unterhaltsreinigung Treppenhaus Q3 (wöchentlich)",
+          "betrag": 189,
+          "kostenart": "gebaeudereinigung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "344",
+      "beleg": "344_Clean-and-Go_Q4.pdf",
+      "lieferant": "Clean&Go Gebäudeservice GmbH",
+      "datum": "2025-10-01",
+      "leistungszeitraum": "01.10.2025 – 31.12.2025",
+      "rechnungsbetrag": 189,
+      "bank_kennung": "CLEAN+GO",
+      "positionen": [
+        {
+          "bezeichnung": "Unterhaltsreinigung Treppenhaus Q4 (wöchentlich)",
+          "betrag": 189,
+          "kostenart": "gebaeudereinigung",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "351",
+      "beleg": "351_Hausverwaltung-Rheinblick_Q1.pdf",
+      "lieferant": "Hausverwaltung Rheinblick GmbH",
+      "datum": "2025-01-02",
+      "leistungszeitraum": "01.01.2025 – 31.03.2025",
+      "rechnungsbetrag": 294,
+      "bank_kennung": "RHEINBLICK",
+      "positionen": [
+        {
+          "bezeichnung": "Verwaltervergütung Q1 (4 WE × 3 Mon. × 20,59 € netto)",
+          "betrag": 294,
+          "kostenart": "verwaltung",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "352",
+      "beleg": "352_Hausverwaltung-Rheinblick_Q2.pdf",
+      "lieferant": "Hausverwaltung Rheinblick GmbH",
+      "datum": "2025-04-01",
+      "leistungszeitraum": "01.04.2025 – 30.06.2025",
+      "rechnungsbetrag": 294,
+      "bank_kennung": "RHEINBLICK",
+      "positionen": [
+        {
+          "bezeichnung": "Verwaltervergütung Q2",
+          "betrag": 294,
+          "kostenart": "verwaltung",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "353",
+      "beleg": "353_Hausverwaltung-Rheinblick_Q3.pdf",
+      "lieferant": "Hausverwaltung Rheinblick GmbH",
+      "datum": "2025-07-01",
+      "leistungszeitraum": "01.07.2025 – 30.09.2025",
+      "rechnungsbetrag": 294,
+      "bank_kennung": "RHEINBLICK",
+      "positionen": [
+        {
+          "bezeichnung": "Verwaltervergütung Q3",
+          "betrag": 294,
+          "kostenart": "verwaltung",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "354",
+      "beleg": "354_Hausverwaltung-Rheinblick_Q4.pdf",
+      "lieferant": "Hausverwaltung Rheinblick GmbH",
+      "datum": "2025-10-01",
+      "leistungszeitraum": "01.10.2025 – 31.12.2025",
+      "rechnungsbetrag": 294,
+      "bank_kennung": "RHEINBLICK",
+      "positionen": [
+        {
+          "bezeichnung": "Verwaltervergütung Q4",
+          "betrag": 294,
+          "kostenart": "verwaltung",
+          "umlagefaehig": false
+        }
+      ]
+    },
+    {
+      "id": "361",
+      "beleg": "361_Gruenpflege-Bertram_Pflegeeinsatz_1.pdf",
+      "lieferant": "Grünpflege Bertram GbR",
+      "datum": "2025-04-17",
+      "leistungszeitraum": "17.04.2025",
+      "rechnungsbetrag": 245,
+      "bank_kennung": "BERTRAM",
+      "positionen": [
+        {
+          "bezeichnung": "Pflegeeinsatz Außenanlagen (Frühjahrsschnitt, Rasen, Beete)",
+          "betrag": 245,
+          "kostenart": "gartenpflege",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "362",
+      "beleg": "362_Gruenpflege-Bertram_Pflegeeinsatz_2.pdf",
+      "lieferant": "Grünpflege Bertram GbR",
+      "datum": "2025-07-11",
+      "leistungszeitraum": "11.07.2025",
+      "rechnungsbetrag": 245,
+      "bank_kennung": "BERTRAM",
+      "positionen": [
+        {
+          "bezeichnung": "Pflegeeinsatz Außenanlagen (Rasenmahd, Hecke, Wildkraut)",
+          "betrag": 245,
+          "kostenart": "gartenpflege",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "363",
+      "beleg": "363_Gruenpflege-Bertram_Pflegeeinsatz_3.pdf",
+      "lieferant": "Grünpflege Bertram GbR",
+      "datum": "2025-10-02",
+      "leistungszeitraum": "02.10.2025",
+      "rechnungsbetrag": 245,
+      "bank_kennung": "BERTRAM",
+      "positionen": [
+        {
+          "bezeichnung": "Pflegeeinsatz Außenanlagen (Rasenmahd, Stauden, Laub)",
+          "betrag": 245,
+          "kostenart": "gartenpflege",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "364",
+      "beleg": "364_Gruenpflege-Bertram_Neuanlage-Vorgarten.pdf",
+      "lieferant": "Grünpflege Bertram GbR",
+      "datum": "2025-04-25",
+      "leistungszeitraum": "22.–25.04.2025",
+      "rechnungsbetrag": 1480,
+      "bank_kennung": "BERTRAM",
+      "positionen": [
+        {
+          "bezeichnung": "Neuanlage Vorgarten (Bodenaustausch, 12 Sträucher, Pflanzung, Cortenstahl-Umrandung)",
+          "betrag": 1480,
+          "kostenart": "neuanlage",
+          "umlagefaehig": false,
+          "begruendung": "Erstmalige Herstellung/Umgestaltung auf Auftrag der Eigentümerin vom 04.04.2025 – keine laufende Pflege, daher nicht nach § 2 Nr. 10 BetrKV umlagefähig (Kontenrahmen 6600)."
+        }
+      ]
+    },
+    {
+      "id": "37",
+      "beleg": "37_Schornsteinfeger_Kaempgen.pdf",
+      "lieferant": "Bezirksschornsteinfeger Thomas Kämpgen",
+      "datum": "2025-03-06",
+      "leistungszeitraum": "06.03.2025",
+      "rechnungsbetrag": 218.4,
+      "bank_kennung": "KAEMPGEN",
+      "positionen": [
+        {
+          "bezeichnung": "Feuerstättenschau, Überprüfung Abgasanlagen (4 Thermen), BImSchV-Messung",
+          "betrag": 218.4,
+          "kostenart": "schornsteinfeger",
+          "umlagefaehig": true,
+          "begruendung": "§ 5 Abs. 2 Mietvertrag: Vermieterin trägt die Kosten und legt sie nach § 4 (Wohnfläche) um."
+        }
+      ]
+    },
+    {
+      "id": "38",
+      "beleg": "38_SafeAlarm_Wartung-Rauchwarnmelder.pdf",
+      "lieferant": "SafeAlarm Brandschutz GmbH",
+      "datum": "2025-06-03",
+      "leistungszeitraum": "03.06.2025",
+      "rechnungsbetrag": 89,
+      "bank_kennung": "SAFEALARM",
+      "positionen": [
+        {
+          "bezeichnung": "Jährliche Funktionsprüfung 9 Rauchwarnmelder (DIN 14676)",
+          "betrag": 89,
+          "kostenart": "rauchwarnmelder",
+          "umlagefaehig": true
+        }
+      ]
+    },
+    {
+      "id": "39",
+      "beleg": "39_Sanitaer-Doblinger_Steigleitung.pdf",
+      "lieferant": "Sanitär Doblinger GmbH",
+      "datum": "2025-08-19",
+      "leistungszeitraum": "19.08.2025",
+      "rechnungsbetrag": 486.2,
+      "bank_kennung": "DOBLINGER",
+      "positionen": [
+        {
+          "bezeichnung": "Instandsetzung Kaltwassersteigleitung (Ventiltausch, 3,5 Monteurstunden)",
+          "betrag": 486.2,
+          "kostenart": "instandhaltung",
+          "umlagefaehig": false,
+          "begruendung": "Reparatur eines defekten Ventils = Instandsetzung (§ 1 Abs. 2 Nr. 2 BetrKV, § 7 Abs. 2 Mietvertrag)."
+        }
+      ]
+    },
+    {
+      "id": "40",
+      "beleg": "40_Vodafone_Jahresuebersicht-Kabel.pdf",
+      "lieferant": "Vodafone Deutschland GmbH",
+      "datum": "2025-12-31",
+      "leistungszeitraum": "01.01.2025 – 31.12.2025",
+      "rechnungsbetrag": 427.2,
+      "bank_kennung": "VODAFONE",
+      "zahlung_erwartet": "12 × 35,60 € jeweils zum 20. des Monats",
+      "positionen": [
+        {
+          "bezeichnung": "Sammelinkasso Kabelanschluss, 4 WE × 12 Monate",
+          "betrag": 427.2,
+          "kostenart": "kabel",
+          "umlagefaehig": false,
+          "begruendung": "Seit 01.07.2024 dürfen Kabel-TV-Kosten aus Sammelverträgen nicht mehr als Betriebskosten umgelegt werden (Ende des 'Nebenkostenprivilegs', § 71 TKG). Zudem ist die Kostenart in § 4 der Mietverträge nicht vereinbart."
+        }
+      ]
+    }
+  ],
+  "buchungen": [
+    {
+      "datum": "2025-01-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-01-02",
+      "gegenpartei": "PROVINZIAL RHEINLAND",
+      "zweck": "BEITRAG 2025 VS-2025-4470912",
+      "betrag": -1337.52
+    },
+    {
+      "datum": "2025-01-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-01-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 01/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-01-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 01/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-01-07",
+      "gegenpartei": "HAUSSERVICE WILMS E.K.",
+      "zweck": "HAUSWARTVERTRAG 01.01.2025",
+      "betrag": -442
+    },
+    {
+      "datum": "2025-01-07",
+      "gegenpartei": "CLEAN+GO GEBAEUDESERVICE",
+      "zweck": "TREPPENHAUSREINIGUNG 01.01.2025",
+      "betrag": -189
+    },
+    {
+      "datum": "2025-01-08",
+      "gegenpartei": "HAUSVERWALTUNG RHEINBLICK",
+      "zweck": "VERWALTERHONORAR 01.01.2025",
+      "betrag": -294
+    },
+    {
+      "datum": "2025-01-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-01-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-02-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-02-03",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-02-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 02/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-02-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 02/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-02-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-02-17",
+      "gegenpartei": "STADT KOELN KASSE",
+      "zweck": "GRUNDBESITZABGABEN GBA-2025-50937-0218",
+      "betrag": -808.7
+    },
+    {
+      "datum": "2025-02-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-03-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-03-03",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-03-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 03/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-03-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 03/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-03-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-03-18",
+      "gegenpartei": "SCHORNSTEINFEGER KAEMPGEN",
+      "zweck": "FEUERSTAETTENSCHAU",
+      "betrag": -218.4
+    },
+    {
+      "datum": "2025-03-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-04-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-04-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-04-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 04/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-04-04",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 04/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-04-07",
+      "gegenpartei": "HAUSSERVICE WILMS E.K.",
+      "zweck": "HAUSWARTVERTRAG 01.04.2025",
+      "betrag": -428
+    },
+    {
+      "datum": "2025-04-07",
+      "gegenpartei": "CLEAN+GO GEBAEUDESERVICE",
+      "zweck": "TREPPENHAUSREINIGUNG 01.04.2025",
+      "betrag": -189
+    },
+    {
+      "datum": "2025-04-08",
+      "gegenpartei": "HAUSVERWALTUNG RHEINBLICK",
+      "zweck": "VERWALTERHONORAR 01.04.2025",
+      "betrag": -294
+    },
+    {
+      "datum": "2025-04-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-04-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-04-24",
+      "gegenpartei": "GRUENPFLEGE BERTRAM GBR",
+      "zweck": "PFLEGEEINSATZ",
+      "betrag": -245
+    },
+    {
+      "datum": "2025-05-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-05-04",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-05-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 05/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-05-05",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 05/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-05-06",
+      "gegenpartei": "GRUENPFLEGE BERTRAM GBR",
+      "zweck": "RE 2025-0412 VORGARTEN",
+      "betrag": -1480
+    },
+    {
+      "datum": "2025-05-15",
+      "gegenpartei": "STADT KOELN KASSE",
+      "zweck": "GRUNDBESITZABGABEN GBA-2025-50937-0218",
+      "betrag": -808.7
+    },
+    {
+      "datum": "2025-05-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-05-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-06-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-06-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-06-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 06/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-06-05",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 06/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-06-11",
+      "gegenpartei": "SAFEALARM GMBH",
+      "zweck": "WARTUNG RAUCHWARNMELDER",
+      "betrag": -89
+    },
+    {
+      "datum": "2025-06-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-06-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-07-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-07-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-07-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 07/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-07-04",
+      "gegenpartei": "CHRISTIANE NOWAK",
+      "zweck": "Miete WE3 Nowak 07/2025",
+      "betrag": 880
+    },
+    {
+      "datum": "2025-07-07",
+      "gegenpartei": "HAUSSERVICE WILMS E.K.",
+      "zweck": "HAUSWARTVERTRAG 01.07.2025",
+      "betrag": -451
+    },
+    {
+      "datum": "2025-07-07",
+      "gegenpartei": "CLEAN+GO GEBAEUDESERVICE",
+      "zweck": "TREPPENHAUSREINIGUNG 01.07.2025",
+      "betrag": -189
+    },
+    {
+      "datum": "2025-07-08",
+      "gegenpartei": "HAUSVERWALTUNG RHEINBLICK",
+      "zweck": "VERWALTERHONORAR 01.07.2025",
+      "betrag": -294
+    },
+    {
+      "datum": "2025-07-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-07-18",
+      "gegenpartei": "GRUENPFLEGE BERTRAM GBR",
+      "zweck": "PFLEGEEINSATZ",
+      "betrag": -245
+    },
+    {
+      "datum": "2025-07-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-08-04",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-08-04",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-08-04",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-08-04",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 08/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-08-15",
+      "gegenpartei": "STADT KOELN KASSE",
+      "zweck": "GRUNDBESITZABGABEN GBA-2025-50937-0218",
+      "betrag": -808.7
+    },
+    {
+      "datum": "2025-08-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-08-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-08-27",
+      "gegenpartei": "SANITAER DOBLINGER GMBH",
+      "zweck": "RE 25-0733",
+      "betrag": -486.2
+    },
+    {
+      "datum": "2025-09-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-09-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-09-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 09/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-09-12",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-09-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-09-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-10-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-10-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-10-04",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-10-07",
+      "gegenpartei": "HAUSSERVICE WILMS E.K.",
+      "zweck": "HAUSWARTVERTRAG 01.10.2025",
+      "betrag": -419
+    },
+    {
+      "datum": "2025-10-07",
+      "gegenpartei": "CLEAN+GO GEBAEUDESERVICE",
+      "zweck": "TREPPENHAUSREINIGUNG 01.10.2025",
+      "betrag": -189
+    },
+    {
+      "datum": "2025-10-08",
+      "gegenpartei": "HAUSVERWALTUNG RHEINBLICK",
+      "zweck": "VERWALTERHONORAR 01.10.2025",
+      "betrag": -294
+    },
+    {
+      "datum": "2025-10-09",
+      "gegenpartei": "GRUENPFLEGE BERTRAM GBR",
+      "zweck": "PFLEGEEINSATZ",
+      "betrag": -245
+    },
+    {
+      "datum": "2025-10-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-10-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-11-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-11-03",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-11-04",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-11-04",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 11/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-11-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-11-17",
+      "gegenpartei": "STADT KOELN KASSE",
+      "zweck": "GRUNDBESITZABGABEN GBA-2025-50937-0218",
+      "betrag": -808.7
+    },
+    {
+      "datum": "2025-11-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    },
+    {
+      "datum": "2025-12-02",
+      "gegenpartei": "MARCO BENDEL",
+      "zweck": "MARCO BENDEL",
+      "betrag": 585
+    },
+    {
+      "datum": "2025-12-03",
+      "gegenpartei": "AHMET UND SEVDA YILDIRIM",
+      "zweck": "MIETE BERRENRATHER 218 WE1 YILDIRIM",
+      "betrag": 650
+    },
+    {
+      "datum": "2025-12-03",
+      "gegenpartei": "JULIAN KESTNER",
+      "zweck": "DAUERAUFTRAG MIETE WE 3 KESTNER",
+      "betrag": 1090
+    },
+    {
+      "datum": "2025-12-03",
+      "gegenpartei": "PETRA OHLWEIN",
+      "zweck": "Miete Ohlwein DG 12/2025",
+      "betrag": 760
+    },
+    {
+      "datum": "2025-12-15",
+      "gegenpartei": "RHEINENERGIE AG",
+      "zweck": "ABSCHLAG WASSER U. ALLGEMEINSTROM VK 8841027",
+      "betrag": -100
+    },
+    {
+      "datum": "2025-12-20",
+      "gegenpartei": "VODAFONE DEUTSCHLAND",
+      "zweck": "SAMMELINKASSO KABEL-TV",
+      "betrag": -35.6
+    }
+  ],
+  "kontoauszuege": [
+    {
+      "datei": "501_Kontoauszug_01_Januar_2025.txt",
+      "monat": 1,
+      "jahr": 2025,
+      "anfangsbestand": 4180.55,
+      "endbestand": 4657.43
+    },
+    {
+      "datei": "502_Kontoauszug_02_Februar_2025.txt",
+      "monat": 2,
+      "jahr": 2025,
+      "anfangsbestand": 4657.43,
+      "endbestand": 6588.13
+    },
+    {
+      "datei": "503_Kontoauszug_03_März_2025.txt",
+      "monat": 3,
+      "jahr": 2025,
+      "anfangsbestand": 6588.13,
+      "endbestand": 9109.13
+    },
+    {
+      "datei": "504_Kontoauszug_04_April_2025.txt",
+      "monat": 4,
+      "jahr": 2025,
+      "anfangsbestand": 9109.13,
+      "endbestand": 10692.53
+    },
+    {
+      "datei": "505_Kontoauszug_05_Mai_2025.txt",
+      "monat": 5,
+      "jahr": 2025,
+      "anfangsbestand": 10692.53,
+      "endbestand": 11143.23
+    },
+    {
+      "datei": "506_Kontoauszug_06_Juni_2025.txt",
+      "monat": 6,
+      "jahr": 2025,
+      "anfangsbestand": 11143.23,
+      "endbestand": 13793.63
+    },
+    {
+      "datei": "507_Kontoauszug_07_Juli_2025.txt",
+      "monat": 7,
+      "jahr": 2025,
+      "anfangsbestand": 13793.63,
+      "endbestand": 15354.03
+    },
+    {
+      "datei": "508_Kontoauszug_08_August_2025.txt",
+      "monat": 8,
+      "jahr": 2025,
+      "anfangsbestand": 15354.03,
+      "endbestand": 17008.53
+    },
+    {
+      "datei": "509_Kontoauszug_09_September_2025.txt",
+      "monat": 9,
+      "jahr": 2025,
+      "anfangsbestand": 17008.53,
+      "endbestand": 19957.93
+    },
+    {
+      "datei": "510_Kontoauszug_10_Oktober_2025.txt",
+      "monat": 10,
+      "jahr": 2025,
+      "anfangsbestand": 19957.93,
+      "endbestand": 21000.33
+    },
+    {
+      "datei": "511_Kontoauszug_11_November_2025.txt",
+      "monat": 11,
+      "jahr": 2025,
+      "anfangsbestand": 21000.33,
+      "endbestand": 23141.03
+    },
+    {
+      "datei": "512_Kontoauszug_12_Dezember_2025.txt",
+      "monat": 12,
+      "jahr": 2025,
+      "anfangsbestand": 23141.03,
+      "endbestand": 26090.43
+    }
+  ],
+  "befunde": [
+    {
+      "id": "A1",
+      "kategorie": "Stammdaten",
+      "titel": "Wohnfläche WE 3: 'ca. 81 m²' (Vertrag Nowak 2016) vs. 84,00 m² (Aufmaß 2018)",
+      "behandlung": "84,00 m² angesetzt. Das Aufmaß vom 12.04.2018 ist lt. Einheitenübersicht maßgeblich, der Vertrag Kestner nennt bereits 84,00 m², und nach BGH (VIII ZR 220/17) zählt für die Betriebskostenumlage die tatsächliche Fläche. Abweichung 3,7 % – auch die 10 %-Toleranz-Rechtsprechung greift nicht.",
+      "auswirkung": "Frau Nowak zahlt ihren Anteil nach 84 m² statt 81 m² (≈ +3,7 % auf ihren Anteil)."
+    },
+    {
+      "id": "A2",
+      "kategorie": "Zahlungseingang",
+      "titel": "WE 4 Ohlwein: Mietzahlung Oktober 2025 fehlt auf dem Objektkonto",
+      "behandlung": "Nur 11 Zahlungseingänge à 760,00 € (Okt. fehlt). In der Abrechnung werden nur die tatsächlich geleisteten Vorauszahlungen (11 × 150,00 € = 1.650,00 €) gutgeschrieben (BGH VIII ZR 57/04). Die offene Oktobermiete (760,00 €) ist außerhalb der Abrechnung als Mietrückstand anzumahnen.",
+      "auswirkung": "Nachzahlung Ohlwein 325,43 € statt 175,43 € bei Soll-Ansatz; umschaltbar im Reiter Einstellungen (vorauszahlungen_ansatz)."
+    },
+    {
+      "id": "A3",
+      "kategorie": "Mietbuchhaltung",
+      "titel": "WE 2 Bendel: Staffelmiete (§ 3a) seit 09/2023 nie umgesetzt",
+      "behandlung": "Für die Nebenkostenabrechnung irrelevant (Vorauszahlung 120 € ist von den Staffeln unberührt). Aber: Stammdaten 'laut Buchhaltung' zeigen 465 €, der Mieter zahlt 465 € – vertraglich geschuldet sind 515 € (ab 09/2024) bzw. 545 € (ab 09/2025). Mindereinnahme 2025: 720 €, kumuliert seit 09/2023: 1.220 €.",
+      "auswirkung": "Kein Einfluss auf die Abrechnung; Bewirtschaftungs-Check Nr. 1."
+    },
+    {
+      "id": "A4",
+      "kategorie": "Kostenabgrenzung",
+      "titel": "RheinEnergie-Jahresrechnung erst am 22.01.2026: 1.276,60 € Kosten vs. 1.200,00 € Abschläge in 2025",
+      "behandlung": "Leistungsprinzip: angesetzt werden die Kosten des Abrechnungsjahres lt. Jahresrechnung (1.276,60 €), da die Rechnung vor Erstellung der Abrechnung vorliegt. Der Nachzahlungsbetrag (76,60 €) fließt im Februar 2026 ab. Umschaltbar (kostenansatz: abfluss).",
+      "auswirkung": "+76,60 € umlagefähige Kosten gegenüber Abflussprinzip; umschaltbar im Reiter Einstellungen (kostenansatz)."
+    },
+    {
+      "id": "A5",
+      "kategorie": "Kostenabgrenzung",
+      "titel": "Hauswart-Rechnungen enthalten 'Kleinreparaturen und Instandhaltungsarbeiten' (300,00 € in 2025)",
+      "behandlung": "Position 2 jeder Wilms-Rechnung ist Instandhaltung (§ 2 Nr. 14 BetrKV nimmt Instandhaltung ausdrücklich aus) und wird herausgerechnet; nur die Hauswartpauschale (4 × 360,00 €) wird umgelegt.",
+      "auswirkung": "300,00 € weniger Umlage als bei ungeprüfter Übernahme der Rechnungsbeträge."
+    },
+    {
+      "id": "A6",
+      "kategorie": "Kostenabgrenzung",
+      "titel": "Vodafone Sammelinkasso Kabel-TV (427,20 €) nicht mehr umlagefähig",
+      "behandlung": "Das 'Nebenkostenprivileg' für Kabel-TV endete zum 30.06.2024 (§ 71 TKG). Zudem ist Kabelanschluss in § 4 der Mietverträge nicht als Kostenart vereinbart. Nicht umgelegt.",
+      "auswirkung": "Kosten verbleiben bei der Eigentümerin; Bewirtschaftungs-Check Nr. 3."
+    },
+    {
+      "id": "A7",
+      "kategorie": "Kostenabgrenzung",
+      "titel": "Weitere nicht umlagefähige Belege: Verwaltervergütung (1.176 €), Neuanlage Vorgarten (1.480 €), Steigleitungsreparatur (486,20 €), Rechtsschutz (189 €)",
+      "behandlung": "Verwaltung: § 1 Abs. 2 Nr. 1 BetrKV. Neuanlage: einmalige Herstellung, keine laufende Gartenpflege (eigenes Konto 6600). Steigleitung: Instandsetzung. Rechtsschutz: keine Sach-/Haftpflichtversicherung. Alle vier bleiben beim Eigentümer, werden in den Abrechnungen aber zur Transparenz als 'nicht umgelegt' ausgewiesen.",
+      "auswirkung": "Von 12.956,72 € Belegsumme sind 8.898,32 € (68,7 %) umlagefähig."
+    },
+    {
+      "id": "A8",
+      "kategorie": "Plausibilität",
+      "titel": "Hauswart Q1 rechnet 'Kontrolle Heizungsraum' ab – das Haus hat keinen Heizungsraum",
+      "behandlung": "Alle vier Wohnungen haben Gas-Etagenthermen. Vermutlich Textbaustein aus einem anderen Objekt. Der Pauschalbetrag wird dennoch angesetzt (Vertrag vom 04.01.2021), die Leistungsbeschreibung ist aber zu klären.",
+      "auswirkung": "Rückfrage an Eigentümerin/Hauswart; kein Zahleneffekt."
+    },
+    {
+      "id": "A9",
+      "kategorie": "Plausibilität",
+      "titel": "Wasserverbrauch 320 m³ konsistent (RheinEnergie ↔ Schmutzwassergebühr Stadt Köln); Saldenkette der 12 Kontoauszüge lückenlos; alle 23 Belege vollständig bezahlt",
+      "behandlung": "Automatisch geprüft (Prüfungen I-04, I-06, P-01 im Rechenkern; Belegsummen zusätzlich gegen den PDF-Text über scripts/02_parse.py). 320 m³ / 250 m² ≈ 1,28 m³/m² bzw. ≈ 80 m³ je Wohnung – plausibel.",
+      "auswirkung": "Keine."
+    },
+    {
+      "id": "A10",
+      "kategorie": "Vertrag",
+      "titel": "Anschrift Frau Nowak nach Auszug unbekannt",
+      "behandlung": "Das Schreiben an Frau Nowak ist gesperrt: Prüfung F-08 schlägt an, das Dokument trägt sichtbar den Vermerk ENTWURF und darf nicht versandt werden. Sobald die Anschrift eingetragen ist, verschwindet der Vermerk. Frist § 556 Abs. 3 BGB: 31.12.2026.",
+      "auswirkung": "Rückfrage."
+    }
+  ],
+  "protokoll": [
+    {
+      "zeitpunkt": "2026-09-22",
+      "wer": "Aaron",
+      "was": "Falldatei aus v1-Daten erzeugt",
+      "warum": "Umstellung auf eine einzige, versendbare Falldatei (siehe SPEC.md, ADR-1/ADR-3)"
+    },
+    {
+      "zeitpunkt": "2026-09-22",
+      "wer": "Aaron",
+      "was": "Rundung auf Largest-Remainder umgestellt; Befunde und Übergabedokumente auf diesen Stand gebracht",
+      "warum": "Kaufmännisches Runden je Zeile ließ 2 Cent verschwinden (SPEC.md § 9.2). Seither stimmen alle Summen exakt; die Salden von Bendel, Kestner und Ohlwein verschieben sich um je einen Cent."
+    },
+    {
+      "zeitpunkt": "2026-09-22",
+      "wer": "Aaron",
+      "was": "Jede Kostenart um Vertragsgrundlage und eine Begründung in normaler Sprache ergänzt",
+      "warum": "Eine Paragrafenangabe allein erklärt niemandem, warum ein Posten umgelegt wird oder nicht. Die Prüfung R-01 verlangt beide Seiten (BetrKV und Mietvertrag) - jetzt sind beide auch sichtbar."
+    },
+    {
+      "zeitpunkt": "2026-09-22",
+      "wer": "Aaron",
+      "was": "Prüfsummen aller 43 Originaldokumente in die Falldatei aufgenommen",
+      "warum": "Damit sich feststellen lässt, ob sich eine Unterlage seit der Erfassung geändert hat (SPEC.md § 3.5)."
+    }
+  ],
+  "unterlagen": [
+    {
+      "datei": "10_Stammdaten/10_Einheiten-_und_Mieteruebersicht.pdf",
+      "sha256": "69bb74d24c729e1d745276235a315ee17c1984d98e872eea7b56421da8ad5877",
+      "groesse": 5567
+    },
+    {
+      "datei": "10_Stammdaten/11_Kontenrahmen.pdf",
+      "sha256": "ccb65ed965e0ea4db8c3a734c9fed182ac148593ede9214dedfa82c0a5e12588",
+      "groesse": 4694
+    },
+    {
+      "datei": "10_Stammdaten/12_Energieausweis.pdf",
+      "sha256": "6c3472967c16efa18429a082109dab07434a039be0f50da07b59741a5b5c94ee",
+      "groesse": 4437
+    },
+    {
+      "datei": "20_Mietvertraege/20_Mietvertrag_WE1_Yildirim.pdf",
+      "sha256": "cfb79c14556dfefe28ef3b9e79e7043e127710059c6c7da4ca1a22e66f5c5aa8",
+      "groesse": 6636
+    },
+    {
+      "datei": "20_Mietvertraege/21_Mietvertrag_WE2_Bendel.pdf",
+      "sha256": "8be20506d8d5d50a48e91587f31ea2cc09c93851ec8c926b3576645d545f0dae",
+      "groesse": 7262
+    },
+    {
+      "datei": "20_Mietvertraege/22_Mietvertrag_WE3_Nowak.pdf",
+      "sha256": "0922e88364fb4adffaeabe226f5cf9cb2b8e7e6addaa0280e4e7a0c62936f519",
+      "groesse": 7128
+    },
+    {
+      "datei": "20_Mietvertraege/23_Mietvertrag_WE3_Kestner.pdf",
+      "sha256": "dc2ec4503a8535828733ccf96e52a555316f312444c780ced4cbaf8d31318e37",
+      "groesse": 6649
+    },
+    {
+      "datei": "20_Mietvertraege/24_Mietvertrag_WE4_Ohlwein.pdf",
+      "sha256": "934e2bab48944d86eb3bb5e4750c9819ba069839ee071babd8d3cf889aa01d37",
+      "groesse": 6593
+    },
+    {
+      "datei": "30_Rechnungen/30_Stadt-Koeln_Grundbesitzabgaben_2025.pdf",
+      "sha256": "e65722ec847759d311bef34d28dbf22c617d0ebf3da3eff878480f25ff062c87",
+      "groesse": 4148
+    },
+    {
+      "datei": "30_Rechnungen/31_RheinEnergie_Jahresrechnung_2025.pdf",
+      "sha256": "ceca64bd048b7277c0a6127b8f202cb120be8c0a7a69d443ecd603d690908216",
+      "groesse": 4094
+    },
+    {
+      "datei": "30_Rechnungen/32_Provinzial_Versicherungsbeitrag_2025.pdf",
+      "sha256": "4b87879c38fa82768524f35812ea9b221293d7d8a7348a24a3b388762d7027d1",
+      "groesse": 3727
+    },
+    {
+      "datei": "30_Rechnungen/331_Hausservice-Wilms_Q1.pdf",
+      "sha256": "6f2c8ecee56f68af2a2c0a707489d283443ff7ed2ccea07ae098b1dddaace9ec",
+      "groesse": 3434
+    },
+    {
+      "datei": "30_Rechnungen/332_Hausservice-Wilms_Q2.pdf",
+      "sha256": "e32466e03f8fb2e5b192772e26b13d88272233678e6eda5c9cd04fa0b9ac4503",
+      "groesse": 3392
+    },
+    {
+      "datei": "30_Rechnungen/333_Hausservice-Wilms_Q3.pdf",
+      "sha256": "d2838ce6ef89a23263823acdd5301ddb7de4bef15f00628c254bd2a8bb502a34",
+      "groesse": 3394
+    },
+    {
+      "datei": "30_Rechnungen/334_Hausservice-Wilms_Q4.pdf",
+      "sha256": "8536588bd6acdb263107b05e0216a4838f0d56b5e8583711225e98f7c59e4986",
+      "groesse": 3407
+    },
+    {
+      "datei": "30_Rechnungen/341_Clean-and-Go_Q1.pdf",
+      "sha256": "4c239c29c25312deb23345709fbd87616cb42ee8619ffd2f1027784e5ac5f90a",
+      "groesse": 3165
+    },
+    {
+      "datei": "30_Rechnungen/342_Clean-and-Go_Q2.pdf",
+      "sha256": "8aa2f1c489215d5df3e590335126810c6ee36093cf08006593a760e61cdcedae",
+      "groesse": 3164
+    },
+    {
+      "datei": "30_Rechnungen/343_Clean-and-Go_Q3.pdf",
+      "sha256": "4d40a334dadefc0fb8c2dd5f9bc5a15ad1f2e453c2f43195975eeade348d6f3e",
+      "groesse": 3163
+    },
+    {
+      "datei": "30_Rechnungen/344_Clean-and-Go_Q4.pdf",
+      "sha256": "c6ac01c82bb7816a0e88bd3120accbdce92703e2a440f827b5d942d5e5521fd9",
+      "groesse": 3164
+    },
+    {
+      "datei": "30_Rechnungen/351_Hausverwaltung-Rheinblick_Q1.pdf",
+      "sha256": "efb513ddd0dd1919659c0ccebd19d20681ce05c6400fcf74f411f1ca60e754d0",
+      "groesse": 3151
+    },
+    {
+      "datei": "30_Rechnungen/352_Hausverwaltung-Rheinblick_Q2.pdf",
+      "sha256": "01134630f5a0bc7781246148ad2fd3f8f552445aed476ec46c62d8864709c60c",
+      "groesse": 3144
+    },
+    {
+      "datei": "30_Rechnungen/353_Hausverwaltung-Rheinblick_Q3.pdf",
+      "sha256": "2321339cafbd1a749760b9271323e83fb54e029aadb7717f38b64286a4f3ce84",
+      "groesse": 3145
+    },
+    {
+      "datei": "30_Rechnungen/354_Hausverwaltung-Rheinblick_Q4.pdf",
+      "sha256": "343913975c4177848fd784997cdc5143b8ec5360b23f132b9bb20cdde2ca1d20",
+      "groesse": 3143
+    },
+    {
+      "datei": "30_Rechnungen/361_Gruenpflege-Bertram_Pflegeeinsatz_1.pdf",
+      "sha256": "d40c232e92d4ab1b165ca2b73164f1dbf761fcbd3968230e8fc0f67b68964d3b",
+      "groesse": 3069
+    },
+    {
+      "datei": "30_Rechnungen/362_Gruenpflege-Bertram_Pflegeeinsatz_2.pdf",
+      "sha256": "0cbce715bf420439c2760b6c42f61ef917acc9427f1e1f811f3fc1914e76f36e",
+      "groesse": 3076
+    },
+    {
+      "datei": "30_Rechnungen/363_Gruenpflege-Bertram_Pflegeeinsatz_3.pdf",
+      "sha256": "ae94c6e2b8a9eb8e64d602e289348f2491eeac167a69d17aed8742ea47fc60d7",
+      "groesse": 3073
+    },
+    {
+      "datei": "30_Rechnungen/364_Gruenpflege-Bertram_Neuanlage-Vorgarten.pdf",
+      "sha256": "3cc24a142753db0cfe80587b445f52ecf6dfcb6a9b01d1263982cdee123d9b01",
+      "groesse": 3628
+    },
+    {
+      "datei": "30_Rechnungen/37_Schornsteinfeger_Kaempgen.pdf",
+      "sha256": "789f7b19a3d6787648e053e7a839a20269a638432a2cf5b1d3e0f4e9a3c2a6c4",
+      "groesse": 3433
+    },
+    {
+      "datei": "30_Rechnungen/38_SafeAlarm_Wartung-Rauchwarnmelder.pdf",
+      "sha256": "439d016f9d824aa57a98077b4d41af2fec66671dd26e1de702d9101ae9b51b35",
+      "groesse": 3134
+    },
+    {
+      "datei": "30_Rechnungen/39_Sanitaer-Doblinger_Steigleitung.pdf",
+      "sha256": "9df3ff23f94fe741ab849765446d40f7de5f2ba79a5cc9fbad759d3033decf32",
+      "groesse": 3502
+    },
+    {
+      "datei": "30_Rechnungen/40_Vodafone_Jahresuebersicht-Kabel.pdf",
+      "sha256": "5e617642b0f164a629a1169808ae9b88616439368b215e611cc562c73c7c0130",
+      "groesse": 4167
+    },
+    {
+      "datei": "40_Kontoauszuege/501_Kontoauszug_01_Januar_2025.pdf",
+      "sha256": "100c27828614c3e435cd3d4917077da9cf85e211243c0ad1b11906d6299e94fb",
+      "groesse": 4285
+    },
+    {
+      "datei": "40_Kontoauszuege/502_Kontoauszug_02_Februar_2025.pdf",
+      "sha256": "516fece03dcd192c46261adf1ee0635c07c7f2dfc021f17c87dbf2491f407aed",
+      "groesse": 4050
+    },
+    {
+      "datei": "40_Kontoauszuege/503_Kontoauszug_03_März_2025.pdf",
+      "sha256": "772cdee4cf1cd2c4f616bf3e6b5c4a2d2519a4af551e38c8b84aee49dc32c1b2",
+      "groesse": 4028
+    },
+    {
+      "datei": "40_Kontoauszuege/504_Kontoauszug_04_April_2025.pdf",
+      "sha256": "22d6a3bc803606932aeeaf1087169e8f8f2c82650c55e7b8ebe03ed6b740cffe",
+      "groesse": 4276
+    },
+    {
+      "datei": "40_Kontoauszuege/505_Kontoauszug_05_Mai_2025.pdf",
+      "sha256": "c9c42bd5e4a08e687299cf47ebe02883ede13fcde88807eb3a09789332de596c",
+      "groesse": 4129
+    },
+    {
+      "datei": "40_Kontoauszuege/506_Kontoauszug_06_Juni_2025.pdf",
+      "sha256": "d7bbd48d72af51615f195b57ca86b711a3408267357164c0a8f45456524051a6",
+      "groesse": 4023
+    },
+    {
+      "datei": "40_Kontoauszuege/507_Kontoauszug_07_Juli_2025.pdf",
+      "sha256": "f2f9f37f906c8c3b195dc0490a0e478feec01698efa2876001b4ce9f4160f5d7",
+      "groesse": 4260
+    },
+    {
+      "datei": "40_Kontoauszuege/508_Kontoauszug_08_August_2025.pdf",
+      "sha256": "b295843a8c2b48e0c9356eac56926f5b34cb45050250532cc166a879c3d147ee",
+      "groesse": 4135
+    },
+    {
+      "datei": "40_Kontoauszuege/509_Kontoauszug_09_September_2025.pdf",
+      "sha256": "57901d606db6ae2444fb71477da52b5ca53721e8c0ebe307f03c4e1ee461613c",
+      "groesse": 3961
+    },
+    {
+      "datei": "40_Kontoauszuege/510_Kontoauszug_10_Oktober_2025.pdf",
+      "sha256": "f9b4c66159c8a833efcb1531588b8891d2bbabef1e877ba220022d37bf0987f4",
+      "groesse": 4209
+    },
+    {
+      "datei": "40_Kontoauszuege/511_Kontoauszug_11_November_2025.pdf",
+      "sha256": "fb7364cf6178abd1c0ab074c7b934cc63e87c0c946bef6ea3e7c5bc6239c6d1a",
+      "groesse": 4071
+    },
+    {
+      "datei": "40_Kontoauszuege/512_Kontoauszug_12_Dezember_2025.pdf",
+      "sha256": "ffde93a628c39361b6a609dcdc3078dfdfb142e8ca5be1f7ca2d4c2384ce3548",
+      "groesse": 3960
+    }
+  ]
+}

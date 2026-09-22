@@ -1,0 +1,96 @@
+Hausverwaltung Rheinblick GmbH                                                                    Sudermanstraße 9
+                                                                                                        50670 Köln
+
+
+
+Objekt                                                                   Objekt-Nr.   0218-SUE
+Berrenrather Straße 218                                                  Fassung      01/2025
+50937 Köln
+
+
+
+ Kontenrahmen Immobilienbewirtschaftung
+ Verwendeter Kontenrahmen für die laufende Objektbuchhaltung. Die Zuordnung der Belege zu den Konten erfolgt bei
+ Rechnungseingang.
+
+
+ Bestandskonten
+   Konto              Bezeichnung
+
+   1200               Bank – Geschäftskonto
+
+   1210               Bank – Kautionskonto
+
+   1400               Forderungen aus Vermietung
+
+   1600               Verbindlichkeiten aus Lieferungen und Leistungen
+
+   1700               Erhaltene Mietkautionen
+
+
+ Erlöskonten
+   Konto              Bezeichnung
+
+   4100               Mieterlöse Wohnraum
+
+   4200               Nebenkostenvorauszahlungen
+
+   4300               Nebenkostenabrechnung – Nachforderung/Guthaben
+
+   4900               Sonstige Erträge
+
+
+ Aufwandskonten
+   Konto              Bezeichnung
+
+   6100               Grundsteuer
+
+   6110               Abfallentsorgung
+
+   6120               Straßenreinigung
+
+   6130               Entwässerung (Schmutz- und Niederschlagswasser)
+
+   6140               Wasserversorgung
+
+   6150               Allgemeinstrom
+
+   6200               Sach- und Haftpflichtversicherung Gebäude
+
+   6210               Rechtsschutzversicherung
+
+   6300               Hauswart
+
+   6310               Gartenpflege
+
+   6320               Gebäudereinigung
+
+   6330               Schornsteinfeger
+
+   6340               Wartung technischer Anlagen
+
+   6350               Breitband-/Kabelanschluss
+
+
+
+
+Berrenrather Straße 218, 50937 Köln · Kontenrahmen                                                          Seite 1
+   Konto              Bezeichnung
+
+   6400               Instandhaltung und Instandsetzung
+
+   6410               Kleinreparaturen
+
+   6500               Verwaltervergütung
+
+   6600               Außenanlagen – Neuanlage und Erweiterung
+
+   6700               Zinsen und Gebühren
+
+   6900               Sonstige betriebliche Aufwendungen
+
+
+
+
+Berrenrather Straße 218, 50937 Köln · Kontenrahmen               Seite 2
+

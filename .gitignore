@@ -1,0 +1,13 @@
+# macOS legt in jedem Ordner eine unsichtbare Datei mit Ansichtseinstellungen an.
+.DS_Store
+
+# Die Aufgabenstellung selbst ist nicht Teil der Lösung.
+00_Case-Brief.pdf
+02_extracted/00_Case-Brief.txt
+
+# Bewusst NICHT ausgeschlossen, obwohl man das üblicherweise täte:
+#   dist/         das fertige Ergebnis soll ohne Bauen anklickbar sein
+#   vendor/       die Lösung soll ohne Installation laufen (siehe vendor/HERKUNFT.md)
+#   app/fall.js   sonst funktioniert app/index.html nach einem Klonen nicht;
+#                 ein Test wacht darüber, dass die Datei zur Falldatei passt
+#   02_extracted/ nachvollziehbare Grundlage der erfassten Daten

@@ -1,0 +1,61 @@
+{
+  "_zweck": "Sollwerte (Golden Values) der Abrechnung 2025. Von Hand nach der Regel aus SPEC.md § 2.3 (Largest-Remainder) hergeleitet und geprüft. Weicht der Rechenkern hiervon ab, ist ENTWEDER der Code ODER diese Datei falsch - beides muss aufgeklärt werden, bevor weitergearbeitet wird.",
+  "_stand": "2026-09-22",
+  "_einstellungen_unter_denen_diese_werte_gelten": {
+    "zeitanteil_methode": "tage",
+    "vorauszahlungen_ansatz": "ist",
+    "kostenansatz": "leistung"
+  },
+
+  "summen_euro": {
+    "belege_gesamt": 12956.72,
+    "umlagefaehig": 8898.32,
+    "nicht_umlagefaehig": 4058.40
+  },
+
+  "jahresanteil_je_einheit_euro": {
+    "_hinweis": "Anteil der Wohnung an den umlagefähigen Kosten, ganzes Jahr. Die Summe muss exakt 8.898,32 EUR ergeben (Prüfung A-02).",
+    "WE 1": 2206.78,
+    "WE 2": 1726.28,
+    "WE 3": 2989.83,
+    "WE 4": 1975.43
+  },
+
+  "referenz_mietverhaeltnis": {
+    "_hinweis": "WE 1 Yildirim, ganzjährig, Flächenanteil 62,00/250,00 m² = 24,800 %. Zeile für Zeile von Hand nachgerechnet.",
+    "id": "WE1_Yildirim",
+    "zeilen_euro": [
+      { "kostenart": "grundsteuer",       "gesamt": 1096.00, "anteil": 271.81 },
+      { "kostenart": "wasser",            "gesamt":  892.40, "anteil": 221.31,
+        "_herleitung": "892,40 x 24,8 % = 221,3152. Abgerundet 221,31. Die 2 Restcent der Kostenart gehen an WE 3 (Nachkomma 0,64) und WE 2 (0,56) - WE 1 hat nur 0,52." },
+      { "kostenart": "entwaesserung",     "gesamt": 1160.40, "anteil": 287.78 },
+      { "kostenart": "strassenreinigung", "gesamt":  214.40, "anteil":  53.17 },
+      { "kostenart": "muell",             "gesamt":  764.00, "anteil": 189.47 },
+      { "kostenart": "gebaeudereinigung", "gesamt":  756.00, "anteil": 187.49 },
+      { "kostenart": "gartenpflege",      "gesamt":  735.00, "anteil": 182.28 },
+      { "kostenart": "allgemeinstrom",    "gesamt":  384.20, "anteil":  95.28 },
+      { "kostenart": "schornsteinfeger",  "gesamt":  218.40, "anteil":  54.16 },
+      { "kostenart": "versicherung",      "gesamt": 1148.52, "anteil": 284.84,
+        "_herleitung": "1.148,52 x 24,8 % = 284,83296. Abgerundet 284,83. Der 1 Restcent der Kostenart geht an WE 1, weil 0,296 der größte Nachkommateil ist." },
+      { "kostenart": "hauswart",          "gesamt": 1440.00, "anteil": 357.12 },
+      { "kostenart": "rauchwarnmelder",   "gesamt":   89.00, "anteil":  22.07 }
+    ],
+    "summe": 2206.78,
+    "vorauszahlungen": 1560.00,
+    "saldo": 646.78
+  },
+
+  "ergebnis_je_mietverhaeltnis_euro": {
+    "WE1_Yildirim": { "tage": 365, "anteil": 2206.78, "vorauszahlung": 1560.00, "saldo":  646.78 },
+    "WE2_Bendel":   { "tage": 365, "anteil": 1726.28, "vorauszahlung": 1440.00, "saldo":  286.28 },
+    "WE3_Nowak":    { "tage": 212, "anteil": 1736.56, "vorauszahlung": 1260.00, "saldo":  476.56 },
+    "WE3_Kestner":  { "tage": 153, "anteil": 1253.27, "vorauszahlung": 1000.00, "saldo":  253.27 },
+    "WE4_Ohlwein":  { "tage": 365, "anteil": 1975.43, "vorauszahlung": 1650.00, "saldo":  325.43 }
+  },
+
+  "erwartete_warnungen": {
+    "_hinweis": "Diese Prüfungen MÜSSEN anschlagen - sie sind die echten Befunde im Datenbestand. Schlagen sie nicht mehr an, wurde etwas kaputt gemacht.",
+    "P-02": "fehlender Mieteingang Oktober 2025 (Ohlwein)",
+    "P-02b": "Staffelmiete Bendel nicht vereinnahmt"
+  }
+}

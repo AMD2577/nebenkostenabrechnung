@@ -1,0 +1,31 @@
+# Bewirtschaftungs-Check – Empfehlungen an die Eigentümerin
+
+Grundlage: die 44 Unterlagen des Objekts (Verträge, 23 Belege, 12 Kontoauszüge 2025). Alle Zahlen sind aus den Dokumenten abgeleitet und in der Lösung nachvollziehbar (`dist/Nebenkostenabrechnung_2025.html`, Reiter *Übersicht* und *Prüfungen*).
+
+## 1. Mietbuchhaltung und Forderungsmanagement in Ordnung bringen – 1.480 € allein 2025 liegen gelassen
+
+**Befund.**
+- Herr Bendel (WE 2) hat seit 11.08.2022 eine Staffelmiete (§ 3a): 490 € ab 09/2023, 515 € ab 09/2024, 545 € ab 09/2025. Er zahlt bis heute 465 €, und die Stammdaten „laut Buchhaltung“ führen ebenfalls 465 €. Die Staffel wurde schlicht nie umgesetzt. Mindereinnahme 2025: **720 €**; seit 09/2023 kumuliert: **1.220 €**; ab 2026 laufend **960 €/Jahr**.
+- Frau Ohlwein (WE 4) hat im Oktober 2025 keine Miete überwiesen (**760 €**). In den Auszügen November/Dezember ist keine Nachzahlung und keine Mahngebühr zu sehen – der Rückstand ist offenbar niemandem aufgefallen.
+
+**Empfehlung.** Beide Beträge jetzt schriftlich nachfordern (Staffel: Verjährung der Ansprüche aus 2023 läuft am 31.12.2026 ab, § 195 BGB). Dann die Ursache abstellen: Die Hausverwaltung Rheinblick erhält 1.176 €/Jahr ausdrücklich „für Mietbuchhaltung, Zahlungsverkehr, Mieterkorrespondenz“ – ein monatlicher Soll/Ist-Abgleich der Mieteingänge gehört dazu. Verlangen Sie einen monatlichen Report (Soll je Mieter lt. Vertrag inkl. Staffeln vs. Eingang), oder legen Sie die Staffeltermine selbst als Erinnerung an. Der Abgleich ist trivial – das Skript dieser Abrechnung findet beide Fälle automatisch.
+
+## 2. Vorauszahlungen anpassen – sie decken nur 77 % der tatsächlichen Betriebskosten
+
+**Befund.** Umlagefähige Kosten 2025: 8.898 € = 35,59 €/m²·Jahr (2,97 €/m²·Monat). Vereinbarte Vorauszahlungen: 600 €/Monat = 7.200 €/Jahr (bei Vollvermietung; 2025 tatsächlich 6.910 € durch Mieterwechsel und den fehlenden Oktober). Folge: **alle fünf Mietverhältnisse enden mit Nachzahlung**, in Summe 1.988 €, bei Familie Yildirim allein 647 €. Auffällig: Selbst der im Juli 2025 neu abgeschlossene Vertrag Kestner wurde mit 200 € angesetzt, obwohl die Wohnung rund 250 €/Monat verursacht – die Vorauszahlung wurde bei der Neuvermietung nicht neu kalkuliert.
+
+**Empfehlung.** Mit den Abrechnungen die Vorauszahlungen nach § 560 Abs. 4 BGB anpassen (bereits in den Schreiben enthalten): WE 1 → 184 €, WE 2 → 144 €, WE 3 → 250 €, WE 4 → 165 €; zusammen 743 €/Monat statt 600 €. Das ist keine Mehreinnahme, aber es vermeidet Liquiditätslücken, jährliche Nachzahlungsdiskussionen und das Ausfallrisiko bei Auszug (Nowak: 477 € Nachforderung an eine Mieterin ohne bekannte Anschrift). Künftig bei jeder Neuvermietung die Vorauszahlung aus der letzten Abrechnung ableiten.
+
+## 3. Vodafone-Sammelvertrag kündigen und den Kostenblock „nicht umlagefähig“ bewusst steuern
+
+**Befund.** Von 12.957 € Belegsumme sind 4.058 € (31 %) nicht auf die Mieter umlegbar. Ein Teil davon ist unvermeidlich (Verwaltung 1.176 €, Reparatur Steigleitung 486 €) oder eine bewusste Investition (Neuanlage Vorgarten 1.480 €). Zwei Posten sind dagegen vermeidbar:
+- **Kabel-TV Sammelinkasso Vodafone, 427,20 €/Jahr.** Seit dem 01.07.2024 darf der Betrag nicht mehr als Betriebskosten umgelegt werden (Ende des Nebenkostenprivilegs, § 71 TKG). Die Eigentümerin bezahlt also seit 18 Monaten einen Fernsehanschluss für vier Haushalte, den die Mieter kostenlos nutzen und für den es keinen Gegenwert gibt. Der Gestattungsvertrag vom 09.02.2017 verlängert sich jährlich um 12 Monate und ist mit 3 Monaten Frist kündbar.
+- **Rechtsschutz für Vermieter, 189 €/Jahr** (nicht umlagefähig). Bei einem Objekt ohne laufende Rechtsstreitigkeiten ist zu prüfen, ob die Deckung (SB 250 €) den Beitrag wert ist; das ist eine Ermessensfrage, keine Pflicht.
+
+**Empfehlung.** Vodafone zum nächstmöglichen Termin kündigen (Kündigung bis spätestens 3 Monate vor dem Vertragsjahresende am 08.02.) und die Mieter rechtzeitig informieren, dass sie eigene Verträge (Kabel, Streaming, DVB-T2) schließen können. Ersparnis **427 €/Jahr**. Allgemein: In der Buchhaltung die nicht umlagefähigen Konten (6400, 6500, 6600, 6210, 6350) getrennt führen – die Hauswart-Rechnungen zeigen, wie leicht Instandhaltung (300 € in 2025) sonst in die Umlage rutscht.
+
+## Weitere Hinweise (kurz)
+
+- **Liquidität und Energiezustand.** Das Objektkonto ist 2025 von 4.181 € auf 26.090 € gewachsen (Überschuss ≈ 21.900 €). Gleichzeitig ist das Haus Effizienzklasse F (178 kWh/m²·a); der Energieausweis nennt zwei Maßnahmen mit „geringem“ Aufwand (Dämmung oberste Geschossdecke, Kellerdecke). Das Guthaben ist der natürliche Startpunkt für eine Instandhaltungsrücklage und diese beiden Maßnahmen – sie senken die Gaskosten der Mieter (Argument bei Neuvermietung, Modernisierungsumlage nach § 559 BGB möglich) und verhindern, dass die nächste Steigleitungsreparatur die Rücklage leert.
+- **Hauswartvertrag prüfen.** Die Q1-Rechnung führt „Kontrolle Heizungsraum“ auf – das Haus hat keinen. Leistungsbeschreibung und Pauschale (1.440 €/Jahr für ein 4-Parteien-Haus, zusätzlich 300 € Kleinreparaturen) gegen den Vertrag vom 04.01.2021 abgleichen; Laubbeseitigung wird 2025 sowohl vom Hauswart (Q4) als auch von der Gartenpflege (Oktober) berechnet.
+- **Stammdaten pflegen.** Die Einheitenübersicht der Verwaltung zeigt bei Bendel eine falsche Miete und der Vertrag Nowak eine andere Fläche als das Aufmaß. Eine einzige gepflegte Quelle (die JSON-Dateien dieses Projekts genügen dafür) verhindert, dass solche Abweichungen jedes Jahr neu in die Abrechnung wandern.

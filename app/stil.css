@@ -1,0 +1,204 @@
+/* =============================================================================
+ * GESTALTUNG
+ * =============================================================================
+ * Zwei Welten in einer Datei:
+ *   1. BILDSCHIRM - die Bedienoberfläche (Reiter, Tabellen, Schalter)
+ *   2. DRUCK      - die Abrechnungsschreiben auf A4
+ * Im Druck wird die Oberfläche komplett ausgeblendet; übrig bleiben nur die
+ * Schreiben, jedes auf einer eigenen Seite. Deshalb sieht man am Bildschirm
+ * genau das, was später auf dem Papier steht.
+ * ========================================================================== */
+
+:root {
+  --papier: #ffffff;
+  --hintergrund: #f4f6f8;
+  --linie: #dfe3e8;
+  --text: #1b1f24;
+  --gedaempft: #5f6b7a;
+  --akzent: #1f4e8c;
+  --gut: #1a7f4b;
+  --warnung: #b45309;
+  --schlecht: #b91c1c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--hintergrund);
+}
+
+/* --- Kopf und Reiter ------------------------------------------------------ */
+header.kopf {
+  background: #fff; border-bottom: 1px solid var(--linie);
+  padding: 12px 22px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;
+}
+header.kopf h1 { font-size: 16px; margin: 0; }
+header.kopf .unterzeile { color: var(--gedaempft); font-size: 12.5px; }
+header.kopf .werkzeuge { margin-left: auto; display: flex; gap: 8px; }
+
+nav.reiter {
+  background: #fff; border-bottom: 1px solid var(--linie);
+  padding: 8px 22px 0; display: flex; gap: 4px; flex-wrap: wrap;
+}
+nav.reiter button {
+  border: 1px solid transparent; border-bottom: none; background: none;
+  padding: 8px 14px; font-size: 14px; cursor: pointer;
+  color: var(--gedaempft); border-radius: 6px 6px 0 0;
+}
+nav.reiter button.aktiv {
+  background: var(--hintergrund); color: var(--text);
+  border-color: var(--linie); font-weight: 600;
+}
+
+main { padding: 18px 22px 60px; max-width: 1180px; margin: 0 auto; }
+
+/* --- Bausteine ------------------------------------------------------------ */
+.kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.kachel { background: #fff; border: 1px solid var(--linie); border-radius: 8px; padding: 11px 13px; }
+.kachel .titel { color: var(--gedaempft); font-size: 12px; }
+.kachel .wert { font-size: 19px; font-weight: 600; margin-top: 2px; }
+
+.karte { background: #fff; border: 1px solid var(--linie); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+.karte h2 { font-size: 15px; margin: 0 0 10px; }
+
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--linie); vertical-align: top; }
+th { color: var(--gedaempft); font-weight: 600; font-size: 12.5px; }
+td.r, th.r { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+tr.summe td { font-weight: 600; border-top: 2px solid #999; }
+tr.klickbar { cursor: pointer; }
+tr.klickbar:hover { background: #eef3fa; }
+
+.klein { color: var(--gedaempft); font-size: 11.5px; font-weight: normal; }
+.grund { font-size: 12.5px; color: #2c3440; margin: 3px 0; max-width: 60em; }
+.plus { color: var(--schlecht); }
+.minus { color: var(--gut); }
+
+button { font-family: inherit; }
+button.knopf {
+  border: 1px solid var(--linie); background: #fff; border-radius: 6px;
+  padding: 6px 12px; cursor: pointer; font-size: 13px;
+}
+button.knopf:hover { background: #eef3fa; border-color: var(--akzent); }
+button.knopf.haupt { background: var(--akzent); color: #fff; border-color: var(--akzent); }
+button.knopf:disabled, button.knopf.haupt:disabled {
+  background: #e9ecef; color: #9aa4b0; border-color: var(--linie); cursor: not-allowed;
+}
+
+.marke { display: inline-block; font-size: 11.5px; padding: 1px 7px; border-radius: 10px; border: 1px solid; }
+.marke.gut { color: var(--gut); border-color: var(--gut); }
+.marke.schlecht { color: var(--schlecht); border-color: var(--schlecht); }
+.marke.warnung { color: var(--warnung); border-color: var(--warnung); }
+
+.befund { border-left: 3px solid var(--warnung); padding: 7px 12px; margin: 8px 0; background: #fffaf3; border-radius: 0 6px 6px 0; }
+.befund.ok { border-color: var(--gut); background: #f2faf5; }
+.befund.info { border-color: var(--akzent); background: #f3f7fd; }
+.befund b { display: block; }
+
+details summary { cursor: pointer; color: var(--akzent); font-size: 12.5px; }
+
+/* --- Beleg erfassen ------------------------------------------------------- */
+.ablage {
+  border: 2px dashed var(--linie); border-radius: 8px; padding: 26px; text-align: center;
+  color: var(--gedaempft); background: #fbfcfd;
+}
+.ablage.bereit { border-color: var(--akzent); background: #eef3fa; color: var(--akzent); }
+textarea { width: 100%; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px;
+  border: 1px solid var(--linie); border-radius: 6px; padding: 8px; margin: 8px 0; }
+input.feld, select.feld {
+  width: 100%; border: 1px solid var(--linie); border-radius: 5px; padding: 4px 7px;
+  font-family: inherit; font-size: 13px; background: #fff;
+}
+input.feld:focus, select.feld:focus { outline: 2px solid var(--akzent); outline-offset: -1px; }
+pre.dokumenttext {
+  background: #f7f9fb; border: 1px solid var(--linie); border-radius: 6px; padding: 10px;
+  font-size: 11.5px; max-height: 320px; overflow: auto; white-space: pre-wrap;
+}
+
+/* --- Einstellungen -------------------------------------------------------- */
+.schalter { display: grid; grid-template-columns: 220px 1fr; gap: 10px 16px; align-items: start; }
+.schalter label { font-weight: 600; }
+.schalter .auswahl { display: flex; gap: 6px; flex-wrap: wrap; }
+.schalter .auswahl button { border: 1px solid var(--linie); background: #fff; border-radius: 6px; padding: 5px 11px; cursor: pointer; font-size: 13px; }
+.schalter .auswahl button.aktiv { background: var(--akzent); color: #fff; border-color: var(--akzent); }
+
+.diff { background: #fffdf5; border: 1px solid var(--warnung); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
+
+/* =============================================================================
+ * DAS SCHREIBEN (Bildschirm: wie Papier; Druck: A4)
+ * ========================================================================== */
+.papier {
+  background: var(--papier); border: 1px solid var(--linie); border-radius: 4px;
+  padding: 18mm; margin: 0 auto 16px; max-width: 210mm;
+}
+
+.schreiben { font-size: 10.5pt; line-height: 1.4; }
+.schreiben .briefkopf {
+  display: flex; justify-content: space-between; font-size: 9pt;
+  color: #444; border-bottom: 1px solid #999; padding-bottom: 6px; margin-bottom: 22px;
+}
+.schreiben .rechts { text-align: right; }
+.schreiben .datumzeile { float: right; font-size: 9pt; text-align: right; }
+.schreiben .anschriftenfeld { min-height: 32mm; }
+.schreiben .absenderzeile { font-size: 7.5pt; color: #666; text-decoration: underline; margin-bottom: 8px; }
+.schreiben h1 { font-size: 15pt; margin: 18px 0 4px; }
+.schreiben .untertitel { color: #444; margin-bottom: 14px; }
+.schreiben h2 {
+  font-size: 11pt; margin: 18px 0 6px;
+  /* Eine Überschrift allein am Seitenende, deren Inhalt erst auf der nächsten
+     Seite folgt, wirkt im Druck wie ein Fehler - deshalb wandert sie mit. */
+  page-break-after: avoid;
+}
+.schreiben h2 + p, .schreiben h2 + table { page-break-before: avoid; }
+.schreiben p { margin: 6px 0; }
+.schreiben .anrede { margin-top: 14px; }
+.schreiben table.eckdaten td { border: none; padding: 2px 8px 2px 0; }
+.schreiben table.eckdaten td:first-child { color: #555; width: 42mm; }
+.schreiben table.kosten { margin: 10px 0; font-size: 9.5pt; }
+.schreiben table.kosten th { background: #f2f2f2; border-bottom: 1px solid #999; color: #000; }
+.schreiben table.kosten tr { page-break-inside: avoid; }
+.schreiben table.kosten tr.summe td { border-top: 2px solid #333; border-bottom: none; }
+.schreiben table.kosten tr.ergebnis td { font-weight: 700; font-size: 11pt; background: #f7f7f7; border-bottom: 2px solid #333; }
+/* Eine IBAN darf nicht mitten im Block umbrechen - sonst steht "DE21" am
+   Zeilenende und der Rest auf der nächsten Zeile. */
+.schreiben .iban { white-space: nowrap; }
+.schreiben .grund { font-size: 9pt; color: #333; margin: 2px 0 1px; }
+.schreiben .hinweis { border: 1px solid var(--warnung); background: #fffaf3; padding: 8px 10px; margin: 10px 0; font-size: 9.5pt; }
+.schreiben .entwurfsband {
+  border: 2px solid var(--schlecht); background: #fdf2f2; color: var(--schlecht);
+  padding: 8px 10px; margin-bottom: 14px; font-size: 9.5pt;
+}
+.schreiben .entwurfsband b { display: block; letter-spacing: 0.08em; }
+.schreiben .offen { color: var(--schlecht); font-weight: 600; }
+.schreiben .gruss { margin-top: 18px; }
+/* Herleitung, Belegeinsicht und Grußformel gehören zusammen. Ohne diese Regel
+   landet die Grußformel allein auf einer sonst leeren letzten Seite. */
+.schreiben .abschluss { page-break-inside: avoid; }
+.schreiben .brieffuss { font-size: 8pt; color: #666; border-top: 1px solid #999; margin-top: 22px; padding-top: 6px; }
+
+/* Der Druckbereich ist am Bildschirm unsichtbar - er existiert nur fürs Papier. */
+#druckbereich { display: none; }
+
+/* =============================================================================
+ * DRUCK
+ * ========================================================================== */
+@media print {
+  @page { size: A4; margin: 18mm 18mm 16mm 18mm; }
+
+  body { background: #fff; }
+  header.kopf, nav.reiter, main { display: none !important; }
+
+  #druckbereich { display: block; }
+  #druckbereich .schreiben { page-break-after: always; }
+  #druckbereich .schreiben:last-child { page-break-after: auto; }
+
+  /* Wird ein einzelnes Schreiben gedruckt, blendet dieser Block alle anderen
+     aus. body[data-nur-drucken] wird dafür in app.js gesetzt. */
+  body[data-nur-drucken] #druckbereich .schreiben { display: none; }
+  body[data-nur-drucken] #druckbereich .schreiben.drucken { display: block; }
+}
