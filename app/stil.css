@@ -136,6 +136,13 @@ pre.dokumenttext {
 .speicherleiste button { margin-left: auto; white-space: nowrap; }
 .speicherleiste code { background: #f3e6c4; }
 
+.buchungsformular {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px; align-items: end;
+}
+.buchungsformular label { font-size: 12px; color: var(--gedaempft); display: block; }
+.buchungsformular input { margin-top: 3px; }
+
 .diff { background: #fffdf5; border: 1px solid var(--warnung); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
 
 /* =============================================================================

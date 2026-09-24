@@ -349,7 +349,9 @@
               ${p.begruendung ? `<div class="klein"><b>Zu diesem Beleg:</b> ${sicher(p.begruendung)}</div>` : ""}
             </div>`; }).join("")}</td>
           <td class="r">${eur(N.zuCent(b.rechnungsbetrag))}
-            <div class="klein">${stimmt ? "Positionen stimmen" : "PRÜFEN"}</div></td>
+            <div class="klein">${stimmt ? "Positionen stimmen" : "PRÜFEN"}</div>
+            <button class="knopf" data-entferne="${sicher(b.beleg)}"
+                    style="margin-top:6px">Entfernen</button></td>
         </tr>`;
     }).join("");
 
@@ -361,7 +363,22 @@
           ${zeilen}</table>
       </div>
       <div class="karte">
-        <h2>Objektkonto 2025</h2>
+        <h2>Zahlung nachtragen</h2>
+        <p class="klein">Für Zahlungen, die nicht auf dem Objektkonto erscheinen — etwa eine Miete,
+        die auf ein anderes Konto ging. Positiver Betrag = Eingang, negativer = Abbuchung.
+        Die Zuordnung zum Mieter läuft über die Gegenpartei.</p>
+        <div class="buchungsformular">
+          <label>Datum<input class="feld" id="b_datum" type="date" value="${ergebnis.abrechnung.bis}"></label>
+          <label>Gegenpartei<input class="feld" id="b_partei" placeholder="z. B. PETRA OHLWEIN"></label>
+          <label>Verwendungszweck<input class="feld" id="b_zweck" placeholder="z. B. Miete 10/2025"></label>
+          <label>Betrag in €<input class="feld" id="b_betrag" type="number" step="0.01" placeholder="760.00"></label>
+          <label>Grund fürs Protokoll<input class="feld" id="b_grund" placeholder="z. B. Zahlung ging auf das Privatkonto"></label>
+          <button class="knopf haupt" data-aktion="buchung">Buchung nachtragen</button>
+        </div>
+      </div>
+
+      <div class="karte">
+        <h2>Objektkonto ${ergebnis.abrechnung.von.slice(0, 4)}</h2>
         <p class="klein">${fall.buchungen.length} Buchungen aus ${fall.kontoauszuege.length}
         Kontoauszügen. Die Saldenkette wird bei jedem Lauf geprüft (Prüfung I-06).</p>
         <table><tr><th>Monat</th><th class="r">Anfangsbestand</th><th class="r">Endbestand</th></tr>
@@ -668,6 +685,37 @@
     if (dateiwahl) dateiwahl.addEventListener("change", importiere);
 
     verdrahteErfassen();
+    verdrahteBelege();
+  }
+
+  /* ---- Belege entfernen und Buchungen nachtragen ------------------------- */
+  function verdrahteBelege() {
+    document.querySelectorAll("[data-entferne]").forEach((el) =>
+      el.addEventListener("click", () => {
+        const name = el.dataset.entferne;
+        // Der Grund wandert ins Protokoll - ein Beleg soll nicht spurlos verschwinden.
+        const grund = prompt(`Beleg "${name}" entfernen.\n\nWarum? (steht später im Protokoll)`);
+        if (grund === null) return;                    // Abbruch
+        const ergebnis = EIN.entferneBeleg(fall, name, grund);
+        if (!ergebnis.entfernt) { alert(ergebnis.fehler.join("\n")); return; }
+        ungespeichert = true;
+        neuBerechnen(true);
+      }));
+
+    const buchungsknopf = document.querySelector('[data-aktion="buchung"]');
+    if (!buchungsknopf) return;
+    buchungsknopf.addEventListener("click", () => {
+      const wert = (id) => document.getElementById(id).value;
+      const ergebnis = EIN.fuegeBuchungHinzu(fall, {
+        datum: wert("b_datum"),
+        gegenpartei: wert("b_partei"),
+        zweck: wert("b_zweck"),
+        betrag: wert("b_betrag"),
+      }, wert("b_grund"));
+      if (!ergebnis.hinzugefuegt) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
+      ungespeichert = true;
+      neuBerechnen(true);
+    });
   }
 
   /* ---- Knöpfe und Felder der Ansicht "Beleg erfassen" -------------------- */

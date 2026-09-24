@@ -143,6 +143,13 @@ pre.dokumenttext {
 .speicherleiste button { margin-left: auto; white-space: nowrap; }
 .speicherleiste code { background: #f3e6c4; }
 
+.buchungsformular {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px; align-items: end;
+}
+.buchungsformular label { font-size: 12px; color: var(--gedaempft); display: block; }
+.buchungsformular input { margin-top: 3px; }
+
 .diff { background: #fffdf5; border: 1px solid var(--warnung); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
 
 /* =============================================================================
@@ -3918,8 +3925,69 @@ window.FALL = {
     return { uebernommen: true, fehler: [] };
   }
 
+  /**
+   * Entfernt einen Beleg aus dem Fall.
+   *
+   * Wozu: Ein Beleg kann falsch sein - falsches Objekt, Dublette, oder es kommt
+   * eine korrigierte Fassung. Ohne diese Funktion könnte man Belege nur
+   * hinzufügen, nie zurücknehmen; ein Austausch wäre unmöglich.
+   * Der Vorgang landet im Protokoll, damit später nachvollziehbar bleibt,
+   * warum ein Beleg verschwunden ist.
+   */
+  function entferneBeleg(fall, belegName, grund) {
+    const stelle = fall.belege.findIndex((b) => b.beleg === belegName);
+    if (stelle === -1) return { entfernt: false, fehler: [`Beleg "${belegName}" nicht gefunden`] };
+
+    const [entfernt] = fall.belege.splice(stelle, 1);
+    fall.protokoll = fall.protokoll || [];
+    fall.protokoll.push({
+      zeitpunkt: new Date().toISOString().slice(0, 19).replace("T", " "),
+      wer: "Oberfläche",
+      was: `Beleg "${belegName}" über ${entfernt.rechnungsbetrag.toFixed(2)} € entfernt`,
+      warum: grund || "kein Grund angegeben",
+    });
+    return { entfernt: true, beleg: entfernt, fehler: [] };
+  }
+
+  /**
+   * Nimmt eine einzelne Kontobewegung auf.
+   *
+   * Wozu: Nicht jede Zahlung steht auf dem Objektkonto. Geht eine Miete auf ein
+   * anderes Konto ein oder taucht ein Beleg später auf, muss sich die Buchung
+   * nachtragen lassen - sonst rechnet die Abrechnung mit einer Zahlung, die es
+   * gegeben hat, aber nicht sichtbar ist.
+   *
+   * Positiver Betrag = Eingang (Miete), negativer = Abbuchung (Rechnung).
+   */
+  function fuegeBuchungHinzu(fall, buchung, grund) {
+    const fehler = [];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(buchung.datum || "")) fehler.push("Datum fehlt oder hat nicht die Form JJJJ-MM-TT");
+    if (!String(buchung.gegenpartei || "").trim()) fehler.push("Gegenpartei fehlt - darüber wird die Zahlung zugeordnet");
+    const betrag = Number(buchung.betrag);
+    if (!Number.isFinite(betrag) || betrag === 0) fehler.push("Betrag fehlt oder ist null");
+    if (fehler.length) return { hinzugefuegt: false, fehler };
+
+    fall.buchungen.push({
+      datum: buchung.datum,
+      gegenpartei: String(buchung.gegenpartei).trim(),
+      zweck: String(buchung.zweck || "").trim(),
+      betrag: Math.round(betrag * 100) / 100,
+    });
+    fall.buchungen.sort((a, b) => a.datum.localeCompare(b.datum));
+
+    fall.protokoll = fall.protokoll || [];
+    fall.protokoll.push({
+      zeitpunkt: new Date().toISOString().slice(0, 19).replace("T", " "),
+      wer: "Oberfläche",
+      was: `Buchung ${buchung.datum} ${buchung.gegenpartei} ${betrag.toFixed(2)} € nachgetragen`,
+      warum: grund || "kein Grund angegeben",
+    });
+    return { hinzugefuegt: true, fehler: [] };
+  }
+
   const API = {
     normalisiereText, textAusPdf, schlageBelegVor, pruefeVorschlag, uebernimm,
+    entferneBeleg, fuegeBuchungHinzu,
     zahlAusText, datumAusText, findePositionen, schlageKostenartVor,
   };
 
@@ -4280,7 +4348,9 @@ window.FALL = {
               ${p.begruendung ? `<div class="klein"><b>Zu diesem Beleg:</b> ${sicher(p.begruendung)}</div>` : ""}
             </div>`; }).join("")}</td>
           <td class="r">${eur(N.zuCent(b.rechnungsbetrag))}
-            <div class="klein">${stimmt ? "Positionen stimmen" : "PRÜFEN"}</div></td>
+            <div class="klein">${stimmt ? "Positionen stimmen" : "PRÜFEN"}</div>
+            <button class="knopf" data-entferne="${sicher(b.beleg)}"
+                    style="margin-top:6px">Entfernen</button></td>
         </tr>`;
     }).join("");
 
@@ -4292,7 +4362,22 @@ window.FALL = {
           ${zeilen}</table>
       </div>
       <div class="karte">
-        <h2>Objektkonto 2025</h2>
+        <h2>Zahlung nachtragen</h2>
+        <p class="klein">Für Zahlungen, die nicht auf dem Objektkonto erscheinen — etwa eine Miete,
+        die auf ein anderes Konto ging. Positiver Betrag = Eingang, negativer = Abbuchung.
+        Die Zuordnung zum Mieter läuft über die Gegenpartei.</p>
+        <div class="buchungsformular">
+          <label>Datum<input class="feld" id="b_datum" type="date" value="${ergebnis.abrechnung.bis}"></label>
+          <label>Gegenpartei<input class="feld" id="b_partei" placeholder="z. B. PETRA OHLWEIN"></label>
+          <label>Verwendungszweck<input class="feld" id="b_zweck" placeholder="z. B. Miete 10/2025"></label>
+          <label>Betrag in €<input class="feld" id="b_betrag" type="number" step="0.01" placeholder="760.00"></label>
+          <label>Grund fürs Protokoll<input class="feld" id="b_grund" placeholder="z. B. Zahlung ging auf das Privatkonto"></label>
+          <button class="knopf haupt" data-aktion="buchung">Buchung nachtragen</button>
+        </div>
+      </div>
+
+      <div class="karte">
+        <h2>Objektkonto ${ergebnis.abrechnung.von.slice(0, 4)}</h2>
         <p class="klein">${fall.buchungen.length} Buchungen aus ${fall.kontoauszuege.length}
         Kontoauszügen. Die Saldenkette wird bei jedem Lauf geprüft (Prüfung I-06).</p>
         <table><tr><th>Monat</th><th class="r">Anfangsbestand</th><th class="r">Endbestand</th></tr>
@@ -4599,6 +4684,37 @@ window.FALL = {
     if (dateiwahl) dateiwahl.addEventListener("change", importiere);
 
     verdrahteErfassen();
+    verdrahteBelege();
+  }
+
+  /* ---- Belege entfernen und Buchungen nachtragen ------------------------- */
+  function verdrahteBelege() {
+    document.querySelectorAll("[data-entferne]").forEach((el) =>
+      el.addEventListener("click", () => {
+        const name = el.dataset.entferne;
+        // Der Grund wandert ins Protokoll - ein Beleg soll nicht spurlos verschwinden.
+        const grund = prompt(`Beleg "${name}" entfernen.\n\nWarum? (steht später im Protokoll)`);
+        if (grund === null) return;                    // Abbruch
+        const ergebnis = EIN.entferneBeleg(fall, name, grund);
+        if (!ergebnis.entfernt) { alert(ergebnis.fehler.join("\n")); return; }
+        ungespeichert = true;
+        neuBerechnen(true);
+      }));
+
+    const buchungsknopf = document.querySelector('[data-aktion="buchung"]');
+    if (!buchungsknopf) return;
+    buchungsknopf.addEventListener("click", () => {
+      const wert = (id) => document.getElementById(id).value;
+      const ergebnis = EIN.fuegeBuchungHinzu(fall, {
+        datum: wert("b_datum"),
+        gegenpartei: wert("b_partei"),
+        zweck: wert("b_zweck"),
+        betrag: wert("b_betrag"),
+      }, wert("b_grund"));
+      if (!ergebnis.hinzugefuegt) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
+      ungespeichert = true;
+      neuBerechnen(true);
+    });
   }
 
   /* ---- Knöpfe und Felder der Ansicht "Beleg erfassen" -------------------- */

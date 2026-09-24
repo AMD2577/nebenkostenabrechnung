@@ -578,8 +578,69 @@
     return { uebernommen: true, fehler: [] };
   }
 
+  /**
+   * Entfernt einen Beleg aus dem Fall.
+   *
+   * Wozu: Ein Beleg kann falsch sein - falsches Objekt, Dublette, oder es kommt
+   * eine korrigierte Fassung. Ohne diese Funktion könnte man Belege nur
+   * hinzufügen, nie zurücknehmen; ein Austausch wäre unmöglich.
+   * Der Vorgang landet im Protokoll, damit später nachvollziehbar bleibt,
+   * warum ein Beleg verschwunden ist.
+   */
+  function entferneBeleg(fall, belegName, grund) {
+    const stelle = fall.belege.findIndex((b) => b.beleg === belegName);
+    if (stelle === -1) return { entfernt: false, fehler: [`Beleg "${belegName}" nicht gefunden`] };
+
+    const [entfernt] = fall.belege.splice(stelle, 1);
+    fall.protokoll = fall.protokoll || [];
+    fall.protokoll.push({
+      zeitpunkt: new Date().toISOString().slice(0, 19).replace("T", " "),
+      wer: "Oberfläche",
+      was: `Beleg "${belegName}" über ${entfernt.rechnungsbetrag.toFixed(2)} € entfernt`,
+      warum: grund || "kein Grund angegeben",
+    });
+    return { entfernt: true, beleg: entfernt, fehler: [] };
+  }
+
+  /**
+   * Nimmt eine einzelne Kontobewegung auf.
+   *
+   * Wozu: Nicht jede Zahlung steht auf dem Objektkonto. Geht eine Miete auf ein
+   * anderes Konto ein oder taucht ein Beleg später auf, muss sich die Buchung
+   * nachtragen lassen - sonst rechnet die Abrechnung mit einer Zahlung, die es
+   * gegeben hat, aber nicht sichtbar ist.
+   *
+   * Positiver Betrag = Eingang (Miete), negativer = Abbuchung (Rechnung).
+   */
+  function fuegeBuchungHinzu(fall, buchung, grund) {
+    const fehler = [];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(buchung.datum || "")) fehler.push("Datum fehlt oder hat nicht die Form JJJJ-MM-TT");
+    if (!String(buchung.gegenpartei || "").trim()) fehler.push("Gegenpartei fehlt - darüber wird die Zahlung zugeordnet");
+    const betrag = Number(buchung.betrag);
+    if (!Number.isFinite(betrag) || betrag === 0) fehler.push("Betrag fehlt oder ist null");
+    if (fehler.length) return { hinzugefuegt: false, fehler };
+
+    fall.buchungen.push({
+      datum: buchung.datum,
+      gegenpartei: String(buchung.gegenpartei).trim(),
+      zweck: String(buchung.zweck || "").trim(),
+      betrag: Math.round(betrag * 100) / 100,
+    });
+    fall.buchungen.sort((a, b) => a.datum.localeCompare(b.datum));
+
+    fall.protokoll = fall.protokoll || [];
+    fall.protokoll.push({
+      zeitpunkt: new Date().toISOString().slice(0, 19).replace("T", " "),
+      wer: "Oberfläche",
+      was: `Buchung ${buchung.datum} ${buchung.gegenpartei} ${betrag.toFixed(2)} € nachgetragen`,
+      warum: grund || "kein Grund angegeben",
+    });
+    return { hinzugefuegt: true, fehler: [] };
+  }
+
   const API = {
     normalisiereText, textAusPdf, schlageBelegVor, pruefeVorschlag, uebernimm,
+    entferneBeleg, fuegeBuchungHinzu,
     zahlAusText, datumAusText, findePositionen, schlageKostenartVor,
   };
 

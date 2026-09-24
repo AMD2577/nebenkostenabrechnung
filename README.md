@@ -236,6 +236,17 @@ verloren — für dauerhafte Änderungen die Datei in `daten/` ersetzen und neu 
 
 ---
 
+### Einen Beleg austauschen oder eine Zahlung nachtragen
+
+Im Reiter **Belege & Konto**:
+
+- **Beleg entfernen** — Knopf neben dem Betrag. Der Grund wird abgefragt und landet im Protokoll,
+  damit später nachvollziehbar bleibt, warum ein Beleg verschwunden ist. Einen Beleg *austauschen*
+  heißt: alten entfernen, neuen unter *Beleg erfassen* einlesen.
+- **Zahlung nachtragen** — für Zahlungen, die nicht auf dem Objektkonto erscheinen. Beispiel: Die
+  Oktobermiete von Frau Ohlwein ging auf ein anderes Konto. Trägt man sie nach, sinkt ihre
+  Nachzahlung von 325,43 € auf 175,43 €, und die Warnung P-02 verschwindet.
+
 ## 5 Wenn sich die Unterlagen ändern
 
 Die Falldatei ist aus den PDF-Dokumenten in `01_Unterlagen` entstanden. Wird dort etwas
