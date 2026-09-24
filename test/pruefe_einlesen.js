@@ -42,7 +42,7 @@ function test(beschreibung, fn) {
 const ergebnisse = fall.belege.map((beleg) => {
   const textdatei = pfad.join(WURZEL, "02_extracted", "30_Rechnungen", beleg.beleg.replace(/\.pdf$/, ".txt"));
   const text = fs.readFileSync(textdatei, "utf8");
-  const gelesen = E.schlageBelegVor(text, beleg.beleg, fall.objekt);
+  const gelesen = E.schlageBelegVor(text, beleg.beleg, fall);
   return { soll: beleg, gelesen };
 });
 
@@ -192,7 +192,9 @@ test("dieselbe Rechnung unter anderem Dateinamen wird abgelehnt", () => {
   const vorschlag = JSON.parse(JSON.stringify(r.gelesen.vorschlag));
   vorschlag.beleg = "ganz_anderer_name.pdf";          // anderer Dateiname
   vorschlag.bank_kennung = "CLEAN+GO";
-  vorschlag.positionen.forEach((p) => { p.kostenart = "gebaeudereinigung"; p.umlagefaehig = true; });
+  vorschlag.positionen.forEach((p) => {
+    p.entscheidung = "angenommen"; p.kostenart = "gebaeudereinigung"; p.umlagefaehig = true;
+  });
   const ergebnis = E.uebernimm(testfall, vorschlag);
   if (ergebnis.uebernommen) throw new Error("Dublette mit anderem Dateinamen wurde übernommen");
 });
@@ -213,7 +215,10 @@ test("eine Nicht-Umlage ohne Fundstelle wird abgelehnt (R-03)", () => {
   const r = ergebnisse.find((x) => x.soll.beleg === "341_Clean-and-Go_Q1.pdf");
   const vorschlag = JSON.parse(JSON.stringify(r.gelesen.vorschlag));
   vorschlag.beleg = "neuer_beleg.pdf";
-  vorschlag.positionen.forEach((p) => { p.umlagefaehig = false; p.begruendung = "will ich nicht"; });
+  // Wer vom Vorschlag abweicht, muss das belegen - eine freie Meinung genügt nicht.
+  vorschlag.positionen.forEach((p) => {
+    p.entscheidung = "abgelehnt"; p.umlagefaehig = false; p.begruendung = "will ich nicht";
+  });
   const ergebnis = E.uebernimm(testfall, vorschlag);
   if (ergebnis.uebernommen) throw new Error("wurde ohne Fundstelle übernommen");
   if (!ergebnis.fehler.some((f) => f.includes("R-03"))) throw new Error("falscher Ablehnungsgrund");
@@ -232,7 +237,9 @@ test("ein vollständiger Vorschlag wird übernommen und wirkt sich auf die Abrec
   vorschlag.rechnungsnr = "CG-26-0042";
   vorschlag.datum = "2026-01-02";
   vorschlag.bank_kennung = "CLEAN+GO";
-  vorschlag.positionen.forEach((p) => { p.kostenart = "gebaeudereinigung"; p.umlagefaehig = true; });
+  vorschlag.positionen.forEach((p) => {
+    p.entscheidung = "angenommen"; p.kostenart = "gebaeudereinigung"; p.umlagefaehig = true;
+  });
 
   const ergebnis = E.uebernimm(testfall, vorschlag);
   if (!ergebnis.uebernommen) throw new Error("abgelehnt: " + ergebnis.fehler.join(", "));
@@ -252,9 +259,56 @@ test("derselbe Beleg kann nicht zweimal erfasst werden (I-07)", () => {
   const testfall = JSON.parse(JSON.stringify(fall));
   const r = ergebnisse.find((x) => x.soll.beleg === "341_Clean-and-Go_Q1.pdf");
   const vorschlag = JSON.parse(JSON.stringify(r.gelesen.vorschlag));
-  vorschlag.positionen.forEach((p) => { p.kostenart = "gebaeudereinigung"; p.umlagefaehig = true; });
+  vorschlag.positionen.forEach((p) => {
+    p.entscheidung = "angenommen"; p.kostenart = "gebaeudereinigung"; p.umlagefaehig = true;
+  });
   const ergebnis = E.uebernimm(testfall, vorschlag);   // Name existiert bereits
   if (ergebnis.uebernommen) throw new Error("Dublette wurde übernommen");
+});
+
+console.log("\n5. Vorschlag annehmen oder ablehnen");
+
+test("ohne Entscheidung wird nichts übernommen", () => {
+  const testfall = JSON.parse(JSON.stringify(fall));
+  const r = ergebnisse.find((x) => x.soll.beleg === "361_Gruenpflege-Bertram_Pflegeeinsatz_1.pdf");
+  const v = JSON.parse(JSON.stringify(r.gelesen.vorschlag));
+  v.beleg = "neu.pdf"; v.rechnungsnr = "N-1"; v.datum = "2026-05-01"; v.bank_kennung = "BERTRAM";
+  const ergebnis = E.uebernimm(testfall, v);
+  if (ergebnis.uebernommen) throw new Error("ohne Klick übernommen");
+  if (!ergebnis.fehler.some((f) => f.includes("nicht entschieden"))) {
+    throw new Error("falscher Grund: " + ergebnis.fehler.join("; "));
+  }
+});
+
+test("der Vorschlag trägt Begründung, Fundstellen und Sicherheit", () => {
+  const doblinger = ergebnisse.find((x) => x.soll.beleg === "39_Sanitaer-Doblinger_Steigleitung.pdf");
+  const v = doblinger.gelesen.vorschlag.positionen[0].vorschlag_umlage;
+  gleich(v.kostenart, "instandhaltung", "Kostenart");
+  gleich(v.umlagefaehig, false, "nicht umlagefähig");
+  gleich(v.sicherheit, "Betreff", "nur über die Betreffzeile erkannt");
+  if (!v.warum || !v.betrkv) throw new Error("Begründung oder Rechtsgrundlage fehlt");
+
+  const garten = ergebnisse.find((x) => x.soll.beleg === "361_Gruenpflege-Bertram_Pflegeeinsatz_1.pdf");
+  const g = garten.gelesen.vorschlag.positionen[0].vorschlag_umlage;
+  gleich(g.umlagefaehig, true, "Gartenpflege umlagefähig");
+  gleich(g.sicherheit, "Position", "sicher aus der Positionszeile erkannt");
+});
+
+test("ein angenommener Vorschlag braucht keine eigene Begründung", () => {
+  const testfall = JSON.parse(JSON.stringify(fall));
+  const r = ergebnisse.find((x) => x.soll.beleg === "361_Gruenpflege-Bertram_Pflegeeinsatz_1.pdf");
+  const v = JSON.parse(JSON.stringify(r.gelesen.vorschlag));
+  v.beleg = "neu2.pdf"; v.rechnungsnr = "N-2"; v.datum = "2026-05-02"; v.bank_kennung = "BERTRAM";
+  v.positionen.forEach((p) => {
+    p.entscheidung = "angenommen";
+    p.kostenart = p.vorschlag_umlage.kostenart;
+    p.umlagefaehig = p.vorschlag_umlage.umlagefaehig;
+    p.begruendung = [p.vorschlag_umlage.betrkv, p.vorschlag_umlage.vertrag].filter(Boolean).join(" · ");
+  });
+  const ergebnis = E.uebernimm(testfall, v);
+  if (!ergebnis.uebernommen) throw new Error("abgelehnt: " + ergebnis.fehler.join("; "));
+  const eintrag = testfall.protokoll.slice(-1)[0];
+  if (!eintrag.was.includes("angenommen")) throw new Error("Protokolleintrag fehlt");
 });
 
 console.log(`\n${"=".repeat(70)}`);

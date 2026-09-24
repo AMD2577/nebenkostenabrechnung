@@ -357,11 +357,52 @@
 
     return `
       ${zeigeDiff()}
+      ${einlesebereich()}
       <div class="karte">
-        <h2>Belege (${fall.belege.length})</h2>
+        <h2>Erfasste Belege (${fall.belege.length})</h2>
         <table><tr><th>Beleg</th><th>Datum</th><th>Positionen</th><th class="r">Betrag</th></tr>
           ${zeilen}</table>
       </div>
+      `;
+  };
+
+  /* =========================================================================
+   * Ansicht 3: Konto
+   * =========================================================================
+   * Alles zum Objektkonto an einem Ort: Salden, alle Buchungen mit ihrer
+   * Zuordnung, und das Formular zum Nachtragen. Vorher lag das verstreut in
+   * der Belegansicht - dort sucht es niemand.
+   * ======================================================================= */
+  ansichten.konto = function () {
+    // Jede Buchung bekommt ihre Zuordnung: Mieteingang -> Mietverhältnis,
+    // Abbuchung -> Beleg. Was übrig bleibt, wird hervorgehoben.
+    const zuordnung = (b) => {
+      if (b.betrag > 0) {
+        const m = ergebnis.mietverhaeltnisse.find(
+          (x) => b.gegenpartei.toUpperCase().includes(x.zahler_kennung));
+        return m ? { text: `${m.we} · ${m.mieter}`, art: "gut" } : null;
+      }
+      const beleg = fall.belege.find((x) => x.bank_kennung
+        && b.gegenpartei.toUpperCase().includes(x.bank_kennung.toUpperCase()));
+      return beleg ? { text: sicher(beleg.beleg), art: "gut" } : null;
+    };
+
+    const buchungen = fall.buchungen.map((b) => {
+      const z = zuordnung(b);
+      return `
+        <tr class="${z ? "" : "ohne-zuordnung"}">
+          <td>${dat(b.datum)}</td>
+          <td>${sicher(b.gegenpartei)}<div class="klein">${sicher(b.zweck)}</div></td>
+          <td class="r ${b.betrag > 0 ? "minus" : ""}">${eur(N.zuCent(b.betrag))}</td>
+          <td>${z ? `<span class="marke gut">${z.text}</span>`
+                  : `<span class="marke warnung">nicht zugeordnet</span>`}</td>
+        </tr>`;
+    }).join("");
+
+    const ohneZuordnung = fall.buchungen.filter((b) => !zuordnung(b)).length;
+
+    return `
+      ${zeigeDiff()}
       <div class="karte">
         <h2>Zahlung nachtragen</h2>
         <p class="klein">Für Zahlungen, die nicht auf dem Objektkonto erscheinen — etwa eine Miete,
@@ -378,7 +419,7 @@
       </div>
 
       <div class="karte">
-        <h2>Objektkonto ${ergebnis.abrechnung.von.slice(0, 4)}</h2>
+        <h2>Kontoauszüge ${ergebnis.abrechnung.von.slice(0, 4)}</h2>
         <p class="klein">${fall.buchungen.length} Buchungen aus ${fall.kontoauszuege.length}
         Kontoauszügen. Die Saldenkette wird bei jedem Lauf geprüft (Prüfung I-06).</p>
         <table><tr><th>Monat</th><th class="r">Anfangsbestand</th><th class="r">Endbestand</th></tr>
@@ -387,7 +428,19 @@
               <td class="r">${eur(N.zuCent(a.anfangsbestand))}</td>
               <td class="r">${eur(N.zuCent(a.endbestand))}</td></tr>`).join("")}
         </table>
-      </div>`;
+      </div>
+
+      <div class="karte">
+        <h2>Alle Buchungen (${fall.buchungen.length})</h2>
+        <p class="klein">${ohneZuordnung === 0
+          ? "Jede Buchung ist einem Mietverhältnis oder einem Beleg zugeordnet."
+          : `<b>${ohneZuordnung} Buchung(en) ohne Zuordnung</b> — das ist der Stoff, aus dem Prüfung P-01 ihre Warnungen bildet.`}</p>
+        <table>
+          <tr><th>Datum</th><th>Gegenpartei / Zweck</th><th class="r">Betrag</th><th>Zuordnung</th></tr>
+          ${buchungen}
+        </table>
+      </div>
+      `;
   };
 
   /* =========================================================================
@@ -462,10 +515,10 @@
    * bestätigen -> übernehmen. Zwischen "gelesen" und "gebucht" steht immer ein
    * Mensch (SPEC.md § 3).
    * ======================================================================= */
-  ansichten.erfassen = function () {
+  function einlesebereich() {
     const kopf = `
-      <div class="karte">
-        <h2>Beleg einlesen</h2>
+      <details class="karte" ${vorschlag || einlesefehler ? "open" : ""}>
+        <summary><b>Beleg einlesen</b> — PDF hineinziehen oder Text einfügen</summary>
         <p class="klein">Ein PDF hierher ziehen oder den Text einer Rechnung einfügen. Aus dem
         Dokument wird ein <b>Vorschlag</b>. Übernommen wird er erst, wenn die Prüfungen bestanden
         sind und die Zuordnung bestätigt wurde.</p>
@@ -480,11 +533,11 @@
           <button class="knopf" data-aktion="textauswerten">Text auswerten</button>
         </details>
         ${einlesefehler ? `<div class="befund"><b>Einlesen nicht möglich</b>${sicher(einlesefehler)}</div>` : ""}
-      </div>`;
+      </details>`;
 
     if (!vorschlag) return kopf;
     return kopf + zeigeVorschlag();
-  };
+  }
 
   /** Stellt den eingelesenen Vorschlag zum Prüfen und Zuordnen dar. */
   function zeigeVorschlag() {
@@ -498,37 +551,97 @@
         <td class="klein">${anker ? `Zeile ${anker.zeile} im Dokument` : "nicht im Dokument gefunden"}</td>
       </tr>`;
 
-    const positionen = v.positionen.map((pos, i) => `
-      <tr>
-        <td><input class="feld" data-position="${i}" data-feld="bezeichnung" value="${sicher(pos.bezeichnung)}"></td>
-        <td class="r">${eur(N.zuCent(pos.betrag))}
-          ${pos.hinweis ? `<div class="klein">${sicher(pos.hinweis)}</div>` : ""}</td>
-        <td>
-          <select class="feld" data-position="${i}" data-feld="kostenart">
-            <option value="">— bitte wählen —</option>
-            ${kostenartenListe.map(([schluessel, k]) => `
-              <option value="${schluessel}" ${pos.kostenart === schluessel ? "selected" : ""}>
-                ${sicher(k.bezeichnung)}</option>`).join("")}
-          </select>
-          ${pos.kostenart ? `
-            <div class="grund">${sicher(fall.kostenarten[pos.kostenart].warum || "")}</div>
-            <div class="klein">${sicher(fall.kostenarten[pos.kostenart].betrkv)}
-              · ${sicher(fall.kostenarten[pos.kostenart].vertrag || "")}</div>` : ""}
-        </td>
-        <td>
-          <div class="auswahl">
-            <button class="${pos.umlagefaehig === true ? "aktiv" : ""}"
-                    data-umlage="${i}" data-wert="ja">umlagefähig</button>
-            <button class="${pos.umlagefaehig === false ? "aktiv" : ""}"
-                    data-umlage="${i}" data-wert="nein">nicht umlagefähig</button>
+    // Je Position eine Karte: Vorschlag mit Begründung, annehmen oder ablehnen.
+    // Der Vorschlag entscheidet nichts - erst der Klick tut das.
+    const positionen = v.positionen.map((pos, i) => {
+      const vor = pos.vorschlag_umlage || {};
+      const marke = (text, art) => `<span class="marke ${art}">${text}</span>`;
+
+      // Bereits entschieden: auf eine Zeile zusammenklappen.
+      if (pos.entscheidung !== "offen") {
+        const abweichend = pos.entscheidung === "abgelehnt";
+        return `
+          <div class="positionskarte erledigt">
+            <div class="kopfzeile">
+              <span>✓ ${sicher(pos.bezeichnung)}</span>
+              <span class="r">${eur(N.zuCent(pos.betrag))}</span>
+            </div>
+            <div class="klein">
+              ${abweichend ? marke("abweichend vom Vorschlag", "warnung") + " " : ""}
+              ${sicher(fall.kostenarten[pos.kostenart] ? fall.kostenarten[pos.kostenart].bezeichnung : pos.kostenart)} ·
+              ${pos.umlagefaehig ? "umlagefähig" : "nicht umlagefähig"}
+              <button class="knopf klein-knopf" data-aendere="${i}">ändern</button>
+            </div>
+          </div>`;
+      }
+
+      // Kein Vorschlag möglich: gleich im Modus "selbst entscheiden" öffnen.
+      const kostenartAuswahl = `
+        <select class="feld" data-position="${i}" data-feld="kostenart">
+          <option value="">— Kostenart wählen —</option>
+          ${Object.entries(fall.kostenarten).map(([k, art]) => `
+            <option value="${k}" ${pos.kostenart === k ? "selected" : ""}>${sicher(art.bezeichnung)}</option>`).join("")}
+        </select>`;
+
+      const selbstEntscheiden = `
+        <div class="selbst">
+          <label class="klein">Kostenart${kostenartAuswahl}</label>
+          <div class="auswahl" style="margin:8px 0">
+            <button class="${pos.umlagefaehig === true ? "aktiv" : ""}" data-umlage="${i}" data-wert="ja">umlagefähig</button>
+            <button class="${pos.umlagefaehig === false ? "aktiv" : ""}" data-umlage="${i}" data-wert="nein">nicht umlagefähig</button>
           </div>
-          ${pos.umlagefaehig === false ? `
-            <textarea class="feld begruendungsfeld" data-position="${i}" data-feld="begruendung"
-                      rows="2"
-                      placeholder="Begründung mit Fundstelle, z. B. § 1 Abs. 2 Nr. 2 BetrKV"
-                      >${sicher(pos.begruendung)}</textarea>` : ""}
-        </td>
-      </tr>`).join("");
+          <label class="klein">Begründung mit Fundstelle (Pflicht)
+            <textarea class="feld begruendungsfeld" rows="2" data-position="${i}" data-feld="begruendung"
+              placeholder="z. B. § 1 Abs. 2 Nr. 2 BetrKV – Instandsetzung">${sicher(pos.begruendung)}</textarea></label>
+          <button class="knopf haupt" data-uebernimm-eigene="${i}">Eigene Entscheidung übernehmen</button>
+        </div>`;
+
+      if (!vor.kostenart) {
+        return `
+          <div class="positionskarte">
+            <div class="kopfzeile">
+              <span><b>${sicher(pos.bezeichnung)}</b></span>
+              <span class="r">${eur(N.zuCent(pos.betrag))}</span>
+            </div>
+            <p class="grund">${marke("kein Vorschlag möglich", "warnung")}
+              Zu dieser Position wurde kein Stichwort gefunden. Bitte selbst zuordnen.</p>
+            ${selbstEntscheiden}
+          </div>`;
+      }
+
+      return `
+        <div class="positionskarte ${pos.zeigeEigene ? "" : "vorschlag"}">
+          <div class="kopfzeile">
+            <span><b>${sicher(pos.bezeichnung)}</b></span>
+            <span class="r">${eur(N.zuCent(pos.betrag))}</span>
+          </div>
+
+          <div class="vorschlagszeile">
+            <span class="klein">VORSCHLAG</span>
+            <b>${sicher(vor.bezeichnung)}</b> →
+            ${vor.umlagefaehig ? marke("umlagefähig", "gut") : marke("nicht umlagefähig", "schlecht")}
+            ${vor.sicherheit === "Betreff" ? marke("unsicher – bitte prüfen", "warnung") : ""}
+            ${vor.nur_fuer ? marke("nur für " + vor.nur_fuer.join(", "), "warnung") : ""}
+          </div>
+
+          <p class="grund">${sicher(vor.warum)}</p>
+          <table class="grundlagen">
+            <tr><td>Rechtsgrundlage</td><td>${sicher(vor.betrkv)}</td></tr>
+            <tr><td>Mietvertrag</td><td>${sicher(vor.vertrag)}</td></tr>
+            <tr><td>Erkannt an</td><td>„${sicher(vor.erkannt_an)}" ${vor.sicherheit === "Position"
+              ? "in der Positionszeile" : "in der Betreffzeile des Belegs"}</td></tr>
+          </table>
+
+          ${pos.zeigeEigene ? selbstEntscheiden : `
+            <div class="entscheidung">
+              <button class="knopf haupt" data-nimm-an="${i}">✓ Vorschlag annehmen</button>
+              <button class="knopf" data-lehne-ab="${i}">Ablehnen und selbst entscheiden</button>
+            </div>`}
+        </div>`;
+    }).join("");
+
+    const offen = v.positionen.filter((pos) => pos.entscheidung === "offen").length;
+    const entschieden = v.positionen.length - offen;
 
     return `
       <div class="karte">
@@ -552,15 +665,14 @@
 
       <div class="karte">
         <h2>Positionen zuordnen</h2>
-        <p class="klein">Kostenart und Umlagefähigkeit sind die fachliche Entscheidung — sie werden
-        vorgeschlagen, aber nicht automatisch übernommen.</p>
-        <table>
-          <tr><th>Bezeichnung</th><th class="r">Betrag</th><th>Kostenart</th><th>Umlage</th></tr>
-          ${positionen}
-          <tr class="summe"><td>Summe</td>
-            <td class="r">${eur(N.zuCent(v.positionen.reduce((s, p) => s + p.betrag, 0)))}</td>
-            <td colspan="2" class="klein">muss dem Rechnungsbetrag entsprechen (Prüfung I-04)</td></tr>
-        </table>
+        <div class="positionskopf">
+          <span>${v.positionen.length} Position(en) · ${entschieden} entschieden · ${offen} offen
+            · Summe ${eur(N.zuCent(v.positionen.reduce((s, p) => s + p.betrag, 0)))}</span>
+          ${offen > 1 ? `<button class="knopf" data-aktion="alle-annehmen">Alle offenen Vorschläge annehmen</button>` : ""}
+        </div>
+        <p class="klein">Kostenart und Umlagefähigkeit sind die fachliche Entscheidung. Die Lösung
+        schlägt sie mit Begründung vor — übernommen wird sie erst durch einen Klick.</p>
+        ${positionen}
       </div>
 
       <div class="karte" id="vorschlagstatus">${zeigeVorschlagStatus()}</div>
@@ -605,7 +717,7 @@
     einlesefehler = null;
     try {
       const { text } = await EIN.textAusPdf(datei);
-      vorschlag = EIN.schlageBelegVor(text, datei.name, fall.objekt);
+      vorschlag = EIN.schlageBelegVor(text, datei.name, fall);
     } catch (fehler) {
       vorschlag = null;
       einlesefehler = fehler.message;
@@ -687,6 +799,7 @@
 
     verdrahteErfassen();
     verdrahteBelege();
+    verdrahteKonto();
   }
 
   /* ---- Belege entfernen und Buchungen nachtragen ------------------------- */
@@ -703,6 +816,10 @@
         neuBerechnen(true);
       }));
 
+  }
+
+  /* ---- Zahlungen nachtragen (Reiter Konto) ------------------------------ */
+  function verdrahteKonto() {
     const buchungsknopf = document.querySelector('[data-aktion="buchung"]');
     if (!buchungsknopf) return;
     buchungsknopf.addEventListener("click", () => {
@@ -746,7 +863,7 @@
       const text = document.getElementById("textfeld").value;
       if (!text.trim()) return;
       einlesefehler = null;
-      vorschlag = EIN.schlageBelegVor(text, "eingefuegter_text.pdf", fall.objekt);
+      vorschlag = EIN.schlageBelegVor(text, "eingefuegter_text.pdf", fall);
       zeichne();
     });
     knopf("verwerfen", () => { vorschlag = null; einlesefehler = null; zeichne(); });
@@ -773,13 +890,67 @@
       el.addEventListener("click", () => {
         const pos = vorschlag.vorschlag.positionen[Number(el.dataset.umlage)];
         pos.umlagefaehig = el.dataset.wert === "ja";
-        // Bei einer Nicht-Umlage schlagen wir die Begründung aus dem
-        // Kostenartenkatalog vor - sie muss aber bestätigt werden.
-        if (pos.umlagefaehig === false && !pos.begruendung && pos.kostenart) {
-          pos.begruendung = fall.kostenarten[pos.kostenart].betrkv || "";
+        if (!pos.begruendung && pos.kostenart) {
+          const art = fall.kostenarten[pos.kostenart] || {};
+          pos.begruendung = art.betrkv || "";      // Vorschlag, muss bestätigt werden
         }
         zeichne();
       }));
+
+    /* ---- Die Entscheidung je Position --------------------------------- */
+    const position = (el, feld) => vorschlag.vorschlag.positionen[Number(el.dataset[feld])];
+
+    // Vorschlag annehmen: Kostenart und Umlagefähigkeit kommen aus dem
+    // Vorschlag, die Fundstelle steht bereits an der Kostenart.
+    const nimmAn = (pos) => {
+      const vor = pos.vorschlag_umlage || {};
+      pos.kostenart = vor.kostenart;
+      pos.umlagefaehig = vor.umlagefaehig;
+      pos.begruendung = [vor.betrkv, vor.vertrag].filter(Boolean).join(" · ");
+      pos.entscheidung = "angenommen";
+      pos.zeigeEigene = false;
+    };
+
+    document.querySelectorAll("[data-nimm-an]").forEach((el) =>
+      el.addEventListener("click", () => { nimmAn(position(el, "nimmAn")); zeichne(); }));
+
+    document.querySelectorAll("[data-lehne-ab]").forEach((el) =>
+      el.addEventListener("click", () => {
+        const pos = position(el, "lehneAb");
+        pos.zeigeEigene = true;          // Formular aufklappen, noch nicht entschieden
+        pos.begruendung = "";            // eigene Begründung ist Pflicht
+        zeichne();
+      }));
+
+    document.querySelectorAll("[data-uebernimm-eigene]").forEach((el) =>
+      el.addEventListener("click", () => {
+        const pos = position(el, "uebernimmEigene");
+        const fehlt = [];
+        if (!pos.kostenart) fehlt.push("Kostenart wählen");
+        if (pos.umlagefaehig === null) fehlt.push("umlagefähig ja oder nein wählen");
+        if (!/§|BGH|TKG|BetrKV|Urteil/i.test(pos.begruendung || ""))
+          fehlt.push("Begründung mit Fundstelle angeben (z. B. § 2 Nr. 10 BetrKV)");
+        if (fehlt.length) { alert("Noch offen:\n– " + fehlt.join("\n– ")); return; }
+        pos.entscheidung = "abgelehnt";   // bewusst abweichend vom Vorschlag
+        pos.zeigeEigene = false;
+        zeichne();
+      }));
+
+    document.querySelectorAll("[data-aendere]").forEach((el) =>
+      el.addEventListener("click", () => {
+        const pos = position(el, "aendere");
+        pos.entscheidung = "offen";
+        pos.zeigeEigene = false;
+        zeichne();
+      }));
+
+    const alleAnnehmen = document.querySelector('[data-aktion="alle-annehmen"]');
+    if (alleAnnehmen) alleAnnehmen.addEventListener("click", () => {
+      vorschlag.vorschlag.positionen
+        .filter((pos) => pos.entscheidung === "offen" && pos.vorschlag_umlage && pos.vorschlag_umlage.kostenart)
+        .forEach(nimmAn);
+      zeichne();
+    });
   }
 
   /**

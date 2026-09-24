@@ -182,6 +182,25 @@
     ["kabel", /kabelanschluss|sammelinkasso|breitband/i],
   ];
 
+  /**
+   * Wie sicher ist ein Vorschlag? Das hängt davon ab, WO das Stichwort stand:
+   *   "Position" - in der Positionszeile selbst, das ist eindeutig
+   *   "Betreff"  - nur in der Überschrift des Belegs, das kann danebenliegen
+   *   "keine"    - nichts gefunden, dann gibt es keinen Vorschlag
+   * Die Oberfläche kennzeichnet unsichere Vorschläge, damit man genauer hinsieht.
+   */
+  function erkenneKostenart(bezeichnung, kontext = "") {
+    for (const [schluessel, muster] of STICHWOERTER) {
+      const treffer = muster.exec(bezeichnung);
+      if (treffer) return { kostenart: schluessel, erkannt_an: treffer[0], sicherheit: "Position" };
+    }
+    for (const [schluessel, muster] of STICHWOERTER) {
+      const treffer = muster.exec(kontext);
+      if (treffer) return { kostenart: schluessel, erkannt_an: treffer[0], sicherheit: "Betreff" };
+    }
+    return { kostenart: null, erkannt_an: null, sicherheit: "keine" };
+  }
+
   function schlageKostenartVor(bezeichnung, kontext = "") {
     // Erst die Position selbst ansehen - sie ist am aussagekräftigsten.
     for (const [schluessel, muster] of STICHWOERTER) {
@@ -247,7 +266,7 @@
         betrag,
         zeile: index + 1,
         quelle: "regel",
-        kostenart_vorschlag: schlageKostenartVor(zeile, betreff),
+        erkennung: erkenneKostenart(zeile, betreff),
       });
     });
 
@@ -281,7 +300,7 @@
         betrag,
         zeile: index + 1,
         quelle: "regel-tabelle",
-        kostenart_vorschlag: schlageKostenartVor(zeile, betreff),
+        erkennung: erkenneKostenart(zeile, betreff),
       });
     });
     return positionen;
@@ -295,7 +314,11 @@
    * @param {object} objekt     Objektstammdaten, um den Objektbezug zu prüfen (optional)
    * @returns {{vorschlag, pruefungen, status}}
    */
-  function schlageBelegVor(rohtext, dateiname, objekt) {
+  function schlageBelegVor(rohtext, dateiname, fall) {
+    // Rückwärtskompatibel: Früher wurde nur das Objekt übergeben.
+    const objekt = fall && fall.objekt ? fall.objekt : fall;
+    const kostenarten = (fall && fall.kostenarten) || {};
+    const mietverhaeltnisse = (fall && fall.mietverhaeltnisse) || [];
     const text = normalisiereText(rohtext);
 
     // --- Kopfdaten suchen (jeweils mit Fundstelle) -------------------------
@@ -324,9 +347,17 @@
     // Datum wäre schlimmer als gar keines. Fehlt beides, meldet Prüfung I-01
     // ein Pflichtfeld und der Beleg geht in Quarantäne.
     const datum = leistungsdatum || rechnungsdatum;
-    const zeitraum = sucheMitAnker(
+    // Beim Leistungsdatum steht nach der Normalisierung oft noch Text aus der
+    // Nachbarspalte hinter dem Datum (im Beleg 39 die Postleitzahl des
+    // Absenders). Deshalb wird das ganze Feld gelesen und danach auf seinen
+    // Datumsteil beschnitten - das deckt auch Bereiche wie "22.–25.04.2025" ab.
+    const zeitraumFeld = sucheMitAnker(
       text, /(?:Leistungszeitraum|Abrechnungszeitraum|Erhebungszeitraum|Versicherungsjahr)\s+(\d{2}\.\d{2}\.\d{4}\s*[–—-]\s*\d{2}\.\d{2}\.\d{4})/i)
-      || sucheMitAnker(text, /Leistungsdatum\s+([\d.–—\s-]+\d{4})/i);
+      || sucheMitAnker(text, /Leistungsdatum\s+([^\n]+)/i);
+    const zeitraum = zeitraumFeld
+      ? { ...zeitraumFeld,
+          roh: (/^[\d.\s–—-]*\d{2}\.\d{2}\.\d{4}/.exec(zeitraumFeld.roh) || [zeitraumFeld.roh])[0].trim() }
+      : null;
 
     // Gesamtbetrag: mehrere übliche Bezeichnungen, in dieser Reihenfolge.
     const betragTreffer =
@@ -387,11 +418,15 @@
       positionen: positionen.map((p) => ({
         bezeichnung: p.bezeichnung,
         betrag: p.betrag,
+        // Der fertige Vorschlag samt Begründung - die Oberfläche zeigt ihn als
+        // Karte, und ein Mensch nimmt ihn an oder lehnt ihn ab.
+        vorschlag_umlage: baueUmlageVorschlag(p.erkennung, kostenarten, mietverhaeltnisse),
+        entscheidung: "offen",       // offen | angenommen | abgelehnt
         // Der Nettowert bleibt erhalten: Er ist die Stelle, die wörtlich im
         // Dokument steht, und damit der Anker für den aufgeschlagenen Bruttowert.
         ...(p.netto !== undefined ? { netto: p.netto, hinweis: p.hinweis } : {}),
-        kostenart: p.kostenart_vorschlag,   // VORSCHLAG - muss bestätigt werden
-        umlagefaehig: null,                 // bewusst offen
+        kostenart: p.erkennung.kostenart,   // VORSCHLAG - muss bestätigt werden
+        umlagefaehig: null,                 // bleibt offen bis zur Entscheidung
         begruendung: "",
       })),
       anker: {
@@ -410,6 +445,41 @@
       vorschlag,
       pruefungen,
       status: blocker.length === 0 ? "geprueft" : "quarantaene",
+    };
+  }
+
+  /**
+   * Baut aus der erkannten Kostenart einen vollständigen Vorschlag: Was soll
+   * gelten, warum, und auf welcher Grundlage.
+   *
+   * Die Umlagefähigkeit kommt aus dem Kostenartenkatalog - dort steht sie
+   * bereits mit Rechtsgrundlage und Erklärung. Umlagefähig ist sie aber nur
+   * dann, wenn die Kostenart auch in ALLEN Mietverträgen vereinbart ist:
+   * Was nicht im Vertrag steht, darf nicht umgelegt werden, egal was die
+   * Betriebskostenverordnung erlaubt.
+   */
+  function baueUmlageVorschlag(erkennung, kostenarten, mietverhaeltnisse) {
+    if (!erkennung || !erkennung.kostenart) {
+      return { kostenart: null, sicherheit: "keine" };
+    }
+    const stamm = kostenarten[erkennung.kostenart] || {};
+    const vereinbartIn = mietverhaeltnisse.filter(
+      (m) => (m.vereinbarte_kostenarten || []).includes(erkennung.kostenart));
+    const inAllenVertraegen = mietverhaeltnisse.length > 0
+      && vereinbartIn.length === mietverhaeltnisse.length;
+
+    return {
+      kostenart: erkennung.kostenart,
+      bezeichnung: stamm.bezeichnung || erkennung.kostenart,
+      umlagefaehig: Boolean(stamm.umlagefaehig) && inAllenVertraegen,
+      warum: stamm.warum || "",
+      betrkv: stamm.betrkv || "",
+      vertrag: stamm.vertrag || "",
+      erkannt_an: erkennung.erkannt_an,
+      sicherheit: erkennung.sicherheit,
+      // Für den Fall, dass eine Kostenart nur in einzelnen Verträgen steht.
+      nur_fuer: stamm.umlagefaehig && !inAllenVertraegen
+        ? vereinbartIn.map((m) => m.we) : null,
     };
   }
 
@@ -515,16 +585,23 @@
       pruefe("I-12", "Datum plausibel", "blocker", jahr >= 2000 && jahr <= 2100, v.datum);
     }
 
-    // Fachliche Zuordnung fehlt noch - das ist keine Störung, sondern der
-    // vorgesehene nächste Schritt durch einen Menschen.
-    const ohneKostenart = v.positionen.filter((pos) => !pos.kostenart).length;
-    pruefe("Z-01", "Kostenart je Position vorgeschlagen", "warnung", ohneKostenart === 0,
-      ohneKostenart ? `${ohneKostenart} Position(en) ohne Vorschlag - bitte zuordnen`
-        : "für alle Positionen vorgeschlagen");
+    // Fachliche Zuordnung: Ein Vorschlag ist noch keine Entscheidung.
+    const ohneVorschlag = v.positionen.filter(
+      (pos) => !pos.vorschlag_umlage || !pos.vorschlag_umlage.kostenart).length;
+    const unsicher = v.positionen.filter(
+      (pos) => pos.vorschlag_umlage && pos.vorschlag_umlage.sicherheit === "Betreff").length;
+    pruefe("Z-01", "Kostenart je Position vorgeschlagen", "warnung", ohneVorschlag === 0,
+      ohneVorschlag
+        ? `${ohneVorschlag} Position(en) ohne Vorschlag - bitte selbst zuordnen`
+        : unsicher
+          ? `alle vorgeschlagen, davon ${unsicher} nur über die Betreffzeile erkannt - bitte prüfen`
+          : "für alle Positionen sicher erkannt");
 
-    pruefe("Z-02", "Umlagefähigkeit bestätigt", "warnung",
-      v.positionen.every((pos) => pos.umlagefaehig !== null),
-      "muss vor der Übernahme bestätigt werden");
+    // Das ist die Regel "Vorschlag, nicht Buchung": Ohne Klick passiert nichts.
+    const offen = v.positionen.filter((pos) => pos.entscheidung === "offen").length;
+    pruefe("Z-02", "Jede Position ist entschieden", "warnung", offen === 0,
+      offen ? `${offen} von ${v.positionen.length} Position(en) noch offen`
+        : `${v.positionen.length} Position(en) entschieden`);
 
     return p;
   }
@@ -573,11 +650,20 @@
 
     if (!vorschlag.positionen.length) fehler.push("keine Positionen");
     for (const pos of vorschlag.positionen) {
-      if (!pos.kostenart) fehler.push(`Position "${pos.bezeichnung}": keine Kostenart gewählt`);
+      const kurz = pos.bezeichnung.slice(0, 40);
+      if (pos.entscheidung === "offen") {
+        fehler.push(`Position "${kurz}": noch nicht entschieden`);
+        continue;
+      }
+      if (!pos.kostenart) fehler.push(`Position "${kurz}": keine Kostenart gewählt`);
       else if (!fall.kostenarten[pos.kostenart]) fehler.push(`unbekannte Kostenart "${pos.kostenart}"`);
-      if (pos.umlagefaehig === null) fehler.push(`Position "${pos.bezeichnung}": Umlagefähigkeit nicht bestätigt`);
-      if (pos.umlagefaehig === false && !/§|BGH|TKG|BetrKV|Urteil/i.test(pos.begruendung || ""))
-        fehler.push(`Position "${pos.bezeichnung}": Nicht-Umlage braucht eine Begründung mit Fundstelle (R-03)`);
+      if (pos.umlagefaehig === null) fehler.push(`Position "${kurz}": Umlagefähigkeit nicht bestätigt`);
+
+      // Wurde der Vorschlag angenommen, liegt die Fundstelle schon vor - sie
+      // steht an der Kostenart. Eine eigene Begründung ist nur nötig, wenn
+      // jemand vom Vorschlag abweicht; dann muss er sie auch belegen (R-03).
+      if (pos.entscheidung === "abgelehnt" && !/§|BGH|TKG|BetrKV|Urteil/i.test(pos.begruendung || ""))
+        fehler.push(`Position "${kurz}": abweichende Entscheidung braucht eine Begründung mit Fundstelle (R-03)`);
     }
     const summe = Math.round(vorschlag.positionen.reduce((s, p) => s + p.betrag, 0) * 100);
     if (summe !== Math.round(vorschlag.rechnungsbetrag * 100))
@@ -631,6 +717,22 @@
       was: `Beleg "${vorschlag.beleg}" über ${vorschlag.rechnungsbetrag.toFixed(2)} € erfasst`,
       warum: "Einlesen und Bestätigung durch Benutzer",
     });
+    // Je Position festhalten, ob dem Vorschlag gefolgt wurde oder nicht.
+    for (const pos of vorschlag.positionen) {
+      const v = pos.vorschlag_umlage || {};
+      fall.protokoll.push({
+        zeitpunkt: new Date().toISOString().slice(0, 19).replace("T", " "),
+        wer: "Oberfläche",
+        was: pos.entscheidung === "angenommen"
+          ? `${vorschlag.beleg}, "${pos.bezeichnung.slice(0, 40)}": Vorschlag angenommen ` +
+            `(${v.bezeichnung}, ${pos.umlagefaehig ? "umlagefähig" : "nicht umlagefähig"})`
+          : `${vorschlag.beleg}, "${pos.bezeichnung.slice(0, 40)}": Vorschlag abgelehnt, ` +
+            `stattdessen ${pos.kostenart}, ${pos.umlagefaehig ? "umlagefähig" : "nicht umlagefähig"}`,
+        warum: pos.entscheidung === "angenommen"
+          ? (v.betrkv || "") + (v.vertrag ? " · " + v.vertrag : "")
+          : pos.begruendung || "",
+      });
+    }
 
     return { uebernommen: true, fehler: [] };
   }
@@ -697,6 +799,7 @@
 
   const API = {
     normalisiereText, textAusPdf, schlageBelegVor, pruefeVorschlag, uebernimm, findeBankKennung,
+    erkenneKostenart, baueUmlageVorschlag,
     entferneBeleg, fuegeBuchungHinzu,
     zahlAusText, datumAusText, findePositionen, schlageKostenartVor,
   };

@@ -121,6 +121,35 @@ pre.dokumenttext {
   font-size: 11.5px; max-height: 320px; overflow: auto; white-space: pre-wrap;
 }
 
+tr.ohne-zuordnung { background: #fffaf3; }
+details.karte summary { cursor: pointer; font-size: 14px; color: var(--text); }
+details.karte[open] summary { margin-bottom: 10px; }
+
+/* --- Positionskarten beim Zuordnen --------------------------------------- */
+.positionskopf { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.positionskopf button { margin-left: auto; }
+
+.positionskarte {
+  border: 1px solid var(--linie); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px;
+  background: #fff;
+}
+.positionskarte.vorschlag { border-left: 4px solid var(--akzent); }
+.positionskarte.erledigt { background: #f5f8f5; border-left: 4px solid var(--gut); padding: 8px 14px; }
+.positionskarte .kopfzeile { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.positionskarte .kopfzeile .r { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.positionskarte .vorschlagszeile { margin: 8px 0 4px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.positionskarte .vorschlagszeile .klein { letter-spacing: .06em; }
+/* Die Begründung ist der wichtigste Text der Karte - nicht grau und nicht klein. */
+.positionskarte .grund { font-size: 14px; color: var(--text); margin: 6px 0; }
+.positionskarte table.grundlagen { font-size: 12.5px; margin: 6px 0 10px; }
+.positionskarte table.grundlagen td { border: none; padding: 1px 10px 1px 0; vertical-align: top; }
+.positionskarte table.grundlagen td:first-child { color: var(--gedaempft); width: 9em; }
+.positionskarte .entscheidung { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.positionskarte .entscheidung button { min-height: 36px; }
+.positionskarte .selbst { border-top: 1px solid var(--linie); margin-top: 10px; padding-top: 10px; }
+.positionskarte .selbst label { display: block; margin-bottom: 4px; }
+button.klein-knopf { padding: 2px 8px; font-size: 12px; min-height: 0; margin-left: 8px; }
+
 /* --- Einstellungen -------------------------------------------------------- */
 .schalter { display: grid; grid-template-columns: 220px 1fr; gap: 10px 16px; align-items: start; }
 .schalter label { font-weight: 600; }
