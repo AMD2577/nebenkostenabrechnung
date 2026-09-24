@@ -1550,8 +1550,8 @@ window.FALL = {
     {
       "id": "A3",
       "kategorie": "Mietbuchhaltung",
-      "titel": "WE 2 Bendel: Staffelmiete (§ 3a) seit 09/2023 nie umgesetzt",
-      "behandlung": "Für die Nebenkostenabrechnung irrelevant (Vorauszahlung 120 € ist von den Staffeln unberührt). Aber: Stammdaten 'laut Buchhaltung' zeigen 465 €, der Mieter zahlt 465 € – vertraglich geschuldet sind 515 € (ab 09/2024) bzw. 545 € (ab 09/2025). Mindereinnahme 2025: 720 €, kumuliert seit 09/2023: 1.220 €.",
+      "titel": "WE 2 Bendel: Staffelmiete (§ 3a) nicht umgesetzt",
+      "behandlung": "Für die Nebenkostenabrechnung irrelevant (Vorauszahlung 120 € ist von den Staffeln unberührt). Aber: Stammdaten 'laut Buchhaltung' zeigen 465 €, der Mieter zahlt 465 € – vertraglich geschuldet sind 515 € (ab 09/2024) bzw. 545 € (ab 09/2025). Mindereinnahme 2025: 720 € (belegt durch die Kontoauszüge). Hat er auch ab 09/2023 nur 465 € gezahlt, kommen bis zu 500 € hinzu – die Auszüge 2023/24 liegen nicht vor.",
       "auswirkung": "Kein Einfluss auf die Abrechnung; Bewirtschaftungs-Check Nr. 1."
     },
     {
@@ -1608,14 +1608,14 @@ window.FALL = {
       "kategorie": "Plausibilität",
       "titel": "Hauswart rechnet konkrete Reparaturen am ersten Tag des Quartals ab",
       "behandlung": "Jede der vier Wilms-Rechnungen ist auf den ersten Tag ihres Leistungszeitraums datiert (02.01., 01.04., 01.07., 01.10.) und listet trotzdem einzelne Arbeiten „nach Aufwand“ für dieses Quartal – etwa „Austausch 3 Leuchtmittel Treppenhaus“ am 02.01. für den Zeitraum bis 31.03. Zum Rechnungsdatum können diese Arbeiten nicht erbracht gewesen sein. Die Positionen sind ohnehin nicht umlagefähig und wurden herausgerechnet; die Pauschale von 4 × 360 € bleibt angesetzt, weil ein Hauswartvertrag vorliegt.",
-      "auswirkung": "Kein Zahleneffekt. Aber: Wer Leistungen im Voraus bezahlt, die nicht nachweisbar erbracht sind, legt sie auch nicht rechtssicher um. Leistungsnachweise anfordern – Rückfrage 11."
+      "auswirkung": "Kein Zahleneffekt. Aber: Wer Leistungen im Voraus bezahlt, die nicht nachweisbar erbracht sind, legt sie auch nicht rechtssicher um. Leistungsnachweise anfordern – Rückfrage 6."
     },
     {
       "id": "A12",
       "kategorie": "Vertrag",
       "titel": "Neuvertrag Kestner: 890 € für 84 m² (10,60 €/m²) nach zuvor 700 €",
       "behandlung": "Die Miete stieg bei der Neuvermietung um 27 %. Köln unterliegt der Mietpreisbegrenzungsverordnung NRW. Der Mietvertrag nennt lediglich „vor Übergabe instandgesetzt und neu gestrichen“ – das ist Instandsetzung, keine umfassende Modernisierung, die eine Ausnahme begründen würde. Ohne Kenntnis der ortsüblichen Vergleichsmiete lässt sich das nicht abschließend beurteilen.",
-      "auswirkung": "Kein Einfluss auf die Nebenkostenabrechnung. Aber ein Rückforderungsrisiko für die Eigentümerin – Rückfrage 12. Die Ausnahme für die Vormiete (§ 556e BGB) greift hier nicht, weil die Vormiete niedriger war."
+      "auswirkung": "Kein Einfluss auf die Nebenkostenabrechnung. Aber ein Rückforderungsrisiko für die Eigentümerin – Rückfrage 10. Die Ausnahme für die Vormiete (§ 556e BGB) greift hier nicht, weil die Vormiete niedriger war."
     },
     {
       "id": "A13",
@@ -1648,7 +1648,7 @@ window.FALL = {
       "zeitpunkt": "2026-09-22",
       "wer": "Aaron",
       "was": "Prüfsummen aller 43 Originaldokumente in die Falldatei aufgenommen",
-      "warum": "Damit sich feststellen lässt, ob sich eine Unterlage seit der Erfassung geändert hat (SPEC.md § 3.5)."
+      "warum": "Damit sich feststellen lässt, ob sich eine Unterlage seit der Erfassung geändert hat (SPEC.md § 3.4)."
     },
     {
       "zeitpunkt": "2026-09-24",

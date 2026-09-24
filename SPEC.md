@@ -1,12 +1,12 @@
 # SPEC — Nebenkostenabrechnung 2025, Berrenrather Straße 218
 
-**Status:** Entwurf v2, vor Implementierung · **Stand:** 22.09.2026 · **Autor:** Aaron
+**Status:** umgesetzt · **Stand:** 24.09.2026 · **Autor:** Aaron
 **Zweck:** Dieses Dokument legt fest, *was* gebaut wird, *warum* es fachlich so aussehen muss und
-*woran* geprüft wird, dass es stimmt. Es entsteht vor dem Code und ist die Grundlage für Abnahme,
-Live-Änderung im Termin und Übergabe.
+*woran* geprüft wird, dass es stimmt. Es ist vor dem Code entstanden und beschreibt jetzt den
+gebauten Stand. Wo etwas bewusst nicht umgesetzt ist, steht das an der Stelle dabei.
 
-> Eine Vorversion (v1) existiert bereits und dient als Referenz; ihre Zahlen sind noch **nicht**
-> als Sollwerte freigegeben (siehe [§ 9.2](#92-gefundene-abweichung-in-v1) — Rundungsdifferenz).
+> Die Vorversion (v1) hatte eine Rundungsdifferenz von 2 Cent. Sie ist gefunden und behoben, siehe
+> [§ 9.2](#92-gefundene-abweichung-in-v1).
 
 ---
 
@@ -90,7 +90,7 @@ Kosten, Paragraf je Kostenart in der Kostentabelle), in der Oberfläche unter *�
 | Einwendungsfrist des Mieters 12 Monate, Belegeinsichtsrecht | § 556 Abs. 3 S. 5 BGB | Hinweis im Schreiben, Check F-06 |
 | Anpassung der Vorauszahlung nur durch ausdrückliche Erklärung | § 560 Abs. 4 BGB | eigener Absatz, Check F-07 |
 | **Wirtschaftlichkeitsgebot** | § 556 Abs. 3 S. 1 BGB | Plausibilitätschecks P-01…P-06 → Bewirtschaftungs-Check |
-| Umlage der **Bruttobeträge** (kein Vorsteuerabzug bei Wohnraum) | § 4 Nr. 12a UStG | Beträge brutto, Annahme A9 |
+| Umlage der **Bruttobeträge** (kein Vorsteuerabzug bei Wohnraum) | § 4 Nr. 12a UStG | Beträge brutto, Annahme 9 |
 
 ### 2.3 Rechenweg (einzige Formel im System)
 
@@ -107,94 +107,66 @@ Summe exakt den Gesamtkosten entspricht (siehe § 9.2). Reines kaufmännisches R
 
 ---
 
-## 3 Extraktionsvertrag: Vom PDF zum geprüften Datensatz
+## 3 Einlesen neuer Belege: vom PDF zum geprüften Datensatz
 
-> **Umsetzungsstand:** implementiert in `app/einlesen.js`, gemessen in `test/pruefe_einlesen.js`.
-> 22 von 23 Belegen werden vollautomatisch korrekt gelesen, einer geht in Quarantäne, keiner wird
-> mit falschen Werten übernommen. Umgesetzt sind: Normalisierung, Anker-Regel mit Fundstelle,
-> Gegenrechnen (I-04/I-09), Statusmaschine mit Quarantäne, Vorschlag-statt-Buchung und das
-> Protokoll. Nicht umgesetzt: getrennte `records/`- und `cards/`-Dateien (der Vorschlag lebt im
-> Arbeitsspeicher der Oberfläche, bis er bestätigt wird) und die Modell-Stufe für unbekannte
-> Layouts — die deterministischen Muster decken alle Lieferanten dieses Objekts ab.
+Umgesetzt in `app/einlesen.js`, gemessen in `test/pruefe_einlesen.js`: Von den 23 Belegen des
+Objekts werden 22 vollständig richtig gelesen, einer geht in Quarantäne, **keiner** wird mit falschen
+Werten übernommen.
 
-### 3.1 Drei Granularitätsstufen
-| Datei | Inhalt | ca. Tokens | Gelesen wenn |
-|---|---|---|---|
-| `extract/INDEX.md` | eine Zeile je Dokument: id, Typ, Lieferant, Datum, Betrag, Status | ~1,8 k gesamt | immer |
-| `extract/cards/<id>.md` | geprüfter Kopf + Positionen + 5-Zeilen-Zusammenfassung | ~150 je Beleg | beim Arbeiten am Beleg |
-| `extract/text/<id>.txt` | normalisierter Volltext | ~900 je Beleg | selten (Nachweis, neuer Parser) |
-
-Normalisierung vor allem anderen: Trennstriche auflösen, Mehrfach-Leerraum verdichten, wiederholte
-Seitenkopf-/-fußzeilen und Rechtsbehelfs-Boilerplate entfernen, Zeilenstruktur für positionsbasiertes
-Parsen erhalten. `raw/` bleibt erhalten — die Kette `raw → normalisiert → Felder` muss rekonstruierbar sein.
-
-### 3.2 Ein kanonischer Datensatz, zwei Darstellungen
+### 3.1 Ablauf
 ```
-extract/records/<id>.json     ← kanonisch, einzige Wahrheit
-        ├── render → cards/<id>.md    (für Mensch und Modell)
-        └── feed   → Berechnung
+PDF oder Text → normalisieren → Felder erkennen (je Lieferant ein Muster)
+              → Prüfungen am Beleg ─ alle ok ──→ Vorschlag → Mensch bestätigt Kostenart
+                                    │                        und Umlagefähigkeit → Falldatei
+                                    └ Fehler ──→ Quarantäne (keine Übernahme möglich)
 ```
-Karten sind **Build-Ergebnis**, nie handgepflegt. Die Zusammenfassung wird aus Feldern *gerendert*,
-nicht formuliert — sonst entsteht eine zweite, driftende Wahrheit.
 
-### 3.3 Herkunft je Feld
-| `quelle` | Bedeutung | Vertrauen |
-|---|---|---|
-| `regel` | deterministischer Parser / Lieferanten-Template | hoch, automatisch verifiziert |
-| `modell` | LLM-Extraktion (unbekanntes Layout) | **nie direkt übernommen** |
-| `mensch` | eingegeben oder bestätigt | maßgeblich, protokolliert |
+### 3.2 Drei Regeln
+- **Anker-Regel:** Jeder übernommene Wert muss wörtlich im Dokument stehen; die Fundstelle wird
+  angezeigt. Was sich nicht nachweisen lässt, wird verworfen, nicht geraten.
+- **Gegenrechnen:** Positionen == Rechnungsbetrag (I-04), Netto + USt == Brutto (I-09). Sonst
+  Quarantäne.
+- **Vorschlag, keine Buchung:** Kostenart und Umlagefähigkeit sind eine fachliche Entscheidung.
+  Sie werden vorgeschlagen, aber erst nach Bestätigung übernommen und protokolliert. Eine
+  Nicht-Umlage verlangt eine Begründung mit Fundstelle (R-03).
 
-**Anker-Regel (gegen Halluzination und Parser-Drift):** Jeder skalare Wert im Datensatz muss
-wörtlich im normalisierten Quelltext auffindbar sein; der Datensatz speichert die Fundstelle.
-Nicht verankerbare Felder werden verworfen, nicht gespeichert. Normalisierung (`1.096,00 €` →
-`1096.00`) erfolgt **nach** der Verankerung.
-
-### 3.4 Statusmaschine und Sperre
-```
-extrahiert → [Intra-Dokument-Checks] ─ alle ok ──→ verified ──→ darf in die Berechnung
-                                      └ Fehler ──→ quarantaene → Review-Queue
-                                                   (Mensch korrigiert ODER markiert
-                                                    als Dokumentmangel → Rückfrage)
-```
-**Fail-closed:** Die Berechnung startet nicht, solange ein Dokument nicht `verified` ist. Ein
-Übersteuern ist möglich, erfordert aber einen Grund und landet im Protokoll — „wir wussten es und
-haben entschieden" bleibt von „niemand hat es gemerkt" unterscheidbar.
-
-### 3.5 Korrekturen und Idempotenz
-- `sha256` je Quell-PDF → unveränderte Dokumente werden nicht neu extrahiert.
-- Ändert sich ein PDF, gilt der Datensatz und alles Abgeleitete als **stale**; die Berechnung verweigert.
-- `schema`-Version je Datensatz; Parseränderung erzwingt Neu-Extraktion statt Formatmischung.
-- **Menschliche Korrekturen liegen nie in generierten Dateien**, sondern in `overrides.json`,
-  Schlüssel `(doc_id, feld)`, und werden nach jeder Extraktion erneut angewandt.
-
-### 3.6 Fehler nach Verursacher trennen
+### 3.3 Fehler nach Verursacher trennen
 | Klasse | Signal | Eigentümer | Handlung |
 |---|---|---|---|
-| **Extraktionsfehler** | Positionen ≠ Summe, PDF selbst stimmig | wir | Parser fixen, neu extrahieren, kein Kundenkontakt |
+| **Lesefehler** | Positionen ≠ Summe, PDF selbst stimmig | wir | Muster verbessern, kein Kundenkontakt |
 | **Dokumentmangel** | PDF stimmt in sich nicht, Seite fehlt, falsches Objekt | Lieferant/Mandant | Quarantäne + Rückfrage, nie stillschweigend reparieren |
-| **Echte Auffälligkeit** | Dokument korrekt, Sachverhalt auffällig | fachliche Entscheidung | klassifizieren mit Begründung → Befund |
+| **Echte Auffälligkeit** | Dokument korrekt, Sachverhalt auffällig | fachliche Entscheidung | mit Begründung einordnen → Befund |
+
+### 3.4 Bewusst nicht gebaut
+- **Eine KI-Stufe für unbekannte Rechnungslayouts.** Die festen Muster decken alle Lieferanten
+  dieses Objekts ab; ein Modell wäre nicht reproduzierbar und bräuchte ohnehin die Anker-Regel.
+- **Gespeicherte Zwischenstände je Beleg.** Der Vorschlag lebt in der Oberfläche, bis er bestätigt
+  ist; danach steht er in der Falldatei. Ob sich ein Original-PDF seit der Erfassung geändert hat,
+  prüft `werkzeuge/pruefe_unterlagen.js` über eine Prüfsumme je Dokument.
 
 ---
 
 ## 4 Datenmodell
 
+Alles steht in **einer** Datei, `daten/fall_2025.json`:
+
 ```
-case/
-  einstellungen      zeitanteil_methode, vorauszahlungen_ansatz, kostenansatz,
-                     abrechnungsdatum, zahlungsfrist, rundung
-  einheiten[]        we, lage, wohnflaeche_qm, quelle
-  mietverhaeltnisse[] id, we, mieter[], beginn, ende, nettokaltmiete, nk_vorauszahlung,
-                     staffeln[], vereinbarte_kostenarten[]   ← § 4 des jeweiligen Vertrags als Daten
-  kostenarten{}      bezeichnung, betrkv_ziffer, konto,
-                     umlagefaehig_von, umlagefaehig_bis      ← Gültigkeitsfenster (z. B. Kabel bis 2024-06-30)
-  belege[]           doc_id, lieferant, datum, rechnungsnr, leistungszeitraum, betrag,
-                     status, positionen[{ bezeichnung, betrag, kostenart, umlagefaehig,
-                                          begruendung, schluessel }]
-  buchungen[]        datum, gegenpartei, zweck, betrag, zuordnung
-  protokoll[]        zeitpunkt, wer, was, warum        ← Entscheidungs- und Änderungshistorie
+objekt, vermieterin    Stammdaten, Absender, Bankverbindung
+abrechnung             von, bis, erstellt_am, zahlungsfrist_tage
+einstellungen          zeitanteil_methode, vorauszahlungen_ansatz, kostenansatz   ← die drei Stellschrauben
+einheiten[]            we, lage, wohnflaeche_qm, quelle, hinweis
+mietverhaeltnisse[]    id, we, mieter[], beginn, ende, Miete, Vorauszahlung, Staffeln,
+                       vereinbarte Kostenarten   ← § 4 des jeweiligen Vertrags als Daten
+kostenarten{}          bezeichnung, betrkv, vertrag, warum, Gültigkeitsfenster
+belege[]               id, lieferant, datum, leistungszeitraum, rechnungsbetrag, bank_kennung,
+                       positionen[{ bezeichnung, betrag, kostenart, umlagefaehig, begruendung }]
+buchungen[], kontoauszuege[]   aus den 12 Monatsauszügen
+befunde[]              A1…A13: was in den Unterlagen auffällt und wie es behandelt ist
+protokoll[]            wer, wann, was, warum
+unterlagen[]           Prüfsumme je Original-PDF
 ```
-Alles Abgeleitete (Ergebnisse, Checks) wird bei jedem Lauf neu berechnet und **nie** gespeichert —
-so kann die Datei nicht veralten.
+Alles Abgeleitete (Ergebnisse, Prüfungen) wird bei jedem Lauf neu berechnet und **nie** gespeichert —
+so kann nichts veralten.
 
 ---
 
@@ -218,7 +190,7 @@ Annahmen/Rückfragen auftauchen), **I** = Information.
 | I-10 | Menge × Einzelpreis == Positionsbetrag | B |
 | I-11 | Σ Raten == Jahresbetrag; Σ Monatszeilen == Jahressumme | B |
 | I-12 | Datumslogik: Datum ≤ heute, Zeitraum von ≤ bis, Länge plausibel | B |
-| I-13 | Anker-Check auf allen Feldern (§ 3.3) | B |
+| I-13 | Anker-Check auf allen Feldern (§ 3.2) | B |
 | I-14 | Seitenzahl im Text == Seitenzahl im PDF | W |
 
 ### L1 — Arithmetische Invarianten
@@ -351,24 +323,26 @@ Belegsumme 2025: **12.956,72 €** → umlagefähig **8.898,32 €** · nicht um
 
 ---
 
-## 7 Risikoregister
+## 7 Befunde aus den Unterlagen
 
-Jede Zeile hat einen Status: **behandelt** (in den Zahlen berücksichtigt) oder **Rückfrage** (kann
-ohne Mandantin nicht entschieden werden). Keine Zeile darf ohne Status bleiben (Check R-12).
+Die Befunde stehen mit Behandlung und Auswirkung in der Falldatei (`befunde`) und in der Oberfläche
+unter *Prüfungen*. Jede offene Rückfrage steht in `ANNAHMEN_UND_RUECKFRAGEN.md` (Check R-12).
 
-| ID | Befund | Klasse | Behandlung | Status |
-|---|---|---|---|---|
-| A1 | WE 3: „ca. 81 m²" (Vertrag 2016) vs. 84,00 m² (Aufmaß 2018) | Stammdaten-Widerspruch | 84,00 m² angesetzt; nur so ergibt sich auch die Gesamtfläche 250,00 m² | behandelt |
-| A2 | WE 4 Ohlwein: Mietzahlung Oktober 2025 fehlt (760,00 €) | Zahlungslücke | nur 11 × 150 € Vorauszahlung angerechnet; Rückstand separat anmahnen | behandelt + Rückfrage |
-| A3 | WE 2 Bendel: Staffelmiete seit 09/2023 nie umgesetzt (720 € in 2025, 1.220 € kumuliert) | Buchhaltungsfehler | ohne Einfluss auf die Abrechnung; Bewirtschaftungs-Check | Rückfrage |
-| A4 | RheinEnergie-Jahresrechnung datiert 22.01.2026: 1.276,60 € Kosten vs. 1.200,00 € Abschläge 2025 | Periodenabgrenzung | Leistungsprinzip; umschaltbar | behandelt |
-| A5 | Hauswartrechnungen enthalten Kleinreparaturen (300,00 €) | gemischter Beleg | Positionssplit | behandelt |
-| A6 | Vodafone Kabel-TV 427,20 € | Rechtsänderung seit Vertragsschluss | nicht umgelegt | behandelt |
-| A7 | Provinzial: Gebäude + Haftpflicht + Rechtsschutz auf einem Beleg | Bündelvertrag | Split, Rechtsschutz ausgeschlossen | behandelt |
-| A8 | Hauswart Q1 rechnet „Kontrolle Heizungsraum" ab — Objekt hat keinen | Textbaustein-Artefakt | Pauschale angesetzt, Leistungsbeschreibung klären | Rückfrage |
-| A9 | Anschrift Nowak nach Auszug unbekannt | Zustellung | Platzhalter; Frist 31.12.2026 beachten | Rückfrage |
-| A10 | Wasserverbrauch 320 m³ in zwei unabhängigen Belegen konsistent; Saldenkette lückenlos; alle 23 Belege bezahlt | Plausibilität | automatisch geprüft, ohne Befund | behandelt |
-| A11 | Laubbeseitigung sowohl Hauswart Q4 als auch Gartenpflege Oktober | mögliche Doppelleistung | beides angesetzt, Hinweis im Bewirtschaftungs-Check | Rückfrage |
+| ID | Befund | Behandlung | Status |
+|---|---|---|---|
+| A1 | WE 3: „ca. 81 m²" (Vertrag 2016) vs. 84,00 m² (Aufmaß 2018) | 84,00 m² angesetzt; nur so ergibt sich die Gesamtfläche 250,00 m² | behandelt |
+| A2 | WE 4 Ohlwein: Miete Oktober 2025 fehlt (760,00 €) | nur 11 × 150 € Vorauszahlung angerechnet; 610 € Kaltmiete gesondert anmahnen | behandelt + Rückfrage |
+| A3 | WE 2 Bendel: Staffelmiete laut Vertrag ab 09/2023 nicht umgesetzt (720 € in 2025 belegt, bis zu 500 € in 2023/24 zu prüfen) | ohne Einfluss auf die Abrechnung; Bewirtschaftungs-Check | Rückfrage |
+| A4 | RheinEnergie-Jahresrechnung vom 22.01.2026: 1.276,60 € Kosten vs. 1.200,00 € Abschläge 2025 | Leistungsprinzip; umschaltbar | behandelt |
+| A5 | Hauswartrechnungen enthalten Kleinreparaturen (300,00 €) | Positionen aufgeteilt | behandelt |
+| A6 | Vodafone Kabel-TV 427,20 € | nicht umgelegt | behandelt |
+| A7 | Verwaltung, Neuanlage Vorgarten, Steigleitung, Rechtsschutz | nicht umgelegt | behandelt |
+| A8 | Hauswart Q1 rechnet „Kontrolle Heizungsraum" ab — das Haus hat keinen | Pauschale angesetzt, Leistungsbeschreibung klären | Rückfrage |
+| A9 | Wasser 320 m³ in zwei unabhängigen Belegen gleich; Saldenkette lückenlos; alle Belege bezahlt | geprüft, ohne Befund | behandelt |
+| A10 | Anschrift Nowak nach Auszug unbekannt | Schreiben gesperrt; Frist 31.12.2026 | Rückfrage |
+| A11 | Hauswart rechnet Reparaturen am ersten Tag des Quartals ab | Reparaturen ohnehin nicht umgelegt; Nachweise anfordern | Rückfrage |
+| A12 | Neuvertrag Kestner +27 % — Mietpreisbremse? | kein Einfluss auf die Abrechnung | Rückfrage |
+| A13 | Rechenfehler von 2 Cent in der Verwalterrechnung; eine verspätete Miete | kein Einfluss | behandelt |
 
 ---
 
@@ -473,8 +447,9 @@ installieren müssen (D2). Rechenkern als ein Modul, das sowohl die Seite als au
 (Tests, Stapelverarbeitung) nutzt — eine Logik, keine Divergenz. *Verworfen:* Python-Pipeline als
 Auslieferung (setzt Python, poppler, Chrome beim Empfänger voraus).
 
-**ADR-4 — Extraktion deterministisch vor Modell.** Fünf Lieferanten-Templates decken 23 Belege ab.
-Die Modellstufe ist der Pfad für *neue*, unbekannte Dokumente und unterliegt der Anker-Regel.
+**ADR-4 — Belege mit festen Mustern lesen, nicht mit einem Modell.** Feste Muster je Lieferant
+decken alle 23 Belege ab und liefern bei jedem Lauf dasselbe Ergebnis. Eine KI-Stufe wäre erst für
+neue, unbekannte Layouts sinnvoll und müsste dann ebenfalls die Anker-Regel erfüllen.
 *Verworfen:* durchgehende LLM-Extraktion (nicht reproduzierbar, teurer, ohne Anker nicht prüfbar).
 
 **ADR-5 — Fail-closed statt Best-Effort.** Lieber keine Abrechnung als eine falsche: ein
@@ -482,21 +457,20 @@ unwirksames Schreiben kostet die Nachforderung, ein verzögertes nicht.
 
 ---
 
-## 11 Vorgehen und Zeitbudget (~2 h)
+## 11 Vorgehen
 
-| Phase | Inhalt | Ergebnis | ca. |
-|---|---|---|---|
-| 0 Discovery | Unterlagen sichten, Entscheidungstabelle und Risikoregister füllen | dieses SPEC | 20 min |
-| 1 Design | Datenmodell, Formel, Prüfkatalog, Golden Test von Hand | § 4, 5, 9.1 | 15 min |
-| 2 Rechenkern | Umlage, Zeitanteile, Largest-Remainder, Invarianten | `rechenkern/` + L0/L1 | 30 min |
-| 3 Ausgabe | 5 Schreiben, Oberfläche, Dokument-Checks F-01…F-09 | D1, D2 | 30 min |
-| 4 Einlesen | Normalisierung, Anker-Regel, Quarantäne, Zuordnen-und-Bestätigen | `app/einlesen.js` | 30 min |
-| 5 Prüfen | L2–L5, Schalter durchspielen, Vier-Augen-Liste | D5 | 10 min |
-| 6 Übergabe | Annahmen/Rückfragen, Bewirtschaftungs-Check, README, Demo-Skript | D3, D4, D6 | 15 min |
+| Phase | Inhalt | Ergebnis |
+|---|---|---|
+| 0 Discovery | Unterlagen sichten, Entscheidungstabelle und Risikoregister füllen | dieses SPEC |
+| 1 Design | Datenmodell, Formel, Prüfkatalog, Golden Test von Hand | § 4, 5, 9.1 |
+| 2 Rechenkern | Umlage, Zeitanteile, Largest-Remainder, Invarianten | `rechenkern/` + L0/L1 |
+| 3 Ausgabe | 5 Schreiben, Oberfläche, Dokument-Checks F-01…F-09 | D1, D2 |
+| 4 Einlesen | Normalisierung, Anker-Regel, Quarantäne, Zuordnen-und-Bestätigen | `app/einlesen.js` |
+| 5 Prüfen | L2–L5, Schalter durchspielen, Vier-Augen-Liste | D5 |
+| 6 Übergabe | Annahmen/Rückfragen, Bewirtschaftungs-Check, README, Demo-Skript | D3, D4, D6 |
 
 Priorität bei Zeitnot: **A-01…A-07 und F-01…F-04 zuerst** (verhindern falsche Zahlen und
-unwirksame Schreiben), dann R-01/R-02/R-03, dann der Rest. Die Modell-Extraktionsstufe und
-zeichengenaue Fundstellen sind die ersten Kandidaten zum Weglassen.
+unwirksame Schreiben), dann R-01/R-02/R-03, dann der Rest.
 
 ---
 
@@ -506,18 +480,18 @@ zeichengenaue Fundstellen sind die ersten Kandidaten zum Weglassen.
 |---|---|
 | D1 · 5 Abrechnungsschreiben | 4 versandfertig, 1 gesperrt (Anschrift Nowak fehlt, Prüfung F-08) |
 | D2 · Lösung lauffähig beim Empfänger | `dist/Nebenkostenabrechnung_2025.zip` — entpacken, HTML öffnen, ohne Installation |
-| D3 · Annahmen und Rückfragen | `ANNAHMEN_UND_RUECKFRAGEN.md`, 14 Annahmen und 10 Rückfragen |
+| D3 · Annahmen und Rückfragen | `ANNAHMEN_UND_RUECKFRAGEN.md`, 14 Annahmen und 11 Rückfragen |
 | D4 · Bewirtschaftungs-Check | `BEWIRTSCHAFTUNGS_CHECK.md`, 3 Empfehlungen mit € Wirkung |
 | D5 · Prüfprotokoll | `dist/Pruefprotokoll.md`, bei jedem Bauen neu erzeugt |
 | D6 · im Termin änderbar | 3 Stellschrauben mit Vorher/Nachher-Vergleich, plus Beleg-Einlesen |
 
-Automatisch geprüft: **51 Tests** (`node test/pruefe.js`, `node test/pruefe_einlesen.js`) und
+Automatisch geprüft: **51 Tests** (`node test/alles.js`) und
 **66 fachliche Prüfungen** bei jedem Lauf.
 
 ### Offene Punkte
 
 1. Freigabe der Annahmen aus § 8 durch die Mandantin (insb. Ist- vs. Soll-Vorauszahlungen).
-2. Zustelladresse Nowak (Befund A10) — blockiert D1 für dieses eine Schreiben.
+2. Zustelladresse Nowak (Befund A10, Rückfrage 1) — blockiert D1 für dieses eine Schreiben.
 3. Vier-Augen-Durchsicht (Q-03) und Freigabe (Q-04) durch einen Menschen — nicht maschinell ersetzbar.
 4. Vorjahresdaten für P-05 (Abweichungsanalyse) liegen nicht vor.
 5. Eigentümer und Review-Datum für die Gültigkeitsfenster der Kostenarten (§ 5.2).

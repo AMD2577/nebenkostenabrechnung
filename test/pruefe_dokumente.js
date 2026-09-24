@@ -114,9 +114,9 @@ console.log("\n2. Keine veralteten Beträge in den Übergabedokumenten");
 // um zu erklären, warum die Rundungsregel gewechselt hat. Ein erklärter
 // historischer Wert ist kein veralteter Wert.
 const VERALTET = ["286,27", "253,28", "325,42", "175,42", "1.726,27", "1.253,28", "1.975,42"];
-const ZU_PRUEFEN = ["README.md", "ANNAHMEN_UND_RUECKFRAGEN.md", "BEWIRTSCHAFTUNGS_CHECK.md"];
+const ZU_PRUEFEN = ["README.md", "TECHNIK.md", "ANNAHMEN_UND_RUECKFRAGEN.md", "BEWIRTSCHAFTUNGS_CHECK.md"];
 
-test("README, Annahmen und Bewirtschaftungs-Check nennen keine alten Beträge", () => {
+test("README, Technik, Annahmen und Bewirtschaftungs-Check nennen keine alten Beträge", () => {
   const funde = [];
   for (const datei of ZU_PRUEFEN) {
     const inhalt = lies(datei);

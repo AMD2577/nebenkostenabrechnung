@@ -178,8 +178,9 @@ try {
   const { execFileSync } = require("child_process");
   const dist = pfad.join(WURZEL, "dist");
   fs.rmSync(pfad.join(dist, zipName), { force: true });
-  const inhalt = fs.readdirSync(dist).filter((d) => d !== zipName);
-  execFileSync("zip", ["-r", "-q", zipName, ...inhalt], { cwd: dist });
+  // Versteckte Dateien (etwa .DS_Store vom Finder) gehören nicht in die Abgabe.
+  const inhalt = fs.readdirSync(dist).filter((d) => d !== zipName && !d.startsWith("."));
+  execFileSync("zip", ["-r", "-q", zipName, ...inhalt, "-x", "*/.*"], { cwd: dist });
   zipGebaut = true;
 } catch (fehler) {
   console.log("Hinweis: Zip-Archiv konnte nicht erstellt werden (" + fehler.message + ").");

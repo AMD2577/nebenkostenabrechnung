@@ -2,50 +2,114 @@
 
 ## Das Wichtigste in Kürze
 
-**Die vier Annahmen mit Zahleneffekt:**
-1. Wohnfläche WE 3 = **84 m²** (Aufmaß 2018), nicht „ca. 81 m²“ aus dem Altvertrag
-2. **Leistungsprinzip** – Kosten des Abrechnungsjahres, nicht Zahlungen des Jahres
-3. **Zeitanteil taggenau** (212/153 Tage) statt nach vollen Monaten
-4. **Vorauszahlungen nach Ist** – nur tatsächlich Geleistetes wird angerechnet
+**Drei Fragen, die vor dem Versand geklärt sein müssen** (Rückfragen 1–3):
+1. **Neue Anschrift von Frau Nowak** – ohne sie kann ihre Abrechnung nicht zugehen
+2. **Oktobermiete Frau Ohlwein** – Rückstand oder auf ein anderes Konto gezahlt?
+3. **Staffelmiete Herr Bendel** – laut Vertrag seit 09/2023 fällig, gezahlt wird weiter die Anfangsmiete. Gibt es eine Absprache?
 
-**Die drei Fragen, die vor dem Versand geklärt sein müssen:**
-1. Zustelladresse von Frau Nowak – ohne sie kann ihre Abrechnung nicht zugehen
-2. Oktobermiete Ohlwein – Rückstand oder auf ein anderes Konto gezahlt?
-3. Staffelmiete Bendel – warum seit 09/2023 nicht umgesetzt?
+**Vier Annahmen, die die Beträge verändern** – jede ist in der Oberfläche umschaltbar, die Wirkung
+wird sofort je Mieter angezeigt:
 
-Alles Weitere unten: 14 Annahmen, 12 Rückfragen.
+| # | Angenommen | Alternative | Wirkung der Alternative |
+|---|---|---|---|
+| 1 | Wohnfläche WE 3 = **84 m²** (Aufmaß 2018) | 81 m² („ca.“ im Vertrag Nowak) | Nowak −41,66 €, Kestner −30,09 €, die anderen drei zahlen je 21–27 € mehr |
+| 2 | **Leistungsprinzip** (Kosten, die 2025 entstanden sind) | Abflussprinzip (Zahlungen, die 2025 geflossen sind) | umlagefähig 76,60 € weniger, jeder Mieter 11–19 € weniger |
+| 3 | Mieterwechsel WE 3 **taggenau** (212 / 153 Tage) | nach vollen Monaten (7 / 5) | Nowak +7,51 €, Kestner −7,51 € |
+| 4 | Vorauszahlungen **wie tatsächlich gezahlt** | wie im Vertrag vereinbart | Ohlwein 175,43 € statt 325,43 € |
 
 ---
 
-## Annahmen (getroffen, damit abgerechnet werden kann)
+## Annahmen
 
-1. **Wohnfläche WE 3 = 84,00 m²**, nicht „ca. 81 m²“ aus dem Mietvertrag Nowak (2016). Grund: Aufmaß 12.04.2018 ist lt. Einheitenübersicht maßgeblich, Vertrag Kestner (2025) nennt 84,00 m², und für die Betriebskostenumlage zählt die tatsächliche Fläche (BGH VIII ZR 220/17). Nur so ergeben die vier Flächen auch die 250,00 m² Gesamtfläche.
-2. **Leistungsprinzip** (Kosten des Abrechnungsjahres) für alle Kostenarten. Relevant nur bei RheinEnergie: Jahresrechnung vom 22.01.2026 über 1.276,60 € wird angesetzt, nicht die 1.200,00 € Abschläge, die 2025 abgeflossen sind. Die Rechnung lag vor Erstellung der Abrechnung vor. (Umschaltbar: `kostenansatz = abfluss`.)
-3. **Zeitanteil taggenau** (212/365 Nowak, 153/365 Kestner) gemäß § 4 Abs. 5 Mietvertrag „zeitanteilig auf die Dauer des Mietverhältnisses“. Kein Kostenart-spezifischer Nutzungsschlüssel (z. B. Wasser nach Personen), da die Verträge und der Case ausschließlich Wohnfläche vorgeben. (Umschaltbar: `zeitanteil_methode = monate`.)
-4. **Vorauszahlungen nach Ist** (Kontoauszug), nicht nach Soll. Betrifft nur Frau Ohlwein (Oktober 2025 fehlt): gutgeschrieben werden 11 × 150 € = 1.650 €. **Wichtig:** Die nicht geleistete Vorauszahlung von 150 € ist dadurch bereits in ihrer Nachzahlung enthalten. Gesondert angemahnt wird deshalb nur die offene **Nettokaltmiete von 610 €** – nicht die volle Monatsmiete von 760 €, sonst würde die Vorauszahlung doppelt gefordert. (Umschaltbar: `vorauszahlungen_ansatz = soll` → Nachzahlung Ohlwein 175,43 € statt 325,43 €.)
-5. **Hauswart-Rechnungen werden gesplittet**: Pauschale (4 × 360 €) ist umlagefähig, die Position „Kleinreparaturen und Instandhaltungsarbeiten“ (82 + 68 + 91 + 59 = 300 €) nicht (§ 2 Nr. 14 BetrKV nimmt Instandhaltung ausdrücklich aus).
-6. **Versicherung wird gesplittet**: Wohngebäude (986,40 €) und Haus-/Grundbesitzerhaftpflicht (162,12 €) umlagefähig; Rechtsschutz (189,00 €) nicht.
-7. **Nicht umgelegt**: Verwaltervergütung (1.176 €), Neuanlage Vorgarten (1.480 €, einmalige Herstellung, eigenes Konto 6600), Instandsetzung Steigleitung (486,20 €), Kabel-TV Vodafone (427,20 €, Ende Nebenkostenprivileg 30.06.2024 und nicht in § 4 Mietvertrag vereinbart).
-8. **Schornsteinfeger (218,40 €) umlagefähig nach Wohnfläche**, obwohl die Leistung je Etagentherme (4 Stück) anfällt – § 5 Abs. 2 der Mietverträge sagt ausdrücklich „legt sie nach § 4 um“, und § 4 kennt nur Wohnfläche. Rauchwarnmelder (89 €) analog nach § 4 Abs. 2.
-9. **Umsatzsteuer**: Bruttobeträge werden umgelegt (Vermieterin ist gegenüber Wohnraummietern nicht vorsteuerabzugsberechtigt).
-10. **Rundung nach dem Largest-Remainder-Verfahren**: Die Anteile werden abgerundet, und die dabei übrig bleibenden Cent gehen an die Anteile mit dem größten abgeschnittenen Nachkommateil. Dadurch ergibt die Summe aller Wohnungen exakt die Gesamtkosten und die Summe beider Mieter einer Wohnung exakt deren Jahresanteil. Kaufmännisches Runden je Zeile wäre hier falsch: Es ließ in einer Vorfassung 2 Cent verschwinden (8.898,30 € statt 8.898,32 €). Einzelne Zeilen weichen dadurch um höchstens einen Cent vom rein rechnerischen Wert ab – nachvollziehbar dokumentiert in `SPEC.md` § 9.1.
-11. **Abrechnungsdatum 16.02.2026**, Zahlungsfrist 30 Tage; Vorauszahlungsanpassung ab dem übernächsten Monat (§ 560 Abs. 4 BGB). Beides in `daten/fall_2025.json`, Abschnitt `abrechnung`.
-12. Die Abrechnungen sind bewusst **ohne Heizung/Warmwasser** (dezentrale Gasthermen, eigene Verträge) – das steht als Hinweis in der Fußzeile jedes Schreibens.
-13. **Maßgeblich ist das Leistungsdatum, nicht das Rechnungsdatum.** Sieben Belege nennen beides und weichen um wenige Tage ab (z. B. Sanitär Doblinger: Leistung am 19.08., Rechnung am 21.08.2025). Beim Leistungsprinzip zählt der Tag der Leistung; danach ist jeder Beleg dem Abrechnungsjahr zugeordnet. In diesem Jahr ändert das nichts an der Zuordnung – alle sieben liegen in 2025 –, es wäre aber am Jahreswechsel entscheidend.
-14. **Das Schreiben an Frau Nowak ist gesperrt** (Vermerk ENTWURF), weil keine Zustelladresse vorliegt. Die vier übrigen Abrechnungen sind versandfertig. Siehe Rückfrage 3.
+### Mit Wirkung auf die Beträge
 
-## Rückfragen an die Mandantin (vor Versand zu klären)
+1. **Wohnfläche WE 3 = 84,00 m².** Das Aufmaß vom 12.04.2018 ist laut Einheitenübersicht maßgeblich,
+   der neue Vertrag Kestner nennt ebenfalls 84,00 m², und für die Umlage zählt die tatsächliche Fläche
+   (BGH VIII ZR 220/17). Nur so ergeben die vier Wohnungen die 250,00 m² Gesamtfläche.
+2. **Leistungsprinzip.** Relevant nur bei der RheinEnergie: Angesetzt ist die Jahresrechnung vom
+   22.01.2026 über 1.276,60 €, nicht die 1.200,00 € Abschläge, die 2025 abgeflossen sind. Die Rechnung
+   lag vor Erstellung der Abrechnung vor.
+3. **Zeitanteil taggenau**, weil § 4 Abs. 5 der Mietverträge „zeitanteilig auf die Dauer des
+   Mietverhältnisses“ verlangt. Verteilt wird ausschließlich nach Wohnfläche, wie im Mietvertrag und
+   in der Aufgabenstellung vorgegeben.
+4. **Vorauszahlungen nach Kontoauszug** (BGH VIII ZR 57/04). Betrifft nur Frau Ohlwein – der Oktober
+   fehlt, angerechnet werden 11 × 150 € = 1.650 €. Die fehlenden 150 € Vorauszahlung stecken damit
+   bereits in ihrer Nachzahlung. **Gesondert anzumahnen ist deshalb nur die Kaltmiete von 610 €**,
+   nicht die volle Monatsmiete von 760 € – sonst würde dieselbe Vorauszahlung zweimal gefordert.
 
-1. **Frau Ohlwein, Oktober 2025**: Ist die Miete bar oder auf ein anderes Konto gezahlt worden, oder liegt tatsächlich ein Rückstand vor? Wurde gemahnt?
-2. **Herr Bendel, Staffelmiete**: Warum wird seit 09/2023 nicht nach Staffel gezahlt (Vertrag § 3a: 490 € ab 09/2023, 515 € ab 09/2024, 545 € ab 09/2025)? Gab es eine abweichende Vereinbarung in Textform? Falls nein: Nachforderung 1.220 € (bis 12/2025) – siehe Bewirtschaftungs-Check.
-3. **Neue Anschrift Frau Nowak** für die Zustellung der Abrechnung (Frist § 556 Abs. 3 BGB: 31.12.2026). Wurde die Kaution (2.100 €) bereits abgerechnet – soll die Nachzahlung (476,56 €) damit verrechnet werden?
-4. **Hauswart Wilms, Q1**: „Kontrolle Heizungsraum“ – welcher Raum ist gemeint? Das Haus hat keinen Heizungsraum. Ist der Hauswartvertrag vom 04.01.2021 ein Textbaustein aus einem anderen Objekt? Liegt der Vertrag vor (Leistungsumfang, Pauschale 120 €/Monat)?
-5. **Vodafone Gestattungsvertrag**: Soll gekündigt werden (3 Monate zum Ablauf, jährliche Verlängerung ab 09.02.)? Alternativ: Haben Mieter individuell einer Weiterberechnung zugestimmt (dann als Einzelvereinbarung, nicht als Betriebskosten)?
-6. **Vorauszahlungen nach Vertrag** noch aktuell? Alle fünf Mietverhältnisse haben Nachzahlungen; wir schlagen Anpassung vor (siehe Schreiben). Einverstanden mit den Beträgen (WE 1: 184 €, WE 2: 144 €, WE 3: 250 €, WE 4: 165 €)?
-7. **Leistungs- vs. Abflussprinzip**: Wie wurde in den Vorjahren (Excel) verfahren? Ein Wechsel ist zulässig, darf aber nicht zu Doppel- oder Nichterfassung führen (z. B. RheinEnergie-Nachzahlung 2024, die 2025 abgeflossen wäre – in den Auszügen ist keine zu sehen).
-8. **Grundsteuer 2025**: Bescheid nennt Hebesatz 400 v.H. – bitte den tatsächlichen Bescheid nach Grundsteuerreform (Messbescheid FA Köln-Süd 12.11.2024) prüfen; die Zahl aus dem Beleg wurde übernommen.
-9. **Rauchwarnmelder**: 9 Melder, davon nur 1 in WE 2 (2 Zimmer). Erfüllt das die Ausstattungspflicht (§ 48 BauO NRW: Schlafräume, Kinderzimmer, Flure)? Kein Abrechnungsthema, aber Haftungsthema.
-11. **Hauswart Wilms, Leistungsnachweise**: Jede Quartalsrechnung ist auf den ersten Tag ihres Leistungszeitraums datiert und rechnet trotzdem konkrete Reparaturen „nach Aufwand“ für dieses Quartal ab (z. B. am 02.01. für den Zeitraum bis 31.03.). Wurden diese Arbeiten tatsächlich erbracht? Gibt es Leistungsnachweise? Und warum wird nach Aufwand im Voraus abgerechnet?
-12. **Neuvertrag Kestner und Mietpreisbremse**: 890 € für 84 m² nach zuvor 700 € (+27 %). Köln unterliegt der Mietpreisbegrenzungsverordnung NRW; der Vertrag nennt nur „instandgesetzt und neu gestrichen“. Wie hoch ist die ortsübliche Vergleichsmiete? Lag eine umfassende Modernisierung vor? (Kein Einfluss auf die Nebenkosten, aber ein Rückforderungsrisiko.)
-13. **Zustellung an Frau Nowak**, falls die Anschrift nicht zu ermitteln ist: einfache Melderegisterauskunft beim Einwohnermeldeamt, oder Verrechnung der Nachzahlung mit der Kaution (2.100 €) im Rahmen der Kautionsabrechnung. Frist für die Abrechnung: 31.12.2026.
-14. **Unterlagen, die fehlen**: Hauswartvertrag, Verwaltervertrag (15.12.2020), Reinigungs-Leistungsverzeichnis, Vodafone-Gestattungsvertrag, Kautionskonto-Auszüge. Für die Abrechnung nicht zwingend, für die Belegeinsicht durch Mieter hilfreich.
+### Einordnung der Belege
+
+5. **Hauswart-Rechnungen werden aufgeteilt:** Die Pauschale (4 × 360 €) wird umgelegt, die
+   „Kleinreparaturen und Instandhaltungsarbeiten“ (82 + 68 + 91 + 59 = 300 €) nicht – § 2 Nr. 14
+   BetrKV nimmt Instandhaltung ausdrücklich aus.
+6. **Versicherung wird aufgeteilt:** Wohngebäude (986,40 €) und Haftpflicht (162,12 €) werden
+   umgelegt, die Rechtsschutzversicherung (189,00 €) nicht – sie schützt allein die Vermieterin.
+7. **Nicht umgelegt werden außerdem:** Verwaltung (1.176 €), Neuanlage Vorgarten (1.480 €, einmalige
+   Herstellung statt laufender Pflege), Reparatur der Steigleitung (486,20 €) und Kabel-TV von
+   Vodafone (427,20 €: seit 01.07.2024 nicht mehr umlagefähig und im Mietvertrag nicht vereinbart).
+8. **Schornsteinfeger (218,40 €) nach Wohnfläche**, obwohl er je Etagentherme abrechnet – § 5 Abs. 2
+   der Mietverträge verweist ausdrücklich auf § 4, und § 4 kennt nur die Wohnfläche. Rauchwarnmelder
+   (89 €) ebenso nach § 4 Abs. 2.
+9. **Umgelegt werden Bruttobeträge**, weil die Vermieterin bei Wohnraum keine Vorsteuer abziehen kann.
+10. **Es zählt das Leistungsdatum, nicht das Rechnungsdatum.** Sieben Belege nennen beides und
+    weichen um wenige Tage ab (z. B. Steigleitung: Reparatur am 19.08., Rechnung am 21.08.2025). In
+    diesem Jahr ändert das nichts – alle sieben liegen in 2025 –, am Jahreswechsel wäre es aber
+    entscheidend.
+
+### Formales
+
+11. **Rundung centgenau ohne Verlust:** Die Anteile werden so gerundet, dass ihre Summe exakt die
+    Gesamtkosten ergibt. Einfaches Runden jeder Zeile ließ in einer Vorfassung 2 Cent verschwinden
+    (8.898,30 € statt 8.898,32 €). Einzelne Zeilen weichen dadurch höchstens um einen Cent vom rein
+    rechnerischen Wert ab.
+12. **Abrechnungsdatum 16.02.2026**, Zahlungsfrist 30 Tage. Die neuen Vorauszahlungen gelten ab dem
+    übernächsten Monat (§ 560 Abs. 4 BGB).
+13. **Ohne Heizung und Warmwasser** – jede Wohnung hat eine eigene Gastherme mit eigenem Vertrag. Das
+    steht als Hinweis in jedem Schreiben.
+14. **Das Schreiben an Frau Nowak ist gesperrt** und trägt sichtbar den Vermerk ENTWURF, bis ihre
+    Anschrift vorliegt (Rückfrage 1). Die vier anderen Abrechnungen sind versandfertig.
+
+---
+
+## Rückfragen an die Eigentümerin
+
+### Vor dem Versand
+
+1. **Neue Anschrift von Frau Nowak.** Frist für die Zustellung ist der 31.12.2026 (§ 556 Abs. 3 BGB).
+   Ist die Anschrift nicht bekannt: Melderegisterauskunft beim Einwohnermeldeamt einholen. Ist die
+   Kaution (2.100 €) schon abgerechnet – oder soll die Nachzahlung (476,56 €) damit verrechnet werden?
+2. **Frau Ohlwein, Oktober 2025.** Wurde die Miete bar oder auf ein anderes Konto gezahlt, oder liegt
+   tatsächlich ein Rückstand vor? Wurde gemahnt?
+3. **Herr Bendel, Staffelmiete.** Laut § 3a des Vertrags: 490 € ab 09/2023, 515 € ab 09/2024, 545 €
+   ab 09/2025 – gezahlt werden 2025 durchgehend 465 €. Gibt es eine abweichende Vereinbarung in
+   Textform? Falls nein: Nachforderung 720 € für 2025. Was hat er 2023/24 gezahlt? Diese Auszüge
+   liegen nicht vor; waren es auch 465 €, kommen bis zu 500 € hinzu (siehe Bewirtschaftungs-Check).
+4. **Neue Vorauszahlungen** einverstanden? Vorgeschlagen und in den Schreiben enthalten: WE 1 184 €,
+   WE 2 144 €, WE 3 250 €, WE 4 165 € im Monat.
+
+### Vor der nächsten Abrechnung
+
+5. **Leistungs- oder Abflussprinzip** – wie wurde in den Vorjahren (Excel) abgerechnet? Ein Wechsel
+   ist zulässig, darf aber nichts doppelt oder gar nicht erfassen (z. B. eine RheinEnergie-Nachzahlung
+   für 2024, die 2025 geflossen wäre – in den Auszügen ist keine zu sehen).
+6. **Hauswart Wilms, Leistungen.** Jede Quartalsrechnung ist auf den ersten Tag des Quartals datiert
+   und rechnet trotzdem Reparaturen „nach Aufwand“ für das ganze Quartal ab. Wurden die Arbeiten
+   erbracht, gibt es Nachweise? Außerdem steht in Q1 „Kontrolle Heizungsraum“ – das Haus hat keinen –,
+   und das Laub wird im Herbst sowohl vom Hauswart (Q4) als auch von der Gartenpflege (Oktober)
+   berechnet. Liegt der Hauswartvertrag vom 04.01.2021 vor?
+7. **Vodafone-Vertrag kündigen?** Kündbar mit 3 Monaten Frist zum 08.02. Oder haben Mieter einzeln
+   einer Weiterberechnung zugestimmt?
+8. **Grundsteuer 2025:** Bitte den aktuellen Bescheid nach der Grundsteuerreform prüfen (Messbescheid
+   FA Köln-Süd vom 12.11.2024). Übernommen wurde der Betrag aus dem vorliegenden Beleg.
+
+### Ohne Einfluss auf die Abrechnung, aber mit Risiko
+
+9. **Rauchwarnmelder:** 9 Melder, davon nur einer in WE 2. Erfüllt das die Pflicht nach § 48 BauO NRW
+   (Schlafräume, Kinderzimmer, Flure)? Das ist eine Haftungsfrage.
+10. **Neuvertrag Kestner und Mietpreisbremse:** 890 € für 84 m² nach zuvor 700 € (+27 %). Köln
+    unterliegt der Mietpreisbegrenzung NRW, der Vertrag nennt nur „instandgesetzt und neu gestrichen“.
+    Wie hoch ist die ortsübliche Vergleichsmiete, gab es eine umfassende Modernisierung? Sonst droht
+    eine Rückforderung.
+11. **Fehlende Unterlagen:** Hauswartvertrag, Verwaltervertrag (15.12.2020),
+    Reinigungs-Leistungsverzeichnis, Vodafone-Gestattungsvertrag, Auszüge des Kautionskontos. Für die
+    Abrechnung nicht zwingend, aber nötig, wenn ein Mieter Belegeinsicht verlangt.
