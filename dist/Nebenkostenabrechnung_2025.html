@@ -117,6 +117,7 @@ details summary { cursor: pointer; color: var(--akzent); font-size: 12.5px; }
 .ablage.bereit { border-color: var(--akzent); background: #eef3fa; color: var(--akzent); }
 textarea { width: 100%; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px;
   border: 1px solid var(--linie); border-radius: 6px; padding: 8px; margin: 8px 0; }
+textarea.begruendungsfeld { width: 100%; margin-top: 6px; font-family: inherit; font-size: 13px; }
 input.feld, select.feld {
   width: 100%; border: 1px solid var(--linie); border-radius: 5px; padding: 4px 7px;
   font-family: inherit; font-size: 13px; background: #fff;
@@ -130,9 +131,17 @@ pre.dokumenttext {
 /* --- Einstellungen -------------------------------------------------------- */
 .schalter { display: grid; grid-template-columns: 220px 1fr; gap: 10px 16px; align-items: start; }
 .schalter label { font-weight: 600; }
-.schalter .auswahl { display: flex; gap: 6px; flex-wrap: wrap; }
-.schalter .auswahl button { border: 1px solid var(--linie); background: #fff; border-radius: 6px; padding: 5px 11px; cursor: pointer; font-size: 13px; }
-.schalter .auswahl button.aktiv { background: var(--akzent); color: #fff; border-color: var(--akzent); }
+/* Gilt überall, nicht nur im Reiter Einstellungen: Dieselben Knöpfe stehen
+   auch beim Zuordnen einer Belegposition (umlagefähig / nicht umlagefähig).
+   Dort erschienen sie vorher ungestaltet, und die getroffene Wahl war nicht
+   zu erkennen. */
+.auswahl { display: flex; gap: 6px; flex-wrap: wrap; }
+.auswahl button {
+  border: 1px solid var(--linie); background: #fff; border-radius: 6px;
+  padding: 7px 12px; cursor: pointer; font-size: 13px; min-height: 34px;
+}
+.auswahl button:hover { border-color: var(--akzent); }
+.auswahl button.aktiv { background: var(--akzent); color: #fff; border-color: var(--akzent); }
 
 .speicherleiste {
   display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
@@ -689,7 +698,8 @@ window.FALL = {
           "kostenart": "entwaesserung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "GBA-2025-50937-0218"
     },
     {
       "id": "31",
@@ -715,7 +725,8 @@ window.FALL = {
           "kostenart": "allgemeinstrom",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "RE-2026-8841027"
     },
     {
       "id": "32",
@@ -745,7 +756,8 @@ window.FALL = {
           "umlagefaehig": false,
           "begruendung": "Rechtsschutz ist keine Sach-/Haftpflichtversicherung i.S.d. § 2 Nr. 13 BetrKV und dient allein dem Vermieterinteresse."
         }
-      ]
+      ],
+      "rechnungsnr": "VS-2025-4470912"
     },
     {
       "id": "331",
@@ -769,7 +781,8 @@ window.FALL = {
           "kostenart": "kleinreparaturen",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "2025-014"
     },
     {
       "id": "332",
@@ -792,7 +805,8 @@ window.FALL = {
           "kostenart": "kleinreparaturen",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "2025-061"
     },
     {
       "id": "333",
@@ -815,7 +829,8 @@ window.FALL = {
           "kostenart": "kleinreparaturen",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "2025-108"
     },
     {
       "id": "334",
@@ -838,7 +853,8 @@ window.FALL = {
           "kostenart": "kleinreparaturen",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "2025-152"
     },
     {
       "id": "341",
@@ -855,7 +871,8 @@ window.FALL = {
           "kostenart": "gebaeudereinigung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "CG-25-0117"
     },
     {
       "id": "342",
@@ -872,7 +889,8 @@ window.FALL = {
           "kostenart": "gebaeudereinigung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "CG-25-0399"
     },
     {
       "id": "343",
@@ -889,7 +907,8 @@ window.FALL = {
           "kostenart": "gebaeudereinigung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "CG-25-0684"
     },
     {
       "id": "344",
@@ -906,7 +925,8 @@ window.FALL = {
           "kostenart": "gebaeudereinigung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "CG-25-0961"
     },
     {
       "id": "351",
@@ -923,7 +943,8 @@ window.FALL = {
           "kostenart": "verwaltung",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "HR-2025-0041"
     },
     {
       "id": "352",
@@ -940,7 +961,8 @@ window.FALL = {
           "kostenart": "verwaltung",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "HR-2025-0198"
     },
     {
       "id": "353",
@@ -957,7 +979,8 @@ window.FALL = {
           "kostenart": "verwaltung",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "HR-2025-0357"
     },
     {
       "id": "354",
@@ -974,7 +997,8 @@ window.FALL = {
           "kostenart": "verwaltung",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "HR-2025-0512"
     },
     {
       "id": "361",
@@ -991,7 +1015,8 @@ window.FALL = {
           "kostenart": "gartenpflege",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "2025-0388"
     },
     {
       "id": "362",
@@ -1008,7 +1033,8 @@ window.FALL = {
           "kostenart": "gartenpflege",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "2025-0741"
     },
     {
       "id": "363",
@@ -1025,7 +1051,8 @@ window.FALL = {
           "kostenart": "gartenpflege",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "2025-1096"
     },
     {
       "id": "364",
@@ -1043,7 +1070,8 @@ window.FALL = {
           "umlagefaehig": false,
           "begruendung": "Erstmalige Herstellung/Umgestaltung auf Auftrag der Eigentümerin vom 04.04.2025 – keine laufende Pflege, daher nicht nach § 2 Nr. 10 BetrKV umlagefähig (Kontenrahmen 6600)."
         }
-      ]
+      ],
+      "rechnungsnr": "2025-0412"
     },
     {
       "id": "37",
@@ -1061,7 +1089,8 @@ window.FALL = {
           "umlagefaehig": true,
           "begruendung": "§ 5 Abs. 2 Mietvertrag: Vermieterin trägt die Kosten und legt sie nach § 4 (Wohnfläche) um."
         }
-      ]
+      ],
+      "rechnungsnr": "2025-0318-27"
     },
     {
       "id": "38",
@@ -1078,7 +1107,8 @@ window.FALL = {
           "kostenart": "rauchwarnmelder",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "SA-2025-11407"
     },
     {
       "id": "39",
@@ -1096,7 +1126,8 @@ window.FALL = {
           "umlagefaehig": false,
           "begruendung": "Reparatur eines defekten Ventils = Instandsetzung (§ 1 Abs. 2 Nr. 2 BetrKV, § 7 Abs. 2 Mietvertrag)."
         }
-      ]
+      ],
+      "rechnungsnr": "25-0733"
     },
     {
       "id": "40",
@@ -1899,6 +1930,12 @@ window.FALL = {
       "wer": "Aaron",
       "was": "Drei weitere Befunde aufgenommen; Behandlung der fehlenden Oktobermiete korrigiert",
       "warum": "Eine externe Durchsicht hat gezeigt, dass die nicht geleistete Vorauszahlung durch die Abrechnung bereits ausgeglichen ist – gesondert offen ist nur die Nettokaltmiete. Zuvor wäre sie doppelt gefordert worden."
+    },
+    {
+      "zeitpunkt": "2026-09-24",
+      "wer": "Aaron",
+      "was": "Rechnungsnummern zu 22 Belegen ergänzt",
+      "warum": "Ohne sie erkennt die Dublettenprüfung dieselbe Rechnung unter anderem Dateinamen nicht."
     }
   ],
   "unterlagen": [
@@ -2878,6 +2915,11 @@ window.FALL = {
 
     // P-01: Jeder Beleg muss bezahlt worden sein, und jede Abbuchung muss zu
     // einem Beleg gehören. Beide Richtungen, sonst fehlt etwas.
+    // Kontoauszüge schreiben Umlaute aus ("SANITAER"), Rechnungen nicht
+    // ("Sanitär"). Ohne diese Angleichung findet die Zuordnung nichts.
+    const ohneUmlaute = (text) => String(text).toUpperCase()
+      .replace(/Ä/g, "AE").replace(/Ö/g, "OE").replace(/Ü/g, "UE").replace(/ß/g, "SS");
+
     const lieferantenSummen = new Map();
     for (const b of fall.belege) {
       const kennung = b.bank_kennung;
@@ -2890,7 +2932,7 @@ window.FALL = {
     const abbuchungenOhneBeleg = [];
     for (const buchung of fall.buchungen.filter((b) => b.betrag < 0)) {
       const treffer = [...lieferantenSummen.keys()].find((k) =>
-        buchung.gegenpartei.toUpperCase().includes(k));
+        ohneUmlaute(buchung.gegenpartei).includes(ohneUmlaute(k)));
       if (treffer) lieferantenSummen.get(treffer).zahlung += zuCent(-buchung.betrag);
       else abbuchungenOhneBeleg.push(`${buchung.datum} ${buchung.gegenpartei}`);
     }
@@ -3443,6 +3485,10 @@ window.FALL = {
    */
   function normalisiereText(roh) {
     return String(roh)
+      // Manche PDFs liefern "fi" und "fl" als ein einzelnes Sonderzeichen.
+      // NFKC macht daraus normale Buchstaben - sonst greift kein Stichwort,
+      // weil "Rasenpflege" dort anders geschrieben steht als hier gesucht.
+      .normalize("NFKC")
       .replace(/\r\n?/g, "\n")
       .replace(/­/g, "")               // weiches Trennzeichen
       .replace(/(\w)-\n(\w)/g, "$1$2")      // am Zeilenende getrenntes Wort
@@ -3581,8 +3627,11 @@ window.FALL = {
   /** Holt die Betreffzeile des Belegs ("Rechnung – ..."), als Kontext für oben. */
   function findeBetreff(text) {
     const zeilen = text.split("\n");
+    // Das \b am Ende ist entscheidend: Ohne es galten auch "Rechnungsnr." und
+    // "Rechnungsbetrag" als Betreffzeile. Positionen ohne eigenes Stichwort
+    // bekamen dann keine Kostenart vorgeschlagen.
     const treffer = zeilen.find((z) =>
-      /^(Rechnung|Gebührenbescheid|Beitragsrechnung|Jahresrechnung|Jahresübersicht|Grundbesitzabgabenbescheid)/i.test(z));
+      /^(Rechnung|Gebührenbescheid|Beitragsrechnung|Jahresrechnung|Jahresübersicht|Grundbesitzabgabenbescheid)\b/i.test(z));
     return treffer || zeilen.slice(0, 12).join(" ");
   }
 
@@ -3915,6 +3964,37 @@ window.FALL = {
    * Prüft, ob ein bestätigter Vorschlag in den Fall übernommen werden darf,
    * und hängt ihn an. Gibt zurück, was passiert ist.
    */
+  /**
+   * Sucht im Kontoauszug die Abbuchung, die zu diesem Rechnungsbetrag passt,
+   * und liefert deren Gegenpartei als Bank-Kennung zurück.
+   *
+   * Warum nicht einfach den Lieferantennamen nehmen: Auf dem Kontoauszug steht
+   * "SANITAER DOBLINGER GMBH", auf der Rechnung "Sanitär Doblinger GmbH". Das
+   * erste Wort zu raten ergibt "SANITÄR" - und die Zahlungsprüfung P-01 findet
+   * die Zahlung nicht. Der Betrag dagegen ist eindeutig.
+   */
+  function findeBankKennung(fall, betrag) {
+    const gesucht = Math.round(betrag * 100);
+    const treffer = (fall.buchungen || []).filter(
+      (b) => Math.round(-b.betrag * 100) === gesucht);
+    if (treffer.length !== 1) return null;    // mehrdeutig oder nicht gefunden
+    return treffer[0].gegenpartei;
+  }
+
+  /**
+   * Vergleicht zwei Lieferantennamen grosszügig.
+   * Der aus dem PDF gelesene Name trägt oft noch die Anschrift mit sich; der
+   * erfasste ist gekürzt. Verglichen werden deshalb nur Buchstaben und Ziffern
+   * der ersten Wörter - das genügt, um "Clean&Go Gebäudeservice GmbH" und
+   * "Clean&Go; Gebäudeservice GmbH Vitalisstraße 300" als denselben zu erkennen.
+   */
+  function aehnlicherLieferant(a, b) {
+    const kern = (text) => String(text || "").toUpperCase()
+      .replace(/[^A-ZÄÖÜ0-9]/g, "").slice(0, 16);
+    const ka = kern(a), kb = kern(b);
+    return ka.length >= 6 && kb.length >= 6 && (ka.startsWith(kb) || kb.startsWith(ka));
+  }
+
   function uebernimm(fall, vorschlag) {
     const fehler = [];
 
@@ -3930,8 +4010,24 @@ window.FALL = {
     if (summe !== Math.round(vorschlag.rechnungsbetrag * 100))
       fehler.push("Positionen ergeben nicht den Rechnungsbetrag (I-04)");
 
+    // Dublettenprüfung auf drei Wegen - ein anderer Dateiname macht aus
+    // derselben Rechnung keine zweite Rechnung.
     if (fall.belege.some((b) => b.beleg === vorschlag.beleg))
       fehler.push(`Ein Beleg mit dem Namen "${vorschlag.beleg}" ist bereits erfasst (I-07)`);
+    // Rechnungsnummer plus Betrag: Zwei Lieferanten können dieselbe Nummer
+    // vergeben, aber kaum mit demselben Betrag am selben Objekt.
+    if (vorschlag.rechnungsnr && fall.belege.some(
+          (b) => b.rechnungsnr === vorschlag.rechnungsnr
+              && Math.round(b.rechnungsbetrag * 100) === Math.round(vorschlag.rechnungsbetrag * 100)))
+      fehler.push(`Rechnung ${vorschlag.rechnungsnr} über ${vorschlag.rechnungsbetrag.toFixed(2)} € ist bereits erfasst (I-07)`);
+
+    // Lieferant, Betrag und Datum. Der Lieferantenname wird dabei grosszügig
+    // verglichen: Aus dem PDF kommt "Clean&Go; Gebäudeservice GmbH Vitalisstraße
+    // 300, 50933 Köln", erfasst ist "Clean&Go Gebäudeservice GmbH".
+    if (fall.belege.some((b) => aehnlicherLieferant(b.lieferant, vorschlag.lieferant)
+          && Math.round(b.rechnungsbetrag * 100) === Math.round(vorschlag.rechnungsbetrag * 100)
+          && b.datum === vorschlag.datum))
+      fehler.push(`Gleicher Lieferant, Betrag und Datum bereits erfasst - Dublette? (I-07)`);
 
     if (fehler.length) return { uebernommen: false, fehler };
 
@@ -3942,7 +4038,10 @@ window.FALL = {
       datum: vorschlag.datum,
       leistungszeitraum: vorschlag.leistungszeitraum || "",
       rechnungsbetrag: vorschlag.rechnungsbetrag,
-      bank_kennung: vorschlag.bank_kennung || vorschlag.lieferant.split(" ")[0].toUpperCase(),
+      ...(vorschlag.rechnungsnr ? { rechnungsnr: vorschlag.rechnungsnr } : {}),
+      bank_kennung: vorschlag.bank_kennung
+        || findeBankKennung(fall, vorschlag.rechnungsbetrag)
+        || "",
       positionen: vorschlag.positionen.map((p) => ({
         bezeichnung: p.bezeichnung,
         betrag: p.betrag,
@@ -4024,7 +4123,7 @@ window.FALL = {
   }
 
   const API = {
-    normalisiereText, textAusPdf, schlageBelegVor, pruefeVorschlag, uebernimm,
+    normalisiereText, textAusPdf, schlageBelegVor, pruefeVorschlag, uebernimm, findeBankKennung,
     entferneBeleg, fuegeBuchungHinzu,
     zahlAusText, datumAusText, findePositionen, schlageKostenartVor,
   };
@@ -4560,9 +4659,10 @@ window.FALL = {
                     data-umlage="${i}" data-wert="nein">nicht umlagefähig</button>
           </div>
           ${pos.umlagefaehig === false ? `
-            <input class="feld" data-position="${i}" data-feld="begruendung"
-                   placeholder="Begründung mit Fundstelle, z. B. § 1 Abs. 2 Nr. 2 BetrKV"
-                   value="${sicher(pos.begruendung)}">` : ""}
+            <textarea class="feld begruendungsfeld" data-position="${i}" data-feld="begruendung"
+                      rows="2"
+                      placeholder="Begründung mit Fundstelle, z. B. § 1 Abs. 2 Nr. 2 BetrKV"
+                      >${sicher(pos.begruendung)}</textarea>` : ""}
         </td>
       </tr>`).join("");
 
@@ -4786,14 +4886,7 @@ window.FALL = {
       zeichne();
     });
     knopf("verwerfen", () => { vorschlag = null; einlesefehler = null; zeichne(); });
-    knopf("uebernehmen", () => {
-      const ergebnis = EIN.uebernimm(fall, vorschlag.vorschlag);
-      if (!ergebnis.uebernommen) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
-      vorschlag = null;
-      aktiverReiter = "belege";
-      ungespeichert = true;
-      neuBerechnen(true);      // mit Vorher/Nachher-Vergleich
-    });
+    knopf("uebernehmen", uebernehmeVorschlag);
 
     // Eingaben schreiben direkt in den Vorschlag. Danach wird nur der
     // Prüfblock neu gezeichnet - so springt der Eingabefokus nicht weg.
@@ -4825,6 +4918,27 @@ window.FALL = {
       }));
   }
 
+  /**
+   * Übernimmt den geprüften Vorschlag in den Fall.
+   *
+   * Warum eine eigene Funktion: Der Knopf erscheint an zwei Stellen - einmal
+   * beim ersten Zeichnen, einmal nach jeder Eingabe im Vorschlag. Vorher war er
+   * zweimal verdrahtet, und die zweite Fassung vergaß den Speicher-Hinweis.
+   * Wer ein Feld bearbeitet und dann übernommen hat, verlor den Beleg beim
+   * Schließen des Fensters, ohne gewarnt zu werden.
+   */
+  function uebernehmeVorschlag() {
+    const ergebnis = EIN.uebernimm(fall, vorschlag.vorschlag);
+    if (!ergebnis.uebernommen) {
+      alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n"));
+      return;
+    }
+    vorschlag = null;
+    aktiverReiter = "belege";
+    ungespeichert = true;
+    neuBerechnen(true);        // mit Vorher/Nachher-Vergleich
+  }
+
   function aktualisiereVorschlagStatus() {
     const block = document.getElementById("vorschlagstatus");
     if (!block) return;
@@ -4834,13 +4948,7 @@ window.FALL = {
       if (el) el.addEventListener("click", fn);
     };
     neu("verwerfen", () => { vorschlag = null; einlesefehler = null; zeichne(); });
-    neu("uebernehmen", () => {
-      const ergebnis = EIN.uebernimm(fall, vorschlag.vorschlag);
-      if (!ergebnis.uebernommen) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
-      vorschlag = null;
-      aktiverReiter = "belege";
-      neuBerechnen(true);
-    });
+    neu("uebernehmen", uebernehmeVorschlag);
   }
 
   /** Hält fest, wer wann was geändert hat (SPEC.md Q-05). */

@@ -753,6 +753,11 @@
 
     // P-01: Jeder Beleg muss bezahlt worden sein, und jede Abbuchung muss zu
     // einem Beleg gehören. Beide Richtungen, sonst fehlt etwas.
+    // Kontoauszüge schreiben Umlaute aus ("SANITAER"), Rechnungen nicht
+    // ("Sanitär"). Ohne diese Angleichung findet die Zuordnung nichts.
+    const ohneUmlaute = (text) => String(text).toUpperCase()
+      .replace(/Ä/g, "AE").replace(/Ö/g, "OE").replace(/Ü/g, "UE").replace(/ß/g, "SS");
+
     const lieferantenSummen = new Map();
     for (const b of fall.belege) {
       const kennung = b.bank_kennung;
@@ -765,7 +770,7 @@
     const abbuchungenOhneBeleg = [];
     for (const buchung of fall.buchungen.filter((b) => b.betrag < 0)) {
       const treffer = [...lieferantenSummen.keys()].find((k) =>
-        buchung.gegenpartei.toUpperCase().includes(k));
+        ohneUmlaute(buchung.gegenpartei).includes(ohneUmlaute(k)));
       if (treffer) lieferantenSummen.get(treffer).zahlung += zuCent(-buchung.betrag);
       else abbuchungenOhneBeleg.push(`${buchung.datum} ${buchung.gegenpartei}`);
     }

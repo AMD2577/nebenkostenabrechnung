@@ -29,6 +29,10 @@ const WURZEL = pfad.join(__dirname, "..");
 const fall = JSON.parse(fs.readFileSync(pfad.join(WURZEL, "daten/fall_2025.json"), "utf8"));
 
 let bestanden = 0, fehlgeschlagen = 0;
+function gleich(ist, erwartet, was) {
+  if (ist !== erwartet) throw new Error(`${was}: ist ${ist}, erwartet ${erwartet}`);
+}
+
 function test(beschreibung, fn) {
   try { fn(); console.log(`  ok    ${beschreibung}`); bestanden++; }
   catch (f) { console.log(`  FEHLER ${beschreibung}\n         ${f.message}`); fehlgeschlagen++; }
@@ -145,6 +149,54 @@ test("Kostenartvorschläge widersprechen nirgends der geprüften Zuordnung", () 
   if (abweichungen.length) throw new Error(abweichungen.join(" | "));
 });
 
+console.log("\n3b. Fehler, die einmal drin waren");
+
+test("'Rechnungsnr.' wird nicht für die Betreffzeile gehalten", () => {
+  // Vorher traf das Muster ^(Rechnung|...) auch auf "Rechnungsnr." und
+  // "Rechnungsbetrag" zu. Positionen ohne eigenes Stichwort bekamen dann
+  // die Kostenart aus einer Zeile, die gar kein Betreff ist.
+  const text = [
+    "Muster GmbH",
+    "Rechnungsnr. 2025-999",
+    "Rechnung – Gartenpflege",
+    "Leistungsdatum 12.05.2025",
+    "1 Pflegeeinsatz Außenanlagen 1 Einsatz 100,00 € 100,00 €",
+    "Rechnungsbetrag 100,00 €",
+  ].join("\n");
+  const r = E.schlageBelegVor(text, "muster.pdf");
+  gleich(r.vorschlag.positionen[0].kostenart, "gartenpflege",
+    "Kostenart aus der echten Betreffzeile");
+});
+
+test("Ligaturen aus PDFs zerstören die Stichworterkennung nicht", () => {
+  // Manche PDFs liefern "fl" als ein einzelnes Sonderzeichen (U+FB02).
+  const mitLigatur = "Grünp\uFB02ege Bertram\nRechnung – Gartenp\uFB02ege\n" +
+    "Leistungsdatum 12.05.2025\n1 P\uFB02egeeinsatz Außenanlagen 100,00 € 100,00 €\n" +
+    "Rechnungsbetrag 100,00 €";
+  const r = E.schlageBelegVor(mitLigatur, "ligatur.pdf");
+  if (!r.vorschlag.text.includes("Gartenpflege")) throw new Error("Ligatur nicht aufgelöst");
+  gleich(r.vorschlag.positionen[0].kostenart, "gartenpflege", "Kostenart trotz Ligatur");
+});
+
+test("die Bank-Kennung wird aus der passenden Abbuchung geholt, nicht geraten", () => {
+  // "Sanitär Doblinger GmbH" hätte als "SANITÄR" geraten die Zahlungsprüfung
+  // P-01 ins Leere laufen lassen - im Kontoauszug steht "SANITAER".
+  gleich(E.findeBankKennung(fall, 486.20), "SANITAER DOBLINGER GMBH", "eindeutiger Betrag");
+  gleich(E.findeBankKennung(fall, 189.00), null, "mehrdeutiger Betrag (4 Buchungen)");
+  gleich(E.findeBankKennung(fall, 12345.67), null, "noch nicht bezahlte Rechnung");
+});
+
+test("dieselbe Rechnung unter anderem Dateinamen wird abgelehnt", () => {
+  const testfall = JSON.parse(JSON.stringify(fall));
+  const r = ergebnisse.find((x) => x.soll.beleg === "341_Clean-and-Go_Q1.pdf");
+  const vorschlag = JSON.parse(JSON.stringify(r.gelesen.vorschlag));
+  vorschlag.beleg = "ganz_anderer_name.pdf";          // anderer Dateiname
+  vorschlag.bank_kennung = "CLEAN+GO";
+  vorschlag.positionen.forEach((p) => { p.kostenart = "gebaeudereinigung"; p.umlagefaehig = true; });
+  const ergebnis = E.uebernimm(testfall, vorschlag);
+  if (ergebnis.uebernommen) throw new Error("Dublette mit anderem Dateinamen wurde übernommen");
+});
+
 console.log("\n4. Übernahme in den Fall");
 
 test("ein Vorschlag ohne bestätigte Umlagefähigkeit wird abgelehnt", () => {
@@ -174,7 +226,12 @@ test("ein vollständiger Vorschlag wird übernommen und wirkt sich auf die Abrec
 
   const r = ergebnisse.find((x) => x.soll.beleg === "341_Clean-and-Go_Q1.pdf");
   const vorschlag = JSON.parse(JSON.stringify(r.gelesen.vorschlag));
+  // Eine echte neue Rechnung - eigener Dateiname, eigene Nummer, eigenes Datum.
+  // Sonst greift zu Recht die Dublettenprüfung.
   vorschlag.beleg = "345_Clean-and-Go_Q5.pdf";
+  vorschlag.rechnungsnr = "CG-26-0042";
+  vorschlag.datum = "2026-01-02";
+  vorschlag.bank_kennung = "CLEAN+GO";
   vorschlag.positionen.forEach((p) => { p.kostenart = "gebaeudereinigung"; p.umlagefaehig = true; });
 
   const ergebnis = E.uebernimm(testfall, vorschlag);

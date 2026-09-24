@@ -423,7 +423,8 @@ window.FALL = {
           "kostenart": "entwaesserung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "GBA-2025-50937-0218"
     },
     {
       "id": "31",
@@ -449,7 +450,8 @@ window.FALL = {
           "kostenart": "allgemeinstrom",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "RE-2026-8841027"
     },
     {
       "id": "32",
@@ -479,7 +481,8 @@ window.FALL = {
           "umlagefaehig": false,
           "begruendung": "Rechtsschutz ist keine Sach-/Haftpflichtversicherung i.S.d. § 2 Nr. 13 BetrKV und dient allein dem Vermieterinteresse."
         }
-      ]
+      ],
+      "rechnungsnr": "VS-2025-4470912"
     },
     {
       "id": "331",
@@ -503,7 +506,8 @@ window.FALL = {
           "kostenart": "kleinreparaturen",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "2025-014"
     },
     {
       "id": "332",
@@ -526,7 +530,8 @@ window.FALL = {
           "kostenart": "kleinreparaturen",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "2025-061"
     },
     {
       "id": "333",
@@ -549,7 +554,8 @@ window.FALL = {
           "kostenart": "kleinreparaturen",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "2025-108"
     },
     {
       "id": "334",
@@ -572,7 +578,8 @@ window.FALL = {
           "kostenart": "kleinreparaturen",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "2025-152"
     },
     {
       "id": "341",
@@ -589,7 +596,8 @@ window.FALL = {
           "kostenart": "gebaeudereinigung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "CG-25-0117"
     },
     {
       "id": "342",
@@ -606,7 +614,8 @@ window.FALL = {
           "kostenart": "gebaeudereinigung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "CG-25-0399"
     },
     {
       "id": "343",
@@ -623,7 +632,8 @@ window.FALL = {
           "kostenart": "gebaeudereinigung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "CG-25-0684"
     },
     {
       "id": "344",
@@ -640,7 +650,8 @@ window.FALL = {
           "kostenart": "gebaeudereinigung",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "CG-25-0961"
     },
     {
       "id": "351",
@@ -657,7 +668,8 @@ window.FALL = {
           "kostenart": "verwaltung",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "HR-2025-0041"
     },
     {
       "id": "352",
@@ -674,7 +686,8 @@ window.FALL = {
           "kostenart": "verwaltung",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "HR-2025-0198"
     },
     {
       "id": "353",
@@ -691,7 +704,8 @@ window.FALL = {
           "kostenart": "verwaltung",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "HR-2025-0357"
     },
     {
       "id": "354",
@@ -708,7 +722,8 @@ window.FALL = {
           "kostenart": "verwaltung",
           "umlagefaehig": false
         }
-      ]
+      ],
+      "rechnungsnr": "HR-2025-0512"
     },
     {
       "id": "361",
@@ -725,7 +740,8 @@ window.FALL = {
           "kostenart": "gartenpflege",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "2025-0388"
     },
     {
       "id": "362",
@@ -742,7 +758,8 @@ window.FALL = {
           "kostenart": "gartenpflege",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "2025-0741"
     },
     {
       "id": "363",
@@ -759,7 +776,8 @@ window.FALL = {
           "kostenart": "gartenpflege",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "2025-1096"
     },
     {
       "id": "364",
@@ -777,7 +795,8 @@ window.FALL = {
           "umlagefaehig": false,
           "begruendung": "Erstmalige Herstellung/Umgestaltung auf Auftrag der Eigentümerin vom 04.04.2025 – keine laufende Pflege, daher nicht nach § 2 Nr. 10 BetrKV umlagefähig (Kontenrahmen 6600)."
         }
-      ]
+      ],
+      "rechnungsnr": "2025-0412"
     },
     {
       "id": "37",
@@ -795,7 +814,8 @@ window.FALL = {
           "umlagefaehig": true,
           "begruendung": "§ 5 Abs. 2 Mietvertrag: Vermieterin trägt die Kosten und legt sie nach § 4 (Wohnfläche) um."
         }
-      ]
+      ],
+      "rechnungsnr": "2025-0318-27"
     },
     {
       "id": "38",
@@ -812,7 +832,8 @@ window.FALL = {
           "kostenart": "rauchwarnmelder",
           "umlagefaehig": true
         }
-      ]
+      ],
+      "rechnungsnr": "SA-2025-11407"
     },
     {
       "id": "39",
@@ -830,7 +851,8 @@ window.FALL = {
           "umlagefaehig": false,
           "begruendung": "Reparatur eines defekten Ventils = Instandsetzung (§ 1 Abs. 2 Nr. 2 BetrKV, § 7 Abs. 2 Mietvertrag)."
         }
-      ]
+      ],
+      "rechnungsnr": "25-0733"
     },
     {
       "id": "40",
@@ -1633,6 +1655,12 @@ window.FALL = {
       "wer": "Aaron",
       "was": "Drei weitere Befunde aufgenommen; Behandlung der fehlenden Oktobermiete korrigiert",
       "warum": "Eine externe Durchsicht hat gezeigt, dass die nicht geleistete Vorauszahlung durch die Abrechnung bereits ausgeglichen ist – gesondert offen ist nur die Nettokaltmiete. Zuvor wäre sie doppelt gefordert worden."
+    },
+    {
+      "zeitpunkt": "2026-09-24",
+      "wer": "Aaron",
+      "was": "Rechnungsnummern zu 22 Belegen ergänzt",
+      "warum": "Ohne sie erkennt die Dublettenprüfung dieselbe Rechnung unter anderem Dateinamen nicht."
     }
   ],
   "unterlagen": [

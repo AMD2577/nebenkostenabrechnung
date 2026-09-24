@@ -58,6 +58,10 @@
    */
   function normalisiereText(roh) {
     return String(roh)
+      // Manche PDFs liefern "fi" und "fl" als ein einzelnes Sonderzeichen.
+      // NFKC macht daraus normale Buchstaben - sonst greift kein Stichwort,
+      // weil "Rasenpflege" dort anders geschrieben steht als hier gesucht.
+      .normalize("NFKC")
       .replace(/\r\n?/g, "\n")
       .replace(/­/g, "")               // weiches Trennzeichen
       .replace(/(\w)-\n(\w)/g, "$1$2")      // am Zeilenende getrenntes Wort
@@ -196,8 +200,11 @@
   /** Holt die Betreffzeile des Belegs ("Rechnung – ..."), als Kontext für oben. */
   function findeBetreff(text) {
     const zeilen = text.split("\n");
+    // Das \b am Ende ist entscheidend: Ohne es galten auch "Rechnungsnr." und
+    // "Rechnungsbetrag" als Betreffzeile. Positionen ohne eigenes Stichwort
+    // bekamen dann keine Kostenart vorgeschlagen.
     const treffer = zeilen.find((z) =>
-      /^(Rechnung|Gebührenbescheid|Beitragsrechnung|Jahresrechnung|Jahresübersicht|Grundbesitzabgabenbescheid)/i.test(z));
+      /^(Rechnung|Gebührenbescheid|Beitragsrechnung|Jahresrechnung|Jahresübersicht|Grundbesitzabgabenbescheid)\b/i.test(z));
     return treffer || zeilen.slice(0, 12).join(" ");
   }
 
@@ -530,6 +537,37 @@
    * Prüft, ob ein bestätigter Vorschlag in den Fall übernommen werden darf,
    * und hängt ihn an. Gibt zurück, was passiert ist.
    */
+  /**
+   * Sucht im Kontoauszug die Abbuchung, die zu diesem Rechnungsbetrag passt,
+   * und liefert deren Gegenpartei als Bank-Kennung zurück.
+   *
+   * Warum nicht einfach den Lieferantennamen nehmen: Auf dem Kontoauszug steht
+   * "SANITAER DOBLINGER GMBH", auf der Rechnung "Sanitär Doblinger GmbH". Das
+   * erste Wort zu raten ergibt "SANITÄR" - und die Zahlungsprüfung P-01 findet
+   * die Zahlung nicht. Der Betrag dagegen ist eindeutig.
+   */
+  function findeBankKennung(fall, betrag) {
+    const gesucht = Math.round(betrag * 100);
+    const treffer = (fall.buchungen || []).filter(
+      (b) => Math.round(-b.betrag * 100) === gesucht);
+    if (treffer.length !== 1) return null;    // mehrdeutig oder nicht gefunden
+    return treffer[0].gegenpartei;
+  }
+
+  /**
+   * Vergleicht zwei Lieferantennamen grosszügig.
+   * Der aus dem PDF gelesene Name trägt oft noch die Anschrift mit sich; der
+   * erfasste ist gekürzt. Verglichen werden deshalb nur Buchstaben und Ziffern
+   * der ersten Wörter - das genügt, um "Clean&Go Gebäudeservice GmbH" und
+   * "Clean&Go; Gebäudeservice GmbH Vitalisstraße 300" als denselben zu erkennen.
+   */
+  function aehnlicherLieferant(a, b) {
+    const kern = (text) => String(text || "").toUpperCase()
+      .replace(/[^A-ZÄÖÜ0-9]/g, "").slice(0, 16);
+    const ka = kern(a), kb = kern(b);
+    return ka.length >= 6 && kb.length >= 6 && (ka.startsWith(kb) || kb.startsWith(ka));
+  }
+
   function uebernimm(fall, vorschlag) {
     const fehler = [];
 
@@ -545,8 +583,24 @@
     if (summe !== Math.round(vorschlag.rechnungsbetrag * 100))
       fehler.push("Positionen ergeben nicht den Rechnungsbetrag (I-04)");
 
+    // Dublettenprüfung auf drei Wegen - ein anderer Dateiname macht aus
+    // derselben Rechnung keine zweite Rechnung.
     if (fall.belege.some((b) => b.beleg === vorschlag.beleg))
       fehler.push(`Ein Beleg mit dem Namen "${vorschlag.beleg}" ist bereits erfasst (I-07)`);
+    // Rechnungsnummer plus Betrag: Zwei Lieferanten können dieselbe Nummer
+    // vergeben, aber kaum mit demselben Betrag am selben Objekt.
+    if (vorschlag.rechnungsnr && fall.belege.some(
+          (b) => b.rechnungsnr === vorschlag.rechnungsnr
+              && Math.round(b.rechnungsbetrag * 100) === Math.round(vorschlag.rechnungsbetrag * 100)))
+      fehler.push(`Rechnung ${vorschlag.rechnungsnr} über ${vorschlag.rechnungsbetrag.toFixed(2)} € ist bereits erfasst (I-07)`);
+
+    // Lieferant, Betrag und Datum. Der Lieferantenname wird dabei grosszügig
+    // verglichen: Aus dem PDF kommt "Clean&Go; Gebäudeservice GmbH Vitalisstraße
+    // 300, 50933 Köln", erfasst ist "Clean&Go Gebäudeservice GmbH".
+    if (fall.belege.some((b) => aehnlicherLieferant(b.lieferant, vorschlag.lieferant)
+          && Math.round(b.rechnungsbetrag * 100) === Math.round(vorschlag.rechnungsbetrag * 100)
+          && b.datum === vorschlag.datum))
+      fehler.push(`Gleicher Lieferant, Betrag und Datum bereits erfasst - Dublette? (I-07)`);
 
     if (fehler.length) return { uebernommen: false, fehler };
 
@@ -557,7 +611,10 @@
       datum: vorschlag.datum,
       leistungszeitraum: vorschlag.leistungszeitraum || "",
       rechnungsbetrag: vorschlag.rechnungsbetrag,
-      bank_kennung: vorschlag.bank_kennung || vorschlag.lieferant.split(" ")[0].toUpperCase(),
+      ...(vorschlag.rechnungsnr ? { rechnungsnr: vorschlag.rechnungsnr } : {}),
+      bank_kennung: vorschlag.bank_kennung
+        || findeBankKennung(fall, vorschlag.rechnungsbetrag)
+        || "",
       positionen: vorschlag.positionen.map((p) => ({
         bezeichnung: p.bezeichnung,
         betrag: p.betrag,
@@ -639,7 +696,7 @@
   }
 
   const API = {
-    normalisiereText, textAusPdf, schlageBelegVor, pruefeVorschlag, uebernimm,
+    normalisiereText, textAusPdf, schlageBelegVor, pruefeVorschlag, uebernimm, findeBankKennung,
     entferneBeleg, fuegeBuchungHinzu,
     zahlAusText, datumAusText, findePositionen, schlageKostenartVor,
   };

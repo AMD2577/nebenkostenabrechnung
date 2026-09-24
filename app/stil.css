@@ -110,6 +110,7 @@ details summary { cursor: pointer; color: var(--akzent); font-size: 12.5px; }
 .ablage.bereit { border-color: var(--akzent); background: #eef3fa; color: var(--akzent); }
 textarea { width: 100%; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px;
   border: 1px solid var(--linie); border-radius: 6px; padding: 8px; margin: 8px 0; }
+textarea.begruendungsfeld { width: 100%; margin-top: 6px; font-family: inherit; font-size: 13px; }
 input.feld, select.feld {
   width: 100%; border: 1px solid var(--linie); border-radius: 5px; padding: 4px 7px;
   font-family: inherit; font-size: 13px; background: #fff;
@@ -123,9 +124,17 @@ pre.dokumenttext {
 /* --- Einstellungen -------------------------------------------------------- */
 .schalter { display: grid; grid-template-columns: 220px 1fr; gap: 10px 16px; align-items: start; }
 .schalter label { font-weight: 600; }
-.schalter .auswahl { display: flex; gap: 6px; flex-wrap: wrap; }
-.schalter .auswahl button { border: 1px solid var(--linie); background: #fff; border-radius: 6px; padding: 5px 11px; cursor: pointer; font-size: 13px; }
-.schalter .auswahl button.aktiv { background: var(--akzent); color: #fff; border-color: var(--akzent); }
+/* Gilt überall, nicht nur im Reiter Einstellungen: Dieselben Knöpfe stehen
+   auch beim Zuordnen einer Belegposition (umlagefähig / nicht umlagefähig).
+   Dort erschienen sie vorher ungestaltet, und die getroffene Wahl war nicht
+   zu erkennen. */
+.auswahl { display: flex; gap: 6px; flex-wrap: wrap; }
+.auswahl button {
+  border: 1px solid var(--linie); background: #fff; border-radius: 6px;
+  padding: 7px 12px; cursor: pointer; font-size: 13px; min-height: 34px;
+}
+.auswahl button:hover { border-color: var(--akzent); }
+.auswahl button.aktiv { background: var(--akzent); color: #fff; border-color: var(--akzent); }
 
 .speicherleiste {
   display: flex; align-items: center; gap: 16px; flex-wrap: wrap;

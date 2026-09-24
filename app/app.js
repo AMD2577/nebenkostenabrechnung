@@ -523,9 +523,10 @@
                     data-umlage="${i}" data-wert="nein">nicht umlagefähig</button>
           </div>
           ${pos.umlagefaehig === false ? `
-            <input class="feld" data-position="${i}" data-feld="begruendung"
-                   placeholder="Begründung mit Fundstelle, z. B. § 1 Abs. 2 Nr. 2 BetrKV"
-                   value="${sicher(pos.begruendung)}">` : ""}
+            <textarea class="feld begruendungsfeld" data-position="${i}" data-feld="begruendung"
+                      rows="2"
+                      placeholder="Begründung mit Fundstelle, z. B. § 1 Abs. 2 Nr. 2 BetrKV"
+                      >${sicher(pos.begruendung)}</textarea>` : ""}
         </td>
       </tr>`).join("");
 
@@ -749,14 +750,7 @@
       zeichne();
     });
     knopf("verwerfen", () => { vorschlag = null; einlesefehler = null; zeichne(); });
-    knopf("uebernehmen", () => {
-      const ergebnis = EIN.uebernimm(fall, vorschlag.vorschlag);
-      if (!ergebnis.uebernommen) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
-      vorschlag = null;
-      aktiverReiter = "belege";
-      ungespeichert = true;
-      neuBerechnen(true);      // mit Vorher/Nachher-Vergleich
-    });
+    knopf("uebernehmen", uebernehmeVorschlag);
 
     // Eingaben schreiben direkt in den Vorschlag. Danach wird nur der
     // Prüfblock neu gezeichnet - so springt der Eingabefokus nicht weg.
@@ -788,6 +782,27 @@
       }));
   }
 
+  /**
+   * Übernimmt den geprüften Vorschlag in den Fall.
+   *
+   * Warum eine eigene Funktion: Der Knopf erscheint an zwei Stellen - einmal
+   * beim ersten Zeichnen, einmal nach jeder Eingabe im Vorschlag. Vorher war er
+   * zweimal verdrahtet, und die zweite Fassung vergaß den Speicher-Hinweis.
+   * Wer ein Feld bearbeitet und dann übernommen hat, verlor den Beleg beim
+   * Schließen des Fensters, ohne gewarnt zu werden.
+   */
+  function uebernehmeVorschlag() {
+    const ergebnis = EIN.uebernimm(fall, vorschlag.vorschlag);
+    if (!ergebnis.uebernommen) {
+      alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n"));
+      return;
+    }
+    vorschlag = null;
+    aktiverReiter = "belege";
+    ungespeichert = true;
+    neuBerechnen(true);        // mit Vorher/Nachher-Vergleich
+  }
+
   function aktualisiereVorschlagStatus() {
     const block = document.getElementById("vorschlagstatus");
     if (!block) return;
@@ -797,13 +812,7 @@
       if (el) el.addEventListener("click", fn);
     };
     neu("verwerfen", () => { vorschlag = null; einlesefehler = null; zeichne(); });
-    neu("uebernehmen", () => {
-      const ergebnis = EIN.uebernimm(fall, vorschlag.vorschlag);
-      if (!ergebnis.uebernommen) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
-      vorschlag = null;
-      aktiverReiter = "belege";
-      neuBerechnen(true);
-    });
+    neu("uebernehmen", uebernehmeVorschlag);
   }
 
   /** Hält fest, wer wann was geändert hat (SPEC.md Q-05). */
