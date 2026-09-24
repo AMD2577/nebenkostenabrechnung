@@ -1,6 +1,9 @@
 # macOS legt in jedem Ordner eine unsichtbare Datei mit Ansichtseinstellungen an.
 .DS_Store
 
+# Persönliche Notizen, nicht Teil der Lösung.
+_privat/
+
 # Die Aufgabenstellung selbst ist nicht Teil der Lösung.
 00_Case-Brief.pdf
 02_extracted/00_Case-Brief.txt
