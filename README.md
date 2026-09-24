@@ -125,6 +125,10 @@ werkzeuge/baue.js         ← baut die versendbare Datei, das Prüfprotokoll und
 werkzeuge/drucke.js       ← druckt die fünf Abrechnungen als einzelne PDF-Dateien
 werkzeuge/pruefe_unterlagen.js ← meldet, wenn sich Dokumente in 01_Unterlagen geändert haben
 
+Bauen.command             ← Doppelklick (macOS): alles neu erzeugen
+Pruefen.command           ← Doppelklick: alle Tests und der Abgleich mit den Original-PDFs
+Zuruecksetzen.command     ← Doppelklick: alle Änderungen verwerfen
+
 dist/                     ← das Ergebnis zum Verschicken
 01_Unterlagen/            ← die Originale (unverändert)
 02_extracted/             ← die PDFs als Text (mit pdftotext erzeugt)
