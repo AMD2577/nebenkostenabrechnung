@@ -261,6 +261,14 @@ ihr nicht an. Deshalb ist zu jedem Dokument eine Prüfsumme gespeichert:
 node werkzeuge/pruefe_unterlagen.js
 ```
 
+**Wichtig zum Verständnis:** Ein PDF auszutauschen ändert die Abrechnung **nicht**. Die
+Oberfläche liest keine PDFs — sie rechnet mit `daten/fall_2025.json`. Die Originale in
+`01_Unterlagen` sind Nachweis und Grundlage, nicht Datenquelle zur Laufzeit. Solange die
+Falldatei nicht nachgezogen ist, bleibt alles beim Alten, egal wie oft man die Seite neu lädt.
+
+Damit das nicht unbemerkt bleibt, prüft **Bauen.command** vor jedem Bauen, ob sich ein
+Originaldokument geändert hat, und warnt deutlich.
+
 Das Werkzeug vergleicht beide Seiten und sagt, was zu tun ist:
 
 | Befund | Bedeutung | Nächster Schritt |
