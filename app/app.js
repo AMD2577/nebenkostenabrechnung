@@ -38,6 +38,12 @@
   let vorschlag = null;        // der gerade eingelesene, noch nicht übernommene Beleg
   let einlesefehler = null;
 
+  // Alle Eingaben leben in der Falldatei. Änderungen in der Oberfläche liegen
+  // zunächst nur im Arbeitsspeicher dieses Browserfensters - beim Schließen
+  // wären sie weg. Dieser Schalter merkt sich, ob es solche Änderungen gibt,
+  // und die Oberfläche weist dann sichtbar darauf hin.
+  let ungespeichert = false;
+
   const $ = (auswahl) => document.querySelector(auswahl);
 
   /* =========================================================================
@@ -55,6 +61,18 @@
       `${ergebnis.objekt.bezeichnung} · ${dat(ergebnis.abrechnung.von)} – ` +
       `${dat(ergebnis.abrechnung.bis)} · ${ergebnis.einheiten.length} Wohneinheiten, ` +
       `${zahl(ergebnis.flaeche_gesamt_qm)} m²`;
+
+    // Hinweis auf ungespeicherte Änderungen
+    $("#speicherhinweis").innerHTML = ungespeichert
+      ? `<div class="speicherleiste">
+           <div>
+             <b>Nicht gespeicherte Änderungen</b>
+             Deine Änderungen gelten nur in diesem Browserfenster. Damit sie erhalten bleiben,
+             lade die Falldatei herunter und lege sie im Projekt unter <code>daten/</code> ab.
+           </div>
+           <button class="knopf haupt" data-aktion="speichern">Falldatei speichern</button>
+         </div>`
+      : "";
 
     // Reiter markieren
     document.querySelectorAll("nav.reiter button").forEach((b) =>
@@ -628,6 +646,7 @@
       el.addEventListener("click", () => {
         fall.einstellungen[el.dataset.einstellung] = el.dataset.wert;
         protokolliere(`Einstellung ${el.dataset.einstellung} auf "${el.dataset.wert}" gesetzt`);
+        ungespeichert = true;
         neuBerechnen(true);
       }));
 
@@ -637,10 +656,12 @@
       if (el) el.addEventListener("click", funktion);
     };
     aktion("export", exportiere);
+    aktion("speichern", exportiere);
     aktion("import", () => document.getElementById("dateiwahl").click());
     aktion("zuruecksetzen", () => {
       fall = JSON.parse(JSON.stringify(window.FALL));
       vergleich = null;
+      ungespeichert = false;
       neuBerechnen(false);
     });
     const dateiwahl = document.getElementById("dateiwahl");
@@ -685,6 +706,7 @@
       if (!ergebnis.uebernommen) { alert("Nicht übernommen:\n" + ergebnis.fehler.join("\n")); return; }
       vorschlag = null;
       aktiverReiter = "belege";
+      ungespeichert = true;
       neuBerechnen(true);      // mit Vorher/Nachher-Vergleich
     });
 
@@ -769,11 +791,16 @@
 
   function exportiere() {
     const text = JSON.stringify(fall, null, 2);
+    const jahr = fall.abrechnung.von.slice(0, 4);
     const link = document.createElement("a");
     link.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
-    link.download = "fall_2025.json";
+    link.download = `fall_${jahr}.json`;
     link.click();
     URL.revokeObjectURL(link.href);
+
+    // Der Stand liegt jetzt als Datei vor - der Hinweis kann verschwinden.
+    ungespeichert = false;
+    zeichne();
   }
 
   function importiere(ereignis) {
@@ -784,6 +811,7 @@
       try {
         fall = JSON.parse(leser.result);
         vergleich = null;
+        ungespeichert = false;
         neuBerechnen(false);
         alert("Falldatei geladen.");
       } catch (fehler) {
@@ -803,6 +831,14 @@
     }));
 
   document.getElementById("alleDrucken").addEventListener("click", () => drucke("alle"));
+
+  // Letzte Sicherung: Wer das Fenster mit ungespeicherten Änderungen schließt,
+  // bekommt die Rückfrage des Browsers. Ohne Änderungen passiert nichts.
+  window.addEventListener("beforeunload", (ereignis) => {
+    if (!ungespeichert) return;
+    ereignis.preventDefault();
+    ereignis.returnValue = "";
+  });
 
   neuBerechnen(false);
 })();

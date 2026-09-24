@@ -127,6 +127,15 @@ pre.dokumenttext {
 .schalter .auswahl button { border: 1px solid var(--linie); background: #fff; border-radius: 6px; padding: 5px 11px; cursor: pointer; font-size: 13px; }
 .schalter .auswahl button.aktiv { background: var(--akzent); color: #fff; border-color: var(--akzent); }
 
+.speicherleiste {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  background: #fff8e6; border-bottom: 1px solid var(--warnung);
+  padding: 10px 22px; font-size: 13px; color: #6b4708;
+}
+.speicherleiste b { display: block; }
+.speicherleiste button { margin-left: auto; white-space: nowrap; }
+.speicherleiste code { background: #f3e6c4; }
+
 .diff { background: #fffdf5; border: 1px solid var(--warnung); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
 
 /* =============================================================================

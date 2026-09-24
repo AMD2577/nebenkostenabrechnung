@@ -67,6 +67,22 @@ verschickt wird. Sobald die Anschrift in der Falldatei steht, verschwindet der V
 - **Beleg erfassen** — eine neue Rechnung als PDF hineinziehen (siehe Abschnitt 4).
 - **Einstellungen** — die drei Stellschrauben (siehe unten) und die Falldatei zum Laden/Speichern.
 
+### Änderungen behalten
+
+Alle Eingaben stehen in **einer** Datei: `daten/fall_2025.json`. Was du in der Oberfläche änderst
+— eine Stellschraube umstellen, einen Beleg erfassen — gilt zunächst nur in diesem Browserfenster.
+
+Sobald es solche Änderungen gibt, erscheint oben eine Leiste **„Nicht gespeicherte Änderungen"**
+mit dem Knopf *Falldatei speichern*. Der lädt die aktualisierte Falldatei herunter. Um sie
+dauerhaft zu übernehmen: die heruntergeladene Datei im Projekt unter `daten/` ablegen und
+`node werkzeuge/baue.js` ausführen.
+
+Wer das Fenster mit ungespeicherten Änderungen schließen will, wird vom Browser gefragt.
+
+*Warum nicht automatisch im Browser speichern?* Weil dann zwei Wahrheiten entstünden — eine in der
+Datei, eine im Browser — die unbemerkt auseinanderlaufen. Die Datei ist die Quelle; alles andere
+wird daraus erzeugt.
+
 ### Etwas ändern
 
 Im Reiter *Einstellungen* eine der drei Stellschrauben umstellen. Die Abrechnung wird sofort neu

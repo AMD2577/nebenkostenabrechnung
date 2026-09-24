@@ -1,6 +1,6 @@
 # Prüfprotokoll – Nebenkostenabrechnung 2025
 
-Erzeugt am 2026-09-22 durch `node werkzeuge/baue.js`.
+Erzeugt am 2026-09-24 durch `node werkzeuge/baue.js`.
 Grundlage: `daten/fall_2025.json` · Prüfkatalog: `SPEC.md` § 5.
 
 ## Einstellungen dieses Laufs
