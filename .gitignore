@@ -2,7 +2,7 @@
 .DS_Store
 
 # Persönliche Notizen, nicht Teil der Lösung.
-_privat/
+_privat
 
 # Die Aufgabenstellung selbst ist nicht Teil der Lösung.
 00_Case-Brief.pdf
