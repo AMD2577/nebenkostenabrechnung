@@ -2,7 +2,9 @@
 
 Grundlage: die 43 Unterlagen des Objekts (Verträge, 23 Belege, 12 Kontoauszüge 2025). Alle Zahlen
 sind aus den Dokumenten abgeleitet und in der Lösung nachvollziehbar
-(`dist/Nebenkostenabrechnung_2025.html`, Reiter *Übersicht* und *Prüfungen*).
+(`dist/Nebenkostenabrechnung_2025.html`, Reiter *Übersicht* und *Prüfungen*). Die rechtlichen
+Aussagen sind sorgfältig geprüft, ersetzen aber keine Rechtsberatung – vor Nachforderungen und
+Kündigungen im Zweifel anwaltlich absichern.
 
 | # | Empfehlung | Wirkung | Zu tun bis |
 |---|---|---|---|

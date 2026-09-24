@@ -17,6 +17,10 @@ wird sofort je Mieter angezeigt:
 | 3 | Mieterwechsel WE 3 **taggenau** (212 / 153 Tage) | nach vollen Monaten (7 / 5) | Nowak +7,51 €, Kestner −7,51 € |
 | 4 | Vorauszahlungen **wie tatsächlich gezahlt** | wie im Vertrag vereinbart | Ohlwein 175,43 € statt 325,43 € |
 
+> **Zu den Rechtsgrundlagen:** Die genannten Vorschriften habe ich im Wortlaut bzw. anhand
+> einschlägiger Quellen geprüft (Stand 09/2026). Das ist eine sorgfältige Einschätzung, keine
+> Rechtsberatung – vor einer Forderung oder Kündigung sollte im Zweifel anwaltlich geprüft werden.
+
 ---
 
 ## Annahmen
