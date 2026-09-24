@@ -8,7 +8,7 @@ sind aus den Dokumenten abgeleitet und in der Lösung nachvollziehbar
 |---|---|---|---|
 | 1 | Offene Mieten nachfordern und künftig monatlich abgleichen | **1.330 € belegt, bis zu 1.830 €** einmalig, 960 €/Jahr laufend | 31.12.2026 (Verjährung) |
 | 2 | Vorauszahlungen anpassen | keine Nachzahlungen mehr, rund 1.700 €/Jahr früher auf dem Konto | mit dieser Abrechnung |
-| 3 | Kabel-Sammelvertrag bei Vodafone kündigen | **427 €/Jahr** gespart | 08.11.2026 |
+| 3 | Kabel-Sammelvertrag bei Vodafone kündigen | **427 €/Jahr** gespart | sofort – ohne Kündigungsfrist möglich |
 
 ---
 
@@ -66,9 +66,13 @@ Investition (neuer Vorgarten). Ein Posten nicht: Seit dem 01.07.2024 darf Kabelf
 über die Nebenkosten abgerechnet werden. Sie bezahlen seitdem 427,20 € im Jahr für einen
 Fernsehanschluss, den vier Haushalte kostenlos nutzen.
 
-**Was ich rate.** Den Gestattungsvertrag vom 09.02.2017 spätestens am **08.11.2026** zum 08.02.2027
-kündigen (3 Monate Frist, sonst verlängert er sich um ein Jahr). Die Mieter rechtzeitig informieren,
-dass sie eigene Verträge abschließen können (Kabel, Internet-TV, Antenne).
+**Was ich rate.** Den Vertrag **jetzt** kündigen. Weil er vor dem 01.12.2021 geschlossen wurde, darf
+jede Seite ihn wegen des Wegfalls der Umlage **ohne Kündigungsfrist** beenden, und Vodafone kann
+dafür keinen Schadensersatz verlangen (§ 230 Abs. 5 TKG). Das gilt nur, wenn der Vertrag für diesen
+Fall nichts anderes regelt – er liegt uns nicht vor (Rückfrage 7). Ohne dieses Sonderrecht bliebe die
+ordentliche Kündigung mit 3 Monaten Frist zum Ende des Vertragsjahres; wann das endet, lässt sich
+der Jahresübersicht nicht entnehmen. Jeder Monat Warten kostet 35,60 €. Die Mieter rechtzeitig
+informieren, dass sie eigene Verträge abschließen können (Kabel, Internet-TV, Antenne).
 
 ---
 

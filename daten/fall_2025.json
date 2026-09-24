@@ -331,7 +331,7 @@
       "umlagefaehig": false,
       "verteilerschluessel": "flaeche",
       "umlagefaehig_bis": "2024-06-30",
-      "rechtsgrundlage": "Wegfall des § 2 Nr. 15 BetrKV zum 30.06.2024"
+      "rechtsgrundlage": "§ 2 Nr. 15 Buchst. a/b BetrKV: Umlage nur bis 30.06.2024"
     },
     "rechtsschutz": {
       "bezeichnung": "Rechtsschutzversicherung",
@@ -866,7 +866,7 @@
           "betrag": 427.2,
           "kostenart": "kabel",
           "umlagefaehig": false,
-          "begruendung": "Seit 01.07.2024 dürfen Kabel-TV-Kosten aus Sammelverträgen nicht mehr als Betriebskosten umgelegt werden (Ende des 'Nebenkostenprivilegs': § 2 Nr. 15 BetrKV wurde zum 30.06.2024 gestrichen). Zudem ist die Kostenart in § 4 der Mietverträge nicht vereinbart."
+          "begruendung": "Seit 01.07.2024 dürfen Kabel-TV-Kosten aus Sammelverträgen nicht mehr als Betriebskosten umgelegt werden (Ende des 'Nebenkostenprivilegs': § 2 Nr. 15 Buchst. b BetrKV lässt die Grundgebühren für Breitbandanschlüsse nur bis 30.06.2024 zu). Zudem ist die Kostenart in § 4 der Mietverträge nicht vereinbart."
         }
       ]
     }
@@ -1569,7 +1569,7 @@
       "id": "A6",
       "kategorie": "Kostenabgrenzung",
       "titel": "Vodafone Sammelinkasso Kabel-TV (427,20 €) nicht mehr umlagefähig",
-      "behandlung": "Das 'Nebenkostenprivileg' für Kabel-TV endete zum 30.06.2024 (Wegfall des § 2 Nr. 15 BetrKV). Zudem ist Kabelanschluss in § 4 der Mietverträge nicht als Kostenart vereinbart. Nicht umgelegt.",
+      "behandlung": "Das 'Nebenkostenprivileg' für Kabel-TV endete zum 30.06.2024 (Befristung in § 2 Nr. 15 Buchst. a/b BetrKV). Zudem ist Kabelanschluss in § 4 der Mietverträge nicht als Kostenart vereinbart. Nicht umgelegt.",
       "auswirkung": "Kosten verbleiben bei der Eigentümerin; Bewirtschaftungs-Check Nr. 3."
     },
     {
@@ -1611,7 +1611,7 @@
       "id": "A12",
       "kategorie": "Vertrag",
       "titel": "Neuvertrag Kestner: 890 € für 84 m² (10,60 €/m²) nach zuvor 700 €",
-      "behandlung": "Die Miete stieg bei der Neuvermietung um 27 %. Köln unterliegt der Mietpreisbegrenzungsverordnung NRW. Der Mietvertrag nennt lediglich „vor Übergabe instandgesetzt und neu gestrichen“ – das ist Instandsetzung, keine umfassende Modernisierung, die eine Ausnahme begründen würde. Ohne Kenntnis der ortsüblichen Vergleichsmiete lässt sich das nicht abschließend beurteilen.",
+      "behandlung": "Die Miete stieg bei der Neuvermietung um 27 %. Köln fällt unter die Mieterschutzverordnung NRW (seit 01.03.2025): höchstens 10 % über der ortsüblichen Vergleichsmiete (§ 556d BGB). Der Mietvertrag nennt lediglich „vor Übergabe instandgesetzt und neu gestrichen“ – das ist Instandsetzung, keine umfassende Modernisierung, die eine Ausnahme begründen würde. Ohne Kenntnis der ortsüblichen Vergleichsmiete lässt sich das nicht abschließend beurteilen.",
       "auswirkung": "Kein Einfluss auf die Nebenkostenabrechnung. Aber ein Rückforderungsrisiko für die Eigentümerin – Rückfrage 10. Die Ausnahme für die Vormiete (§ 556e BGB) greift hier nicht, weil die Vormiete niedriger war."
     },
     {

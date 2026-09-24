@@ -97,19 +97,25 @@ wird sofort je Mieter angezeigt:
    erbracht, gibt es Nachweise? Außerdem steht in Q1 „Kontrolle Heizungsraum“ – das Haus hat keinen –,
    und das Laub wird im Herbst sowohl vom Hauswart (Q4) als auch von der Gartenpflege (Oktober)
    berechnet. Liegt der Hauswartvertrag vom 04.01.2021 vor?
-7. **Vodafone-Vertrag kündigen?** Kündbar mit 3 Monaten Frist zum 08.02. Oder haben Mieter einzeln
-   einer Weiterberechnung zugestimmt?
+7. **Vodafone-Vertrag kündigen?** Da er vor dem 01.12.2021 geschlossen wurde, ist er nach § 230
+   Abs. 5 TKG ohne Kündigungsfrist kündbar – sofern der Vertrag für diesen Fall nichts anderes
+   regelt. Liegt der Gestattungsvertrag vom 09.02.2017 vor? Haben Mieter einzeln einer
+   Weiterberechnung zugestimmt?
 8. **Grundsteuer 2025:** Bitte den aktuellen Bescheid nach der Grundsteuerreform prüfen (Messbescheid
    FA Köln-Süd vom 12.11.2024). Übernommen wurde der Betrag aus dem vorliegenden Beleg.
 
 ### Ohne Einfluss auf die Abrechnung, aber mit Risiko
 
-9. **Rauchwarnmelder:** 9 Melder, davon nur einer in WE 2. Erfüllt das die Pflicht nach § 48 BauO NRW
-   (Schlafräume, Kinderzimmer, Flure)? Das ist eine Haftungsfrage.
-10. **Neuvertrag Kestner und Mietpreisbremse:** 890 € für 84 m² nach zuvor 700 € (+27 %). Köln
-    unterliegt der Mietpreisbegrenzung NRW, der Vertrag nennt nur „instandgesetzt und neu gestrichen“.
-    Wie hoch ist die ortsübliche Vergleichsmiete, gab es eine umfassende Modernisierung? Sonst droht
-    eine Rückforderung.
+9. **Rauchwarnmelder:** 9 Melder, davon nur einer in WE 2 (2 Zimmer). Nach § 47 Abs. 2 BauO NRW
+   braucht jeder Schlafraum, jedes Kinderzimmer und jeder Flur, über den der Rettungsweg führt,
+   einen eigenen Melder – bei zwei Zimmern also meist mindestens zwei. Welche Räume in WE 2 sind
+   ausgestattet? Das ist eine Haftungsfrage.
+10. **Neuvertrag Kestner und Mietpreisbremse:** 890 € für 84 m² nach zuvor 700 € (+27 %). Köln fällt
+    unter die Mieterschutzverordnung NRW (seit 01.03.2025): Bei Neuvermietung höchstens 10 % über der
+    ortsüblichen Vergleichsmiete (§ 556d BGB). Die höhere Vormiete als Ausnahme scheidet aus, der
+    Vertrag nennt nur „instandgesetzt und neu gestrichen“ – keine umfassende Modernisierung. Wie hoch
+    ist die Vergleichsmiete? Rügt Herr Kestner bis Ende Januar 2028, kann er alles zu viel Gezahlte
+    seit Mietbeginn zurückfordern (§ 556g Abs. 2 BGB).
 11. **Fehlende Unterlagen:** Hauswartvertrag, Verwaltervertrag (15.12.2020),
     Reinigungs-Leistungsverzeichnis, Vodafone-Gestattungsvertrag, Auszüge des Kautionskontos. Für die
     Abrechnung nicht zwingend, aber nötig, wenn ein Mieter Belegeinsicht verlangt.
