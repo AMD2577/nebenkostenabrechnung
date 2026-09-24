@@ -203,8 +203,9 @@ test("derselbe Beleg kann nicht zweimal erfasst werden (I-07)", () => {
 console.log(`\n${"=".repeat(70)}`);
 if (fehlgeschlagen === 0) {
   console.log(`ALLE TESTS BESTANDEN (${bestanden} Tests)`);
-  console.log(`Einlesen: ${betragRichtig.length}/${ergebnisse.length} Belege vollautomatisch korrekt, ` +
-    `${quarantaene.length} in Quarantäne, 0 falsch übernommen`);
+  console.log(`Einlesen: ${betragRichtig.length}/${ergebnisse.length} Rechnungsbeträge richtig gelesen · ` +
+    `${geprueft.length} Belege vollständig übernehmbar · ${quarantaene.length} in Quarantäne · ` +
+    `0 mit falschen Werten übernommen`);
 } else {
   console.log(`${fehlgeschlagen} TEST(S) FEHLGESCHLAGEN (${bestanden} bestanden)`);
 }
