@@ -14,6 +14,18 @@ Mieter tatsächlich schicken kann.
 | Empfehlungen an die Eigentümerin | [`BEWIRTSCHAFTUNGS_CHECK.md`](BEWIRTSCHAFTUNGS_CHECK.md) |
 | Warum die Lösung so aussieht | [`SPEC.md`](SPEC.md) — fachliche Grundlage, Prüfkatalog, Entscheidungen |
 
+**Zum Nachvollziehen mit der Kommandozeile** (nur Node.js nötig, keine Abhängigkeiten,
+kein `npm install`):
+
+```bash
+git clone https://github.com/AMD2577/nebenkostenabrechnung
+cd nebenkostenabrechnung
+node test/alles.js                      # 51 Tests: Rechnen, Einlesen, Dokumentenstand
+node werkzeuge/pruefe_unterlagen.js     # stimmen die Daten noch zu den 43 Original-PDFs?
+node werkzeuge/baue.js                  # Oberfläche, Prüfprotokoll und Zip neu erzeugen
+node werkzeuge/drucke.js                # die fünf Abrechnungen als PDF (braucht Chrome)
+```
+
 ---
 
 ## 1 Das Ergebnis
