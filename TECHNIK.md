@@ -6,7 +6,7 @@ Das Ergebnis und die Befunde stehen im [README](README.md).
 **Mit der Kommandozeile** (nur Node.js nötig, keine Abhängigkeiten, kein `npm install`):
 
 ```bash
-node test/alles.js                      # 59 Tests: Rechnen, Einlesen, Dokumentenstand
+node test/alles.js                      # 60 Tests: Rechnen, Einlesen, Dokumentenstand
 node werkzeuge/pruefe_unterlagen.js     # stimmen die Daten noch zu den 43 Original-PDFs?
 node werkzeuge/baue.js                  # Oberfläche, Prüfprotokoll und Zip neu erzeugen
 node werkzeuge/drucke.js                # die fünf Abrechnungen als PDF (braucht Chrome)
@@ -81,8 +81,8 @@ app/stil.css              ← Gestaltung für Bildschirm UND Druck
 app/index.html            ← Entwicklungsfassung (lädt die Dateien einzeln)
 vendor/                   ← PDF.js (fremde Bibliothek, Herkunft in vendor/HERKUNFT.md)
 
-test/alles.js             ← führt alle Tests aus (59 Stück)
-test/pruefe.js            ← 32 Tests für Rechnen, Prüfungen, Schreiben, Abrechnungsjahr
+test/alles.js             ← führt alle Tests aus (60 Stück)
+test/pruefe.js            ← 33 Tests für Rechnen, Prüfungen, Schreiben, Abrechnungsjahr
 test/pruefe_einlesen.js   ← 17 Tests für das Einlesen, gemessen an allen 23 Belegen
 test/pruefe_dokumente.js  ← 10 Tests dafür, dass alle Dokumente zum aktuellen Stand gehören
 test/sollwerte.json       ← die von Hand nachgerechneten Sollwerte
@@ -192,6 +192,17 @@ Alles steht in `daten/fall_2025.json`. Ein Beleg sieht so aus:
 - `bank_kennung` ist der Text, unter dem der Lieferant im Kontoauszug auftaucht; darüber prüft
   P-01, ob der Beleg auch bezahlt wurde.
 
+**Neue Anschrift eines ausgezogenen Mieters** – im Mietverhältnis den Eintrag `anschrift_hinweis`
+löschen und stattdessen eintragen:
+
+```json
+"anschrift": { "strasse": "Zülpicher Straße 12", "plz_ort": "50674 Köln" },
+```
+
+Wer noch im Haus wohnt, braucht das Feld nicht; das Schreiben geht an die Objektanschrift. Wer
+ausgezogen ist und keine `anschrift` hat, bleibt gesperrt (Prüfung F-08) – sonst ginge der Brief
+an die leere Wohnung.
+
 Danach neu bauen:
 
 ```bash
@@ -292,7 +303,7 @@ node test/alles.js
 Das führt drei Testdateien nacheinander aus (einzeln aufrufbar als `test/pruefe.js`,
 `test/pruefe_einlesen.js`, `test/pruefe_dokumente.js`).
 
-**32 Tests** für Rechnen, Schreiben und Abrechnungsjahr: die Verteilfunktion (inklusive 1.000 Zufallsfällen), die von
+**33 Tests** für Rechnen, Schreiben und Abrechnungsjahr: die Verteilfunktion (inklusive 1.000 Zufallsfällen), die von
 Hand nachgerechneten Sollwerte Zeile für Zeile, die Invarianten, der Prüfkatalog, die Wirkung jeder
 Stellschraube und die gesetzlichen Mindestangaben in allen fünf Schreiben.
 

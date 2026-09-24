@@ -70,7 +70,7 @@ Gesamtkosten (Prüfung F-09).
 | F-05 | Adressat, Zeitraum, Einheit und Datum vorhanden (WE1_Yildirim) | bestanden | vollständig |
 | F-06 | Hinweis auf Einwendungsfrist und Belegeinsicht (WE1_Yildirim) | bestanden | enthalten |
 | F-07 | Vorauszahlungsanpassung als ausdrückliche Erklärung (WE1_Yildirim) | bestanden | eigener Absatz mit Rechtsgrundlage vorhanden |
-| F-08 | Keine offenen Platzhalter im Schreiben (WE1_Yildirim) | bestanden | keine Platzhalter |
+| F-08 | Keine offenen Platzhalter, Anschrift zustellbar (WE1_Yildirim) | bestanden | keine Platzhalter |
 | F-01 | Gesamtkosten je Kostenart abgedruckt (WE2_Bendel) | bestanden | Spalte und Summe vorhanden |
 | F-02 | Verteilerschlüssel genannt und erläutert (WE2_Bendel) | bestanden | Fläche, Prozentsatz und Zeitanteil angegeben |
 | F-03 | Anteilsberechnung je Kostenart sichtbar (WE2_Bendel) | bestanden | 12 Kostenartenzeilen |
@@ -78,7 +78,7 @@ Gesamtkosten (Prüfung F-09).
 | F-05 | Adressat, Zeitraum, Einheit und Datum vorhanden (WE2_Bendel) | bestanden | vollständig |
 | F-06 | Hinweis auf Einwendungsfrist und Belegeinsicht (WE2_Bendel) | bestanden | enthalten |
 | F-07 | Vorauszahlungsanpassung als ausdrückliche Erklärung (WE2_Bendel) | bestanden | eigener Absatz mit Rechtsgrundlage vorhanden |
-| F-08 | Keine offenen Platzhalter im Schreiben (WE2_Bendel) | bestanden | keine Platzhalter |
+| F-08 | Keine offenen Platzhalter, Anschrift zustellbar (WE2_Bendel) | bestanden | keine Platzhalter |
 | F-01 | Gesamtkosten je Kostenart abgedruckt (WE3_Nowak) | bestanden | Spalte und Summe vorhanden |
 | F-02 | Verteilerschlüssel genannt und erläutert (WE3_Nowak) | bestanden | Fläche, Prozentsatz und Zeitanteil angegeben |
 | F-03 | Anteilsberechnung je Kostenart sichtbar (WE3_Nowak) | bestanden | 12 Kostenartenzeilen |
@@ -86,7 +86,7 @@ Gesamtkosten (Prüfung F-09).
 | F-05 | Adressat, Zeitraum, Einheit und Datum vorhanden (WE3_Nowak) | bestanden | vollständig |
 | F-06 | Hinweis auf Einwendungsfrist und Belegeinsicht (WE3_Nowak) | bestanden | enthalten |
 | F-07 | Vorauszahlungsanpassung als ausdrückliche Erklärung (WE3_Nowak) | bestanden | entfällt: Mietverhältnis endete im Abrechnungszeitraum |
-| F-08 | Keine offenen Platzhalter im Schreiben (WE3_Nowak) | **BLOCKER** | ACHTUNG: Anschrift fehlt noch |
+| F-08 | Keine offenen Platzhalter, Anschrift zustellbar (WE3_Nowak) | **BLOCKER** | ACHTUNG: Anschrift fehlt noch |
 | F-01 | Gesamtkosten je Kostenart abgedruckt (WE3_Kestner) | bestanden | Spalte und Summe vorhanden |
 | F-02 | Verteilerschlüssel genannt und erläutert (WE3_Kestner) | bestanden | Fläche, Prozentsatz und Zeitanteil angegeben |
 | F-03 | Anteilsberechnung je Kostenart sichtbar (WE3_Kestner) | bestanden | 12 Kostenartenzeilen |
@@ -94,7 +94,7 @@ Gesamtkosten (Prüfung F-09).
 | F-05 | Adressat, Zeitraum, Einheit und Datum vorhanden (WE3_Kestner) | bestanden | vollständig |
 | F-06 | Hinweis auf Einwendungsfrist und Belegeinsicht (WE3_Kestner) | bestanden | enthalten |
 | F-07 | Vorauszahlungsanpassung als ausdrückliche Erklärung (WE3_Kestner) | bestanden | eigener Absatz mit Rechtsgrundlage vorhanden |
-| F-08 | Keine offenen Platzhalter im Schreiben (WE3_Kestner) | bestanden | keine Platzhalter |
+| F-08 | Keine offenen Platzhalter, Anschrift zustellbar (WE3_Kestner) | bestanden | keine Platzhalter |
 | F-01 | Gesamtkosten je Kostenart abgedruckt (WE4_Ohlwein) | bestanden | Spalte und Summe vorhanden |
 | F-02 | Verteilerschlüssel genannt und erläutert (WE4_Ohlwein) | bestanden | Fläche, Prozentsatz und Zeitanteil angegeben |
 | F-03 | Anteilsberechnung je Kostenart sichtbar (WE4_Ohlwein) | bestanden | 12 Kostenartenzeilen |
@@ -102,7 +102,7 @@ Gesamtkosten (Prüfung F-09).
 | F-05 | Adressat, Zeitraum, Einheit und Datum vorhanden (WE4_Ohlwein) | bestanden | vollständig |
 | F-06 | Hinweis auf Einwendungsfrist und Belegeinsicht (WE4_Ohlwein) | bestanden | enthalten |
 | F-07 | Vorauszahlungsanpassung als ausdrückliche Erklärung (WE4_Ohlwein) | bestanden | eigener Absatz mit Rechtsgrundlage vorhanden |
-| F-08 | Keine offenen Platzhalter im Schreiben (WE4_Ohlwein) | bestanden | keine Platzhalter |
+| F-08 | Keine offenen Platzhalter, Anschrift zustellbar (WE4_Ohlwein) | bestanden | keine Platzhalter |
 
 ## Zusammenfassung
 
@@ -112,7 +112,7 @@ Gesamtkosten (Prüfung F-09).
 
 ### Offene Blocker
 
-- **F-08** Keine offenen Platzhalter im Schreiben (WE3_Nowak): ACHTUNG: Anschrift fehlt noch
+- **F-08** Keine offenen Platzhalter, Anschrift zustellbar (WE3_Nowak): ACHTUNG: Anschrift fehlt noch
 
 ### Offene Warnungen
 

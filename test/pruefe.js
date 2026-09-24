@@ -318,6 +318,24 @@ test("jedes Schreiben enthält die vier gesetzlichen Mindestangaben (F-01..F-04)
   }
 });
 
+test("ausgezogener Mieter: ohne neue Anschrift gesperrt, mit neuer Anschrift versandfertig", () => {
+  const fall = fallDaten();
+  const nowak = fall.mietverhaeltnisse.find((m) => m.id === "WE3_Nowak");
+  delete nowak.anschrift_hinweis;                         // nur den Hinweis löschen reicht nicht
+  let e = N.berechne(fall);
+  let m = e.mietverhaeltnisse.find((x) => x.id === "WE3_Nowak");
+  if (S.pruefeSchreiben(m, e).find((p) => p.id === "F-08").bestanden) {
+    throw new Error("Schreiben ginge ohne Sperre an die verlassene Wohnung");
+  }
+  nowak.anschrift = { strasse: "Zülpicher Straße 12", plz_ort: "50674 Köln" };
+  e = N.berechne(fall);
+  m = e.mietverhaeltnisse.find((x) => x.id === "WE3_Nowak");
+  if (!S.pruefeSchreiben(m, e).find((p) => p.id === "F-08").bestanden) throw new Error("F-08 bleibt offen");
+  const html = S.schreibenFertig(m, e);
+  if (!html.includes("Zülpicher Straße 12")) throw new Error("neue Anschrift fehlt im Schreiben");
+  if (html.includes("ENTWURF")) throw new Error("Schreiben trägt weiter ENTWURF");
+});
+
 test("jeder Betrag aus der Berechnung steht auch im Schreiben", () => {
   // Gegenprobe gegen stille Abweichungen zwischen Rechnung und Dokument.
   for (const m of ergebnis.mietverhaeltnisse) {

@@ -175,9 +175,14 @@
          )}</b> an.</p>`
       : "";
 
+    // Wer noch im Haus wohnt, bekommt die Abrechnung an die Objektanschrift.
+    // Wer ausgezogen ist, braucht eine eigene Anschrift (Feld "anschrift" im
+    // Mietverhältnis) - sonst ginge der Brief an die leere Wohnung.
     const anschrift = m.anschrift_hinweis
       ? `<span class="offen">[Anschrift ergänzen — ${sicher(m.anschrift_hinweis)}]</span>`
-      : `${sicher(o.strasse)}<br>${sicher(o.plz_ort)}`;
+      : m.anschrift
+        ? `${sicher(m.anschrift.strasse)}<br>${sicher(m.anschrift.plz_ort)}`
+        : `${sicher(o.strasse)}<br>${sicher(o.plz_ort)}`;
 
     const flaechenhinweis = m.hinweis
       ? `<p class="klein">${sicher(m.hinweis)}</p>`
@@ -366,9 +371,16 @@
         : "entfällt: Mietverhältnis endete im Abrechnungszeitraum");
     ergebnisse[ergebnisse.length - 1].schwere = "warnung";
 
-    pruefe("F-08", "Keine offenen Platzhalter im Schreiben",
-      !html.includes('class="offen"'),
-      m.anschrift_hinweis ? "ACHTUNG: Anschrift fehlt noch" : "keine Platzhalter");
+    // Ein ausgezogener Mieter ohne eigene Anschrift würde an die Wohnung
+    // geschrieben, die er verlassen hat. Das ist kein sichtbarer Platzhalter,
+    // aber genauso wenig zustellbar.
+    const ausgezogen = m.nutzung_bis < e.abrechnung.bis;
+    const ohneNeueAnschrift = ausgezogen && !m.anschrift;
+    pruefe("F-08", "Keine offenen Platzhalter, Anschrift zustellbar",
+      !html.includes('class="offen"') && !ohneNeueAnschrift,
+      m.anschrift_hinweis ? "ACHTUNG: Anschrift fehlt noch"
+        : ohneNeueAnschrift ? "ausgezogen, aber keine neue Anschrift eingetragen (Feld \"anschrift\")"
+        : "keine Platzhalter");
 
     return ergebnisse;
   }

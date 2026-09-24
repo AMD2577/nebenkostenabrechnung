@@ -231,7 +231,7 @@ Annahmen/Rückfragen auftauchen), **I** = Information.
 | F-05 | Adressat = alle Vertragsparteien, richtiger Zeitraum, richtige Einheit, Datum, Absender | B |
 | F-06 | Hinweis auf Einwendungsfrist und Belegeinsicht | W |
 | F-07 | Vorauszahlungsanpassung als eigene ausdrückliche Erklärung (§ 560 Abs. 4) | W |
-| F-08 | Keine Platzhalter (`[…]`, leere Anschrift) im Schreiben | B |
+| F-08 | Keine Platzhalter (`[…]`, leere Anschrift) im Schreiben; ausgezogene Mieter haben eine eigene Anschrift | B |
 | F-09 | Σ der Anteile aller Schreiben == Σ umlagefähige Kosten | B |
 
 ### L4 — Plausibilität / Wirtschaftlichkeit
@@ -485,7 +485,7 @@ unwirksame Schreiben), dann R-01/R-02/R-03, dann der Rest.
 | D5 · Prüfprotokoll | `dist/Pruefprotokoll.md`, bei jedem Bauen neu erzeugt |
 | D6 · im Termin änderbar | 3 Stellschrauben mit Vorher/Nachher-Vergleich, plus Beleg-Einlesen |
 
-Automatisch geprüft: **59 Tests** (`node test/alles.js`) und
+Automatisch geprüft: **60 Tests** (`node test/alles.js`) und
 **66 fachliche Prüfungen** bei jedem Lauf.
 
 ### Offene Punkte
