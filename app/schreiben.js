@@ -143,12 +143,23 @@
     // Hinweis, wenn Vorauszahlungen fehlen (Ist-Ansatz).
     const fehlhinweis =
       m.fehlende_zahlungen > 0 && e.einstellungen.vorauszahlungen_ansatz === "ist"
-        ? `<div class="hinweis"><b>Hinweis zu Ihren Vorauszahlungen.</b> Für den Abrechnungszeitraum
-           sind ${m.monate} monatliche Vorauszahlungen vereinbart. Auf dem Objektkonto sind
-           ${m.zahlungen.length} Mietzahlungen eingegangen. Angerechnet werden können nur die
-           tatsächlich geleisteten Vorauszahlungen. Die offene Monatsmiete machen wir gesondert
-           geltend. Sollten Sie die Zahlung nachweisen können, korrigieren wir die Abrechnung
-           selbstverständlich.</div>`
+        ? (() => {
+            // WICHTIG: Die nicht geleistete Vorauszahlung ist durch diese Abrechnung bereits
+            // ausgeglichen - sie fehlt in der Spalte "abzüglich Vorauszahlungen" und erhöht die
+            // Nachzahlung entsprechend. Gesondert offen ist deshalb nur die Nettokaltmiete.
+            // Würde man die ganze Monatsmiete zusätzlich anmahnen, wäre die Vorauszahlung
+            // doppelt gefordert.
+            const offeneKaltmiete = N.zuCent(m.nettokaltmiete) * m.fehlende_zahlungen;
+            const bereitsAusgeglichen = m.vorauszahlung_monatlich_cent * m.fehlende_zahlungen;
+            return `<div class="hinweis"><b>Hinweis zu Ihren Vorauszahlungen.</b> Für den
+              Abrechnungszeitraum sind ${m.monate} monatliche Vorauszahlungen vereinbart; auf dem
+              Objektkonto sind ${m.zahlungen.length} Mietzahlungen eingegangen. Angerechnet werden
+              können nur die tatsächlich geleisteten Vorauszahlungen. Der nicht geleistete Anteil
+              von ${eur(bereitsAusgeglichen)} ist damit <b>in dieser Abrechnung bereits
+              berücksichtigt</b> und wird nicht noch einmal gefordert. Gesondert offen bleibt allein
+              die Nettokaltmiete von ${eur(offeneKaltmiete)}. Sollten Sie die Zahlung nachweisen
+              können, korrigieren wir die Abrechnung selbstverständlich.</div>`;
+          })()
         : "";
 
     // Anpassung der Vorauszahlung - nur bei laufendem Mietverhältnis sinnvoll.

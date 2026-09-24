@@ -81,7 +81,7 @@ Kosten, Paragraf je Kostenart in der Kostentabelle), in der Oberfläche unter *�
 |---|---|---|
 | Umlage nur, wenn Kostenart **im Mietvertrag vereinbart** *und* in § 2 BetrKV | § 556 Abs. 1 BGB | Check R-01: Vertragskatalog als Daten je Mietverhältnis |
 | Verwaltung, Instandhaltung/Instandsetzung sind **keine** Betriebskosten | § 1 Abs. 2 BetrKV; § 7 Abs. 2 Mietvertrag | Check R-10 |
-| Kabel-TV aus Sammelverträgen seit 01.07.2024 nicht mehr umlagefähig | § 71 TKG | Gültigkeitsfenster je Kostenart, Check R-02 |
+| Kabel-TV aus Sammelverträgen seit 01.07.2024 nicht mehr umlagefähig | § 2 Nr. 15 BetrKV a.F., gestrichen zum 30.06.2024 | Gültigkeitsfenster je Kostenart, Check R-02 |
 | Maßgeblich ist die **tatsächliche** Wohnfläche, nicht „ca." im Vertrag | BGH VIII ZR 220/17 | Check R-11 + Entscheidung A1 |
 | Bei Mieterwechsel: Kosten **zeitanteilig**, je Mieter nur *seine* Vorauszahlungen | § 4 Abs. 5 Mietvertrag | Zeitfaktor; Check A-03 |
 | Nur **tatsächlich geleistete** Vorauszahlungen anrechenbar | BGH VIII ZR 57/04 | Check R-07, Ist-Ansatz als Default |
@@ -347,7 +347,7 @@ Belegsumme 2025: **12.956,72 €** → umlagefähig **8.898,32 €** · nicht um
 | **Neuanlage Vorgarten** | – | keine laufende Pflege | 1.480,00 | **nein** | einmalige Herstellung, Konto 6600 |
 | **Instandsetzung Steigleitung** | – | § 1 Abs. 2 Nr. 2 | 486,20 | **nein** | Reparatur defektes Ventil |
 | **Rechtsschutzversicherung** | – | nicht in § 2 BetrKV | 189,00 | **nein** | dient allein dem Vermieterinteresse |
-| **Kabel-TV (Sammelinkasso)** | nein | § 71 TKG seit 01.07.2024 | 427,20 | **nein** | Nebenkostenprivileg entfallen **und** nicht vereinbart |
+| **Kabel-TV (Sammelinkasso)** | nein | § 2 Nr. 15 BetrKV a.F., entfallen zum 30.06.2024 | 427,20 | **nein** | Nebenkostenprivileg entfallen **und** nicht vereinbart |
 
 ---
 

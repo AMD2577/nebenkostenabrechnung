@@ -211,7 +211,7 @@ Alles steht in `daten/fall_2025.json`. Ein Beleg sieht so aus:
     { "bezeichnung": "Hauswartstätigkeit Q1 (3 × 120,00 €)",
       "betrag": 360.00, "kostenart": "hauswart", "umlagefaehig": true },
     { "bezeichnung": "Kleinreparaturen und Instandhaltungsarbeiten",
-      "betrag": 68.00, "kostenart": "kleinreparaturen", "umlagefaehig": false }
+      "betrag": 82.00, "kostenart": "kleinreparaturen", "umlagefaehig": false }
   ]
 }
 ```

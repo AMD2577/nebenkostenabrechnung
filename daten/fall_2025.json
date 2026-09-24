@@ -324,14 +324,14 @@
     },
     "kabel": {
       "bezeichnung": "Breitband-/Kabelanschluss",
-      "betrkv": "§ 2 Nr. 15 BetrKV a.F. – seit 01.07.2024 nicht mehr umlagefähig (§ 71 TKG)",
+      "betrkv": "§ 2 Nr. 15 BetrKV a.F. – zum 30.06.2024 entfallen (Übergangsfrist des TKG 2021)",
       "vertrag": "in § 4 des Mietvertrags nicht vereinbart",
       "warum": "Bis Juni 2024 durfte ein Kabelanschluss über die Nebenkosten abgerechnet werden. Diese Möglichkeit ist entfallen: Seit dem 01.07.2024 muss jeder Haushalt seinen Fernsehanschluss selbst beauftragen. Die Kosten bleiben deshalb bei der Eigentümerin – zusätzlich fehlt eine entsprechende Vereinbarung im Mietvertrag.",
       "konto": "6350",
       "umlagefaehig": false,
       "verteilerschluessel": "flaeche",
       "umlagefaehig_bis": "2024-06-30",
-      "rechtsgrundlage": "§ 71 TKG"
+      "rechtsgrundlage": "Wegfall des § 2 Nr. 15 BetrKV zum 30.06.2024"
     },
     "rechtsschutz": {
       "bezeichnung": "Rechtsschutzversicherung",
@@ -844,7 +844,7 @@
           "betrag": 427.2,
           "kostenart": "kabel",
           "umlagefaehig": false,
-          "begruendung": "Seit 01.07.2024 dürfen Kabel-TV-Kosten aus Sammelverträgen nicht mehr als Betriebskosten umgelegt werden (Ende des 'Nebenkostenprivilegs', § 71 TKG). Zudem ist die Kostenart in § 4 der Mietverträge nicht vereinbart."
+          "begruendung": "Seit 01.07.2024 dürfen Kabel-TV-Kosten aus Sammelverträgen nicht mehr als Betriebskosten umgelegt werden (Ende des 'Nebenkostenprivilegs': § 2 Nr. 15 BetrKV wurde zum 30.06.2024 gestrichen). Zudem ist die Kostenart in § 4 der Mietverträge nicht vereinbart."
         }
       ]
     }
@@ -1547,7 +1547,7 @@
       "id": "A6",
       "kategorie": "Kostenabgrenzung",
       "titel": "Vodafone Sammelinkasso Kabel-TV (427,20 €) nicht mehr umlagefähig",
-      "behandlung": "Das 'Nebenkostenprivileg' für Kabel-TV endete zum 30.06.2024 (§ 71 TKG). Zudem ist Kabelanschluss in § 4 der Mietverträge nicht als Kostenart vereinbart. Nicht umgelegt.",
+      "behandlung": "Das 'Nebenkostenprivileg' für Kabel-TV endete zum 30.06.2024 (Wegfall des § 2 Nr. 15 BetrKV). Zudem ist Kabelanschluss in § 4 der Mietverträge nicht als Kostenart vereinbart. Nicht umgelegt.",
       "auswirkung": "Kosten verbleiben bei der Eigentümerin; Bewirtschaftungs-Check Nr. 3."
     },
     {
@@ -1577,6 +1577,27 @@
       "titel": "Anschrift Frau Nowak nach Auszug unbekannt",
       "behandlung": "Das Schreiben an Frau Nowak ist gesperrt: Prüfung F-08 schlägt an, das Dokument trägt sichtbar den Vermerk ENTWURF und darf nicht versandt werden. Sobald die Anschrift eingetragen ist, verschwindet der Vermerk. Frist § 556 Abs. 3 BGB: 31.12.2026.",
       "auswirkung": "Rückfrage."
+    },
+    {
+      "id": "A11",
+      "kategorie": "Plausibilität",
+      "titel": "Hauswart rechnet konkrete Reparaturen am ersten Tag des Quartals ab",
+      "behandlung": "Jede der vier Wilms-Rechnungen ist auf den ersten Tag ihres Leistungszeitraums datiert (02.01., 01.04., 01.07., 01.10.) und listet trotzdem einzelne Arbeiten „nach Aufwand“ für dieses Quartal – etwa „Austausch 3 Leuchtmittel Treppenhaus“ am 02.01. für den Zeitraum bis 31.03. Zum Rechnungsdatum können diese Arbeiten nicht erbracht gewesen sein. Die Positionen sind ohnehin nicht umlagefähig und wurden herausgerechnet; die Pauschale von 4 × 360 € bleibt angesetzt, weil ein Hauswartvertrag vorliegt.",
+      "auswirkung": "Kein Zahleneffekt. Aber: Wer Leistungen im Voraus bezahlt, die nicht nachweisbar erbracht sind, legt sie auch nicht rechtssicher um. Leistungsnachweise anfordern – Rückfrage 11."
+    },
+    {
+      "id": "A12",
+      "kategorie": "Vertrag",
+      "titel": "Neuvertrag Kestner: 890 € für 84 m² (10,60 €/m²) nach zuvor 700 €",
+      "behandlung": "Die Miete stieg bei der Neuvermietung um 27 %. Köln unterliegt der Mietpreisbegrenzungsverordnung NRW. Der Mietvertrag nennt lediglich „vor Übergabe instandgesetzt und neu gestrichen“ – das ist Instandsetzung, keine umfassende Modernisierung, die eine Ausnahme begründen würde. Ohne Kenntnis der ortsüblichen Vergleichsmiete lässt sich das nicht abschließend beurteilen.",
+      "auswirkung": "Kein Einfluss auf die Nebenkostenabrechnung. Aber ein Rückforderungsrisiko für die Eigentümerin – Rückfrage 12. Die Ausnahme für die Vormiete (§ 556e BGB) greift hier nicht, weil die Vormiete niedriger war."
+    },
+    {
+      "id": "A13",
+      "kategorie": "Plausibilität",
+      "titel": "Kleine Unstimmigkeiten in zwei Belegen und einem Zahlungseingang",
+      "behandlung": "Die Verwalterrechnung rechnet 12 WE-Monate × 20,59 € = 247,06 €; tatsächlich ergibt das 247,08 €. Der Nettowert wurde offenbar aus dem Bruttobetrag von 294 € zurückgerechnet. Ohne Folge, da Verwaltungskosten nicht umlagefähig sind. Herr Kestner zahlte die Septembermiete am 12.09. statt bis zum dritten Werktag.",
+      "auswirkung": "Kein Zahleneffekt auf die Abrechnung. Beides in der Buchhaltung im Blick behalten."
     }
   ],
   "protokoll": [
@@ -1603,6 +1624,12 @@
       "wer": "Aaron",
       "was": "Prüfsummen aller 43 Originaldokumente in die Falldatei aufgenommen",
       "warum": "Damit sich feststellen lässt, ob sich eine Unterlage seit der Erfassung geändert hat (SPEC.md § 3.5)."
+    },
+    {
+      "zeitpunkt": "2026-09-24",
+      "wer": "Aaron",
+      "was": "Drei weitere Befunde aufgenommen; Behandlung der fehlenden Oktobermiete korrigiert",
+      "warum": "Eine externe Durchsicht hat gezeigt, dass die nicht geleistete Vorauszahlung durch die Abrechnung bereits ausgeglichen ist – gesondert offen ist nur die Nettokaltmiete. Zuvor wäre sie doppelt gefordert worden."
     }
   ],
   "unterlagen": [

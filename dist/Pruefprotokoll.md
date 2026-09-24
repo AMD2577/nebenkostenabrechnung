@@ -54,7 +54,7 @@ Gesamtkosten (Prüfung F-09).
 | R-11 | Abweichende Wohnflächen sind als Entscheidung dokumentiert | bestanden | WE 3: begründet |
 | R-10 | Verwaltung/Instandhaltung/Neuanlage nicht umgelegt | bestanden | § 1 Abs. 2 BetrKV eingehalten |
 | R-13 | Jede verwendete Kostenart ist in normaler Sprache begründet | bestanden | 18 Kostenarten mit Begründung und Vertragsgrundlage |
-| R-12 | Jeder Befund hat eine dokumentierte Behandlung | bestanden | 10 Befunde dokumentiert |
+| R-12 | Jeder Befund hat eine dokumentierte Behandlung | bestanden | 13 Befunde dokumentiert |
 | P-01 | Belege und Kontobewegungen decken sich | bestanden | 11 Lieferanten abgeglichen |
 | P-02 | Mieteingänge vollständig | **Warnung** | Petra Ohlwein (WE 4): 2025-10 fehlt |
 | P-02b | Vereinbarte Staffelmiete wird vereinnahmt | **Warnung** | Marco Bendel (WE 2): Mindereinnahme 720,00 € in 2025 |
