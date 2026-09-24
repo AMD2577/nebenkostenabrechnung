@@ -286,6 +286,22 @@ test("jede Stellschraube lässt das Ergebnis freigegeben", () => {
   }
 });
 
+test("nachgetragene Zahlung zählt für den Mieter, lässt die Kontoauszüge aber unberührt", () => {
+  // Der Fall aus dem Termin: Die Oktobermiete von Frau Ohlwein ging auf ein anderes Konto.
+  global.self = global;
+  const EIN = require("../app/einlesen.js");
+  const fall = fallDaten();
+  const r = EIN.fuegeBuchungHinzu(fall,
+    { datum: "2025-10-03", gegenpartei: "PETRA OHLWEIN", zweck: "Miete 10/2025", betrag: 760 },
+    "Zahlung ging auf das Privatkonto");
+  if (!r.hinzugefuegt) throw new Error(r.fehler.join(", "));
+  const e = N.berechne(fall);
+  gleich(e.mietverhaeltnisse.find((m) => m.id === "WE4_Ohlwein").saldo_cent, 17543, "Saldo Ohlwein");
+  const status = (id) => e.pruefungen.find((p) => p.id === id).bestanden;
+  if (!status("I-06")) throw new Error("I-06 schlägt an, obwohl die Zahlung nicht über das Objektkonto lief");
+  if (!status("P-02")) throw new Error("P-02 meldet die Oktobermiete weiter als fehlend");
+});
+
 /* ===========================================================================
  * 6. Die fertigen Schreiben (formelle Wirksamkeit, SPEC.md § 2.1)
  * ========================================================================= */

@@ -784,6 +784,9 @@
       gegenpartei: String(buchung.gegenpartei).trim(),
       zweck: String(buchung.zweck || "").trim(),
       betrag: Math.round(betrag * 100) / 100,
+      // Nachgetragen wird, was NICHT über das Objektkonto lief. Die Buchung zählt
+      // für den Mieter, gehört aber nicht zu den Kontoauszügen (Saldenkette I-06).
+      ausserhalb_objektkonto: true,
     });
     fall.buchungen.sort((a, b) => a.datum.localeCompare(b.datum));
 

@@ -472,8 +472,10 @@
     const auszuege = (fall.kontoauszuege || []).slice().sort((a, b) => a.monat - b.monat);
     auszuege.forEach((auszug, i) => {
       const monatsText = String(auszug.monat).padStart(2, "0");
+      // Nachgetragene Zahlungen (etwa auf ein anderes Konto) stehen in keinem
+      // Auszug und dürfen die Saldenkette deshalb nicht verändern.
       const buchungenDesMonats = fall.buchungen.filter(
-        (b) => b.datum.slice(0, 7) === `${auszug.jahr}-${monatsText}`
+        (b) => !b.ausserhalb_objektkonto && b.datum.slice(0, 7) === `${auszug.jahr}-${monatsText}`
       );
       const summe = buchungenDesMonats.reduce((s, b) => s + zuCent(b.betrag), 0);
       if (zuCent(auszug.anfangsbestand) + summe !== zuCent(auszug.endbestand)) {

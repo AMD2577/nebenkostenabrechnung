@@ -6,7 +6,7 @@ Das Ergebnis und die Befunde stehen im [README](README.md).
 **Mit der Kommandozeile** (nur Node.js nötig, keine Abhängigkeiten, kein `npm install`):
 
 ```bash
-node test/alles.js                      # 51 Tests: Rechnen, Einlesen, Dokumentenstand
+node test/alles.js                      # 59 Tests: Rechnen, Einlesen, Dokumentenstand
 node werkzeuge/pruefe_unterlagen.js     # stimmen die Daten noch zu den 43 Original-PDFs?
 node werkzeuge/baue.js                  # Oberfläche, Prüfprotokoll und Zip neu erzeugen
 node werkzeuge/drucke.js                # die fünf Abrechnungen als PDF (braucht Chrome)
@@ -81,9 +81,9 @@ app/stil.css              ← Gestaltung für Bildschirm UND Druck
 app/index.html            ← Entwicklungsfassung (lädt die Dateien einzeln)
 vendor/                   ← PDF.js (fremde Bibliothek, Herkunft in vendor/HERKUNFT.md)
 
-test/alles.js             ← führt alle Tests aus (51 Stück)
-test/pruefe.js            ← 31 Tests für Rechnen, Prüfungen, Schreiben, Abrechnungsjahr
-test/pruefe_einlesen.js   ← 10 Tests für das Einlesen, gemessen an allen 23 Belegen
+test/alles.js             ← führt alle Tests aus (59 Stück)
+test/pruefe.js            ← 32 Tests für Rechnen, Prüfungen, Schreiben, Abrechnungsjahr
+test/pruefe_einlesen.js   ← 17 Tests für das Einlesen, gemessen an allen 23 Belegen
 test/pruefe_dokumente.js  ← 10 Tests dafür, dass alle Dokumente zum aktuellen Stand gehören
 test/sollwerte.json       ← die von Hand nachgerechneten Sollwerte
 
@@ -292,11 +292,11 @@ node test/alles.js
 Das führt drei Testdateien nacheinander aus (einzeln aufrufbar als `test/pruefe.js`,
 `test/pruefe_einlesen.js`, `test/pruefe_dokumente.js`).
 
-**31 Tests** für Rechnen, Schreiben und Abrechnungsjahr: die Verteilfunktion (inklusive 1.000 Zufallsfällen), die von
+**32 Tests** für Rechnen, Schreiben und Abrechnungsjahr: die Verteilfunktion (inklusive 1.000 Zufallsfällen), die von
 Hand nachgerechneten Sollwerte Zeile für Zeile, die Invarianten, der Prüfkatalog, die Wirkung jeder
 Stellschraube und die gesetzlichen Mindestangaben in allen fünf Schreiben.
 
-**10 Tests** für das Einlesen, gemessen an allen 23 Belegen des Objekts, deren richtige Werte bekannt
+**17 Tests** für das Einlesen, gemessen an allen 23 Belegen des Objekts, deren richtige Werte bekannt
 sind. Die wichtigste Eigenschaft ist dabei nicht die Trefferquote: Ein Verfahren, das 90 % richtig
 liest und 10 % falsch übernimmt, wäre unbrauchbar — eines, das 70 % liest und den Rest in Quarantäne
 schickt, ist brauchbar. Getestet wird deshalb vor allem, dass **kein als geprüft geltender Beleg

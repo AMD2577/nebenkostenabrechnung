@@ -2665,8 +2665,10 @@ window.FALL = {
     const auszuege = (fall.kontoauszuege || []).slice().sort((a, b) => a.monat - b.monat);
     auszuege.forEach((auszug, i) => {
       const monatsText = String(auszug.monat).padStart(2, "0");
+      // Nachgetragene Zahlungen (etwa auf ein anderes Konto) stehen in keinem
+      // Auszug und dürfen die Saldenkette deshalb nicht verändern.
       const buchungenDesMonats = fall.buchungen.filter(
-        (b) => b.datum.slice(0, 7) === `${auszug.jahr}-${monatsText}`
+        (b) => !b.ausserhalb_objektkonto && b.datum.slice(0, 7) === `${auszug.jahr}-${monatsText}`
       );
       const summe = buchungenDesMonats.reduce((s, b) => s + zuCent(b.betrag), 0);
       if (zuCent(auszug.anfangsbestand) + summe !== zuCent(auszug.endbestand)) {
@@ -4242,6 +4244,9 @@ window.FALL = {
       gegenpartei: String(buchung.gegenpartei).trim(),
       zweck: String(buchung.zweck || "").trim(),
       betrag: Math.round(betrag * 100) / 100,
+      // Nachgetragen wird, was NICHT über das Objektkonto lief. Die Buchung zählt
+      // für den Mieter, gehört aber nicht zu den Kontoauszügen (Saldenkette I-06).
+      ausserhalb_objektkonto: true,
     });
     fall.buchungen.sort((a, b) => a.datum.localeCompare(b.datum));
 
@@ -4662,7 +4667,8 @@ window.FALL = {
       return `
         <tr class="${z ? "" : "ohne-zuordnung"}">
           <td>${dat(b.datum)}</td>
-          <td>${sicher(b.gegenpartei)}<div class="klein">${sicher(b.zweck)}</div></td>
+          <td>${sicher(b.gegenpartei)}<div class="klein">${sicher(b.zweck)}${
+            b.ausserhalb_objektkonto ? " · nachgetragen, nicht über das Objektkonto" : ""}</div></td>
           <td class="r ${b.betrag > 0 ? "minus" : ""}">${eur(N.zuCent(b.betrag))}</td>
           <td>${z ? `<span class="marke gut">${z.text}</span>`
                   : `<span class="marke warnung">nicht zugeordnet</span>`}</td>

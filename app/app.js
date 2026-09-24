@@ -392,7 +392,8 @@
       return `
         <tr class="${z ? "" : "ohne-zuordnung"}">
           <td>${dat(b.datum)}</td>
-          <td>${sicher(b.gegenpartei)}<div class="klein">${sicher(b.zweck)}</div></td>
+          <td>${sicher(b.gegenpartei)}<div class="klein">${sicher(b.zweck)}${
+            b.ausserhalb_objektkonto ? " · nachgetragen, nicht über das Objektkonto" : ""}</div></td>
           <td class="r ${b.betrag > 0 ? "minus" : ""}">${eur(N.zuCent(b.betrag))}</td>
           <td>${z ? `<span class="marke gut">${z.text}</span>`
                   : `<span class="marke warnung">nicht zugeordnet</span>`}</td>

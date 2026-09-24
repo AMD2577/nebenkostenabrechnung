@@ -485,7 +485,7 @@ unwirksame Schreiben), dann R-01/R-02/R-03, dann der Rest.
 | D5 · Prüfprotokoll | `dist/Pruefprotokoll.md`, bei jedem Bauen neu erzeugt |
 | D6 · im Termin änderbar | 3 Stellschrauben mit Vorher/Nachher-Vergleich, plus Beleg-Einlesen |
 
-Automatisch geprüft: **51 Tests** (`node test/alles.js`) und
+Automatisch geprüft: **59 Tests** (`node test/alles.js`) und
 **66 fachliche Prüfungen** bei jedem Lauf.
 
 ### Offene Punkte
